@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流光 · 记录你的旅程</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/1.jpeg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(70%); /* 调整亮度 */
+            z-index: -1; /* 让背景在最底层 */
+        }
+
+        body {
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #map {
+            width: 80%;
+            height: 400px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .button {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button:hover {
+            background-color: #1e40af;
+        }
+
+        .popup-content {
+            color: black;
+            text-align: left;
+            padding: 10px;
+        }
+        .marker-animation {
+            animation: bounce 0.5s ease-out;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            width: 100%;
+            padding: 1rem;
+            background-color: rgba(30, 58, 138, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 300px;
+            color: #1e3a8a;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .close-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="logo">流光</div>
+            <div class="nav-links">
+                <button class="button" @click="showLoginModal = true">登录</button>
+                <button class="button" @click="showRegisterModal = true">注册</button>
+            </div>
+        </nav>
+
+        <!-- 登录模态框 -->
+        <div class="modal-backdrop" v-if="showLoginModal" @click.self="showLoginModal = false">
+            <div class="modal">
+                <h2>登录</h2>
+                <form @submit.prevent="handleLogin">
+                    <div class="form-group">
+                        <label>用户名：</label>
+                        <input type="text" v-model="loginForm.username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码：</label>
+                        <input type="password" v-model="loginForm.password" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="button" type="submit">登录</button>
+                        <button class="button" @click="showLoginModal = false">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 注册模态框 -->
+        <div class="modal-backdrop" v-if="showRegisterModal" @click.self="showRegisterModal = false">
+            <div class="modal">
+                <h2>注册</h2>
+                <form @submit.prevent="handleRegister">
+                    <div class="form-group">
+                        <label>用户名：</label>
+                        <input type="text" v-model="registerForm.username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码：</label>
+                        <input type="password" v-model="registerForm.password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码：</label>
+                        <input type="password" v-model="registerForm.confirmPassword" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="button" type="submit">注册</button>
+                        <button class="button" @click="showRegisterModal = false">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h1>流光 · 记录你的旅程</h1>
+        <p>点击地图，点亮你的旅行足迹</p>
+
+        <div id="map"></div>
+        <button class="button" @click="resetMap">重置地图</button>
+        <button class="button" @click="saveLocations">保存记录</button>
+    </div>
+
+
+ 
+   <script>
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const visitedPlaces = ref([]);
+                let map;
+
+                const showLoginModal = ref(false);
+                const showRegisterModal = ref(false);
+                const loginForm = ref({
+                    username: '',
+                    password: ''
+                });
+                const registerForm = ref({
+                    username: '',
+                    password: '',
+                    confirmPassword: ''
+                });
+
+                onMounted(() => {
+                    map = L.map('map').setView([30, 114], 3);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+                    // 加载保存的位置
+                    const savedLocations = JSON.parse(localStorage.getItem('visitedPlaces') || '[]');
+                    visitedPlaces.value = savedLocations;
+                    savedLocations.forEach(location => {
+                        addMarker(location);
+                    });
+
+                    map.on('click', (e) => {
+                        const date = new Date().toLocaleString();
+                        const location = {
+                            latlng: e.latlng,
+                            date: date
+                        };
+                        visitedPlaces.value.push(location);
+                        addMarker(location);
+                    });
+                });
+
+                const addMarker = (location) => {
+                    const marker = L.marker(location.latlng)
+                        .bindPopup(`
+                            <div class="popup-content">
+                                <p>纬度: ${location.latlng.lat.toFixed(4)}</p>
+                                <p>经度: ${location.latlng.lng.toFixed(4)}</p>
+                                <p>访问时间: ${location.date}</p>
+                            </div>
+                        `);
+                    marker.addTo(map);
+                    marker._icon.classList.add('marker-animation');
+                };
+
+                const saveLocations = () => {
+                    localStorage.setItem('visitedPlaces', JSON.stringify(visitedPlaces.value));
+                    alert('位置已保存！');
+                };
+
+                const resetMap = () => {
+                    visitedPlaces.value = [];
+                    localStorage.removeItem('visitedPlaces');
+                    map.eachLayer(layer => {
+                        if (layer instanceof L.Marker) {
+                            map.removeLayer(layer);
+                        }
+                    });
+                };
+
+                const handleLogin = () => {
+                    // 这里添加登录逻辑
+                    console.log('登录信息：', loginForm.value);
+                    showLoginModal.value = false;
+                    // 清空表单
+                    loginForm.value = {
+                        username: '',
+                        password: ''
+                    };
+                };
+
+                const handleRegister = () => {
+                    if (registerForm.value.password !== registerForm.value.confirmPassword) {
+                        alert('两次输入的密码不一致！');
+                        return;
+                    }
+                    // 这里添加注册逻辑
+                    console.log('注册信息：', registerForm.value);
+                    showRegisterModal.value = false;
+                    // 清空表单
+                    registerForm.value = {
+                        username: '',
+                        password: '',
+                        confirmPassword: ''
+                    };
+                };
+
+                return {
+                    visitedPlaces,
+                    resetMap,
+                    saveLocations,
+                    showLoginModal,
+                    showRegisterModal,
+                    loginForm,
+                    registerForm,
+                    handleLogin,
+                    handleRegister
+                };
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
