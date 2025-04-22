@@ -1,13 +1,25 @@
 package org.example.fleetingtime;
 
+import org.example.fleetingtime.bean.User;
+import org.example.fleetingtime.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class FleetingTimeApplicationTests {
 
+    @Autowired
+    UserService userService;
+
     @Test
-    void contextLoads() {
+    void testInsertUser() {
+        // 1. 准备测试数据
+        User user = new User();
+        user.setUsername("testUser02");
+        user.setPassword("testPswd02");
+        // 2. 执行插入操作
+        userService.register(user);
     }
 
 }
