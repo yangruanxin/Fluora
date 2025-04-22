@@ -11,11 +11,13 @@
   "dependencies": {
     "@vueuse/core": "^13.1.0",
     "ant-design-vue": "^4.0.0-rc.6",
+    "cobe": "^0.6.3",
     "element-plus": "^2.9.7",
     "motion-v": "^1.0.0-beta.2",
     "vue": "^3.5.13",
     "vue-baidu-map-3x": "^1.0.40",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vue-use-spring": "^0.3.3"
   },
   "devDependencies": {
     "@inspira-ui/plugins": "^0.0.1",
