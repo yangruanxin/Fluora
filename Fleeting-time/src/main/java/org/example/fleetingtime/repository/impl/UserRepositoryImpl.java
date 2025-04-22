@@ -1,8 +1,8 @@
-package org.example.test.repository.impl;
+package org.example.fleetingtime.repository.impl;
 
-import org.example.test.bean.User;
+import org.example.fleetingtime.bean.User;
 import org.springframework.stereotype.Repository;
-import org.example.test.repository.UserRepository;
+import org.example.fleetingtime.repository.UserRepository;
 
 import java.sql.*;
 

@@ -1,6 +1,6 @@
-package org.example.test.service;
+package org.example.fleetingtime.service;
 
-import org.example.test.bean.User;
+import org.example.fleetingtime.bean.User;
 
 
 public interface UserService {

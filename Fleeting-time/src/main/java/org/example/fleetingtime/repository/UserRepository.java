@@ -1,6 +1,6 @@
-package org.example.test.repository;
+package org.example.fleetingtime.repository;
 
-import org.example.test.bean.User;
+import org.example.fleetingtime.bean.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

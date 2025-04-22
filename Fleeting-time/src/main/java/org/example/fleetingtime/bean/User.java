@@ -1,4 +1,4 @@
-package org.example.test.bean;
+package org.example.fleetingtime.bean;
 
 import lombok.Data;
 
