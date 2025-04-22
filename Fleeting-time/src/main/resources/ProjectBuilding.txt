@@ -1,0 +1,16 @@
+1.创建工程时使用maven
+2.导入依赖的时候导入
+Lombok
+Spring Web
+Spring Data JDBC--------以后换成Mybatis
+MySQL Driver
+3.这4个文件放在java包.org.exampl.【包名】下，和application同级
+4.数据库url和密码在repo下记得改
+5.需要在res/application.properties下配置，直接粘贴,记得改数据库地址
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.password=111
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+6.采用的是JDBC,暂时，等蔡老师具体修改，
+
+已验证过注册
