@@ -19,16 +19,15 @@ class FleetingTimeApplicationTests {
     void testRegister() {
         // 1. 准备测试数据
         User user = new User();
-        user.setUsername("testUser03");
-        user.setPassword("testPswd03");
+        user.setUsername("testUser04");
+        user.setPassword("testPswd04");
         // 2. 执行插入操作
         userService.register(user);
     }
 
     @Test
     void testLogin() {
-        String username = "testUser05";
-        String password = "testPswd03";
+        String username = "testUser04";
         User user = userMapper.findByUsername(username);
         System.out.println(user);
     }
@@ -36,7 +35,7 @@ class FleetingTimeApplicationTests {
     @Test
     void testDeactivate() {
         User user = new User();
-        user.setUsername("testUser03");
+        user.setUsername("testUser04");
         userService.deactiveAccount(user);
     }
 
