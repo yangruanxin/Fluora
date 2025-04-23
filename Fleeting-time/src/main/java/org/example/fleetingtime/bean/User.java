@@ -1,6 +1,6 @@
 package org.example.fleetingtime.bean;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
 public class User {

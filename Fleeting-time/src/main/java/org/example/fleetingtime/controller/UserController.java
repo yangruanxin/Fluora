@@ -2,37 +2,35 @@ package org.example.fleetingtime.controller;
 
 
 import org.example.fleetingtime.bean.User;
+import org.example.fleetingtime.common.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.example.fleetingtime.service.UserService;
 
-
+@RequestMapping("/api/v1" )
+@CrossOrigin
 @RestController
 public class UserController {
-//    @RequestMapping(value="/register",consumes ={"application/json"})
-//    public String register(){
-//
-//        return "register";
-//    }
     @Autowired
     private UserService userService;
+
     //注册
-    @RequestMapping(method=RequestMethod.POST,value="/register")
-    public String register(@RequestBody User user) {
+    @PostMapping("/register")
+    public R register(@RequestBody User user) {
         boolean result = userService.register(user);
-        return result ? "注册成功" : "用户名已存在";
+        return result ? R.ok("注册成功") : R.error(500,"用户名已存在");
     }
     //登录
-    @RequestMapping(method=RequestMethod.POST,value="/login")
-    public String login(@RequestBody User user) {
+    @PostMapping("/login")
+    public R login(@RequestBody User user) {
         boolean result = userService.login(user.getUsername(), user.getPassword());
-        return result ? "登录成功" : "用户名或密码错误";
+        return result ? R.ok("登录成功") : R.error(501,"用户名或密码错误");
     }
     //注销
-    @RequestMapping(method=RequestMethod.DELETE,value="/delete")
-    public String logout(@RequestBody User user) {
+    @DeleteMapping("/logout")
+    public R logout(@RequestBody User user) {
         boolean result = userService.logout(user);
-        return result ? "注销成功" : "用户名不存在";
+        return result ? R.ok("注销成功") : R.error(502,"用户名不存在");
     }
-
+    //new....
 }
