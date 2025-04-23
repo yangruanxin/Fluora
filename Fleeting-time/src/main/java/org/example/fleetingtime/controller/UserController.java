@@ -1,10 +1,10 @@
-package org.example.test.controller;
+package org.example.fleetingtime.controller;
 
 
-import org.example.test.bean.User;
+import org.example.fleetingtime.bean.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.example.test.service.UserService;
+import org.example.fleetingtime.service.UserService;
 
 
 @RestController

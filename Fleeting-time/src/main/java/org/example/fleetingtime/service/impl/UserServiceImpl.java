@@ -1,10 +1,10 @@
-package org.example.test.service.impl;
+package org.example.fleetingtime.service.impl;
 
-import org.example.test.bean.User;
+import org.example.fleetingtime.bean.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.example.test.repository.UserRepository;
-import org.example.test.service.UserService;
+import org.example.fleetingtime.repository.UserRepository;
+import org.example.fleetingtime.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

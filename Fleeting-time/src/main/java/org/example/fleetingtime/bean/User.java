@@ -1,8 +1,10 @@
-package org.example.test.bean;
+package org.example.fleetingtime.bean;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private String username;
     private String password;
