@@ -1,6 +1,7 @@
 package org.example.fleetingtime;
 
 import org.example.fleetingtime.bean.User;
+import org.example.fleetingtime.mapper.UserMapper;
 import org.example.fleetingtime.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ class FleetingTimeApplicationTests {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserMapper userMapper;
 
     @Test
     void testInsertUser() {
@@ -22,4 +25,26 @@ class FleetingTimeApplicationTests {
         userService.register(user);
     }
 
+    @Test
+    void testSelectByNameXML(){
+        // 1. prepare String name
+        String name = "testUser";
+        // 2. find
+        User user = userMapper.findByUsername(name);
+        System.out.println(user);
+    }
+
+    @Test
+    void testSaveXML(){
+        User user = new User();
+        user.setUsername("testUserXML");
+        user.setPassword("testPswdXML");
+        userMapper.save(user);
+    }
+
+    @Test
+    void testDeleteXML(){
+        int id = 4;
+        userMapper.delete(id);
+    }
 }
