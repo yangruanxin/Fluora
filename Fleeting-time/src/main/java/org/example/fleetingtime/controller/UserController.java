@@ -31,7 +31,7 @@ public class UserController {
     //注销
     @RequestMapping(method=RequestMethod.DELETE,value="/delete")
     public String logout(@RequestBody User user) {
-        boolean result = userService.logout(user);
+        boolean result = userService.deactiveAccount(user);
         return result ? "注销成功" : "用户名不存在";
     }
 

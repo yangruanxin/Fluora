@@ -7,5 +7,5 @@ import org.example.fleetingtime.bean.User;
 public interface UserMapper {
     User findByUsername(String username);
     void save(User user);
-    void delete(int id);
+    void delete(Long id);
 }

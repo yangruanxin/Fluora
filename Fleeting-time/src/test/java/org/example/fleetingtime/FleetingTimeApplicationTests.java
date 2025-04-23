@@ -11,18 +11,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 class FleetingTimeApplicationTests {
 
     @Autowired
-    UserService userService;
-    @Autowired
     UserMapper userMapper;
+    @Autowired
+    UserService userService;
 
     @Test
-    void testInsertUser() {
+    void testRegister() {
         // 1. 准备测试数据
         User user = new User();
-        user.setUsername("testUser02");
-        user.setPassword("testPswd02");
+        user.setUsername("testUser03");
+        user.setPassword("testPswd03");
         // 2. 执行插入操作
         userService.register(user);
+    }
+
+    @Test
+    void testLogin() {
+        String username = "testUser05";
+        String password = "testPswd03";
+        User user = userMapper.findByUsername(username);
+        System.out.println(user);
+    }
+
+    @Test
+    void testDeactivate() {
+        User user = new User();
+        user.setUsername("testUser03");
+        userService.deactiveAccount(user);
     }
 
     @Test
@@ -44,7 +59,7 @@ class FleetingTimeApplicationTests {
 
     @Test
     void testDeleteXML(){
-        int id = 4;
+        long id = 4;
         userMapper.delete(id);
     }
 }
