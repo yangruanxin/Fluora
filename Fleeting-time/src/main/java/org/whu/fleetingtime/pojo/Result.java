@@ -1,5 +1,10 @@
 package org.whu.fleetingtime.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Result<T> {
 
     private Integer code;
@@ -31,30 +36,5 @@ public class Result<T> {
 
     public static <T> Result<T> failure(Integer code, String message) {
         return new Result<>(code, message, null);
-    }
-
-    // getter & setter
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 }
