@@ -17,6 +17,8 @@ public class UserController {
 
     @Value("${jwt.secret}")
     private String secretKey;
+    @Value("${jwt.duration}")
+    private int duration; // minutes
 
     @Autowired
     private UserService userService;
@@ -39,7 +41,7 @@ public class UserController {
             Long userId = userService.findUserByUsername(user.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
-            String token = JwtUtil.createJwt(secretKey, 30 * 60 * 1000, claims); // 有效期30分钟
+            String token = JwtUtil.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             return Result.success("login successful", result);
