@@ -12,6 +12,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // helloTest
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+
     // 登录接口
     @PostMapping("/login")
     public String login(@RequestBody User user) {

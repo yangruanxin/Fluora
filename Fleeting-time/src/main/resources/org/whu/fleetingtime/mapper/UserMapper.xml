@@ -19,7 +19,7 @@
     </insert>
 
 <!--    根据id删除用户-->
-    <delete id="deleteByUserID" parameterType="Long">
+    <delete id="deleteByUserId" parameterType="Long">
         DELETE FROM fleeting_time.user
         WHERE id = #{id}
     </delete>

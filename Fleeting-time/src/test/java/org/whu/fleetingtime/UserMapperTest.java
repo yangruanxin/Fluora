@@ -46,7 +46,7 @@ public class UserMapperTest {
         User user = userMapper.selectByUsername("testuser123");
         assertNotNull(user);
 
-        int result = userMapper.deleteByUserID(user.getId());
+        int result = userMapper.deleteByUserId(user.getId());
         assertEquals(1, result);
 
         User deleted = userMapper.selectByUsername("testuser123");

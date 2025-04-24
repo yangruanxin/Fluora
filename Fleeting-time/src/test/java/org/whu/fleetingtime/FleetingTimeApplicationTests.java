@@ -53,6 +53,6 @@ class FleetingTimeApplicationTests {
     @Test
     void testDeleteXML(){
         long id = 4;
-        userMapper.deleteByUserID(id);
+        userMapper.deleteByUserId(id);
     }
 }

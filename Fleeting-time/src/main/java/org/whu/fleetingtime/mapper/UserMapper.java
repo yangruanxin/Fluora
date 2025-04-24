@@ -7,5 +7,5 @@ import org.whu.fleetingtime.pojo.User;
 public interface UserMapper {
     User selectByUsername(String username);
     int insertUser(User user);
-    int  deleteByUserID(Long id);
+    int deleteByUserId(Long id);
 }
