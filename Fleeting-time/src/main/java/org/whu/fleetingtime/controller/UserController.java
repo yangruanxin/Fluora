@@ -42,20 +42,20 @@ public class UserController {
             String token = JwtUtil.createJwt(secretKey, 30 * 60 * 1000, claims); // 有效期30分钟
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
-            return Result.success("登录成功", result);
+            return Result.success("Login successful", result);
         } else {
-            return Result.failure("登录失败，用户名或密码错误。");
+            return Result.failure("Login failed. The username or password is incorrect");
         }
     }
 
     // 注册接口
     @PostMapping("/register")
-    public Result<Void> register(@RequestBody User user) {
+    public Result<String> register(@RequestBody User user) {
         boolean success = userService.register(user);
         if (success) {
-            return Result.success("注册成功！", null);
+            return Result.success("Registration successful");
         } else {
-            return Result.failure("注册失败，用户名已存在。");
+            return Result.failure("Registration failed. The username already exists");
         }
     }
 }
