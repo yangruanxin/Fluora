@@ -18,19 +18,19 @@ public class UserController {
     @PostMapping("/register")
     public R register(@RequestBody User user) {
         boolean result = userService.register(user);
-        return result ? R.ok("注册成功") : R.error(500,"用户名已存在");
+        return result ? R.ok("注册成功") : R.error(501,"用户名已存在");
     }
     //登录
     @PostMapping("/login")
     public R login(@RequestBody User user) {
         boolean result = userService.login(user.getUsername(), user.getPassword());
-        return result ? R.ok("登录成功") : R.error(501,"用户名或密码错误");
+        return result ? R.ok("登录成功") : R.error(502,"用户名或密码错误");
     }
     //注销
     @DeleteMapping("/logout")
     public R logout(@RequestBody User user) {
         boolean result = userService.logout(user);
-        return result ? R.ok("注销成功") : R.error(502,"用户名不存在");
+        return result ? R.ok("注销成功") : R.error(503,"用户名不存在");
     }
     //new....
 }
