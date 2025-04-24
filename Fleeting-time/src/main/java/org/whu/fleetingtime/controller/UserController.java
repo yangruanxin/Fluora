@@ -1,6 +1,7 @@
 package org.whu.fleetingtime.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.whu.fleetingtime.pojo.Result;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,16 @@ public class UserController {
 
     // helloTest
     @GetMapping("/hello")
-    public String secretHello(@RequestHeader("Authorization") String token) {
+    public Result<String> secretHello(@RequestHeader("Authorization") String token) {
         // 从 token 中解析用户名
         String userId = (String) JwtUtil.parseJWT(secretKey, token).get("id");
         User user = userService.findUserById(Long.parseLong(userId));
-        return "Hello, " + user.getUsername() + "!";
+        return Result.success("Hello, " + user.getUsername() + "!");
     }
 
     // 登录接口
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public Result<Map<String, Object>> login(@RequestBody User user) {
         User loggedInUser = userService.login(user.getUsername(), user.getPassword());
         if (loggedInUser != null) {
             // 登录成功后返回JWT
@@ -39,20 +40,22 @@ public class UserController {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
             String token = JwtUtil.createJwt(secretKey, 30 * 60 * 1000, claims); // 有效期30分钟
-            return "登录成功，JWT令牌: " + token;
+            Map<String, Object> result = new HashMap<>();
+            result.put("token", token);
+            return Result.success("登录成功", result);
         } else {
-            return "登录失败，用户名或密码错误。";
+            return Result.failure("登录失败，用户名或密码错误。");
         }
     }
 
     // 注册接口
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
+    public Result<Void> register(@RequestBody User user) {
         boolean success = userService.register(user);
         if (success) {
-            return "注册成功！";
+            return Result.success("注册成功！", null);
         } else {
-            return "注册失败，用户名已存在。";
+            return Result.failure("注册失败，用户名已存在。");
         }
     }
 }
