@@ -1,6 +1,8 @@
 package org.whu.fleetingtime.controller;
 
+import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
+import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.pojo.Result;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
@@ -47,7 +49,8 @@ public class UserController {
             result.put("token", token);
             return Result.success("login successful", result);
         } else {
-            return Result.failure("invalid username or password");
+            throw new BizException(BizExceptionEnum.USER_PASSWORD_OR_USERNAME_ERROR);
+            //return Result.failure("invalid username or password");
         }
     }
 
@@ -58,7 +61,8 @@ public class UserController {
         if (success) {
             return Result.success("registration successful");
         } else {
-            return Result.failure("username already exists");
+            throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
+            //return Result.failure("username already exists");
         }
     }
 }

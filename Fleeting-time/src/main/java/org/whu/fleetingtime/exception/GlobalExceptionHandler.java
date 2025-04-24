@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
     public Result<Object> handleJwt(JwtException e) {
         return Result.failure(401, "invalid token");
     }
+
+    @ExceptionHandler(BizException.class)
+    public Result<Object> handleBiz(BizException e) {
+        return Result.failure(e.getCode(), e.getMsg());
+    }
 }
