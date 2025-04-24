@@ -16,6 +16,8 @@ public class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
 
+
+
     @Test
     public void testInsertUser() {
         User user = new User();
@@ -39,6 +41,12 @@ public class UserMapperTest {
         assertEquals("testuser123", user.getUsername());
 
         System.out.println("查询成功，密码为：" + user.getPassword());
+    }
+
+    @Test
+    public void testSelectById() {
+        User user = userMapper.selectByUserId(2L);
+        System.out.println(user);
     }
 
     @Test

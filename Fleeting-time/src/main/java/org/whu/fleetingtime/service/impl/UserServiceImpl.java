@@ -34,4 +34,14 @@ public class UserServiceImpl implements UserService {
         int result = userMapper.insertUser(user);
         return result == 1;
     }
+
+    @Override
+    public User findUserById(Long id) {
+        return userMapper.selectByUserId(id);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userMapper.selectByUsername(username);
+    }
 }

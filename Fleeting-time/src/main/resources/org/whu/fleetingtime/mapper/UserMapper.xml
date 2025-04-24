@@ -9,6 +9,11 @@
         SELECT * FROM fleeting_time.user WHERE username = #{username}
     </select>
 
+<!--    根据id查询-->
+    <select id="selectByUserId" parameterType="Long" resultType="org.whu.fleetingtime.pojo.User">
+        SELECT * FROM fleeting_time.user WHERE id = #{id}
+    </select>
+
 <!--    插入新用户，返回自增主键-->
     <insert id="insertUser"
             parameterType="org.whu.fleetingtime.pojo.User"

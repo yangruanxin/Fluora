@@ -5,4 +5,6 @@ import org.whu.fleetingtime.pojo.User;
 public interface UserService {
     User login(String username, String password);
     boolean register(User user);
+    User findUserById(Long id);
+    User findUserByUsername(String username);
 }
