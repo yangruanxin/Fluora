@@ -42,9 +42,9 @@ public class UserController {
             String token = JwtUtil.createJwt(secretKey, 30 * 60 * 1000, claims); // 有效期30分钟
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
-            return Result.success("Login successful", result);
+            return Result.success("login successful", result);
         } else {
-            return Result.failure("Login failed. The username or password is incorrect");
+            return Result.failure("invalid username or password");
         }
     }
 
@@ -53,9 +53,9 @@ public class UserController {
     public Result<String> register(@RequestBody User user) {
         boolean success = userService.register(user);
         if (success) {
-            return Result.success("Registration successful");
+            return Result.success("registration successful");
         } else {
-            return Result.failure("Registration failed. The username already exists");
+            return Result.failure("username already exists");
         }
     }
 }

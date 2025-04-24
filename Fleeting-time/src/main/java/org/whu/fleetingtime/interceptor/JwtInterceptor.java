@@ -22,7 +22,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
             // 构造统一返回结果
-            Result<Object> result = Result.failure(401, "未提供Token");
+            Result<Object> result = Result.failure(401, "null token");
             // 转成 JSON 返回
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(result);

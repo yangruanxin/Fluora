@@ -11,8 +11,6 @@ public class Result<T> {
     private String message;
     private T data;
 
-    private Result() {}
-
     private Result(Integer code, String message, T data) {
         this.code = code;
         this.message = message;
@@ -20,8 +18,13 @@ public class Result<T> {
     }
 
     // 成功返回
+    public static <T> Result<T> success() {
+        return new Result<>(200, "success", null);
+    }
+
+    // 成功返回
     public static <T> Result<T> success(T data) {
-        return new Result<>(200, "Success", data);
+        return new Result<>(200, "success", data);
     }
 
     // 自定义成功信息

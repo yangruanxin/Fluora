@@ -13,25 +13,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public Map<String, Object> handleRuntime(RuntimeException e) {
-        return buildError(500, e.getMessage());
+        return buildError(500, "internal server error");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public Map<String, Object> handleIllegalArgument(IllegalArgumentException e) {
-        System.out.println(e.getMessage());
-        return buildError(400, "Illegal request parameters: ");
+        return buildError(400, "invalid parameters");
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     public Map<String, Object> handleExpiredJwt(ExpiredJwtException e) {
-        System.out.println(e.getMessage());
-        return buildError(401, "The Token has expired, Please log in again");
+        return buildError(401, "expired token");
     }
 
     @ExceptionHandler(JwtException.class)
     public Map<String, Object> handleJwt(JwtException e) {
-        System.out.println(e.getMessage());
-        return buildError(401, "Invalid Token");
+        return buildError(401, "invalid Token");
     }
 
     private Map<String, Object> buildError(int code, String msg) {
