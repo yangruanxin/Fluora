@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BizException.class)
-    public Result<Object> handleBiz(BizExceptionEnum e) {
+    public Result<Object> handleBiz(BizException e) {
         return Result.failure(e.getCode(), e.getMsg());
     }
 }

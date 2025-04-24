@@ -1,7 +1,12 @@
 package org.whu.fleetingtime.exception;
 
+
+import lombok.Getter;
+
 public class BizException extends RuntimeException {
+    @Getter
     private Integer code;
+    @Getter
     private String msg;
     public BizException(Integer code, String msg) {
         super(msg);
