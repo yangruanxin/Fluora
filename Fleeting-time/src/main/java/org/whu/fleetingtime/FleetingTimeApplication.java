@@ -1,4 +1,4 @@
-package org.example.fleetingtime;
+package org.whu.fleetingtime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
