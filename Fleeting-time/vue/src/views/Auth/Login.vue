@@ -10,7 +10,8 @@
             :rules="rules"
             label-width="auto"
         >
-            <h2>开启你的旅程吧！</h2>
+            <p> 开启你的旅程吧！</p>
+            <br>
             <!-- 账号框 -->
             <el-form-item label="账号" prop="account">
                 <el-input  placeholder="请输入您的账号" v-model="LoginForm.account"/>
@@ -19,8 +20,11 @@
             <el-form-item label="密码" prop="password">
                 <el-input  placeholder="请输入您的密码" type="password" v-model="LoginForm.password" show-password/>
             </el-form-item>
-            <el-form-item label="">
-                <el-button type="primary">登录</el-button>
+            <el-form-item label="" class="button-group">
+                <div class="button-row">
+                    <el-button type="primary" class="login-btn">登录</el-button>
+                    <el-button type="primary" class="cancel-btn" @click="handleCancel">取消</el-button>
+                </div>
             </el-form-item>
         </el-form>
     </div>
@@ -30,11 +34,20 @@
 <script setup>
 
 import {reactive,ref} from "vue"
+import {useRouter} from "vue-router"
 
 const LoginForm = reactive({
   account: '',
   password: ''
 })
+
+//获取路由事例
+const router=useRouter()
+
+//“取消”按钮点击事件
+const handleCancel = () =>{
+    router.push('/')
+}
 
 </script>
 
@@ -69,7 +82,7 @@ const LoginForm = reactive({
     background-position: center;
     padding: 8rem;
     border-radius: 20px;
-    width: 500px;
+    width: 800px;
 }
 
 .login-image {
@@ -93,6 +106,26 @@ const LoginForm = reactive({
 
 .el-input{
     border-radius: 8px;
+}
+
+
+p{
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.button-group {
+    margin-top: 20px; 
+}
+
+.button-row {
+    display: flex;
+    gap: 10px; /* 按钮之间的间距 */
+    width: 100%;
+}
+
+.login-btn, .cancel-btn {
+    flex: 1; /* 使两个按钮等宽 */
 }
 
 </style>

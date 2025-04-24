@@ -1,13 +1,25 @@
 <!-- vue3引入百度api -->
 <template>
   <div class="map-container">
-    <h2>点击地图，选择你的旅行目的地</h2>
+    <div class="header-row">
+      <h2>点击地图，选择你的旅行目的地</h2>
+      <HoverButton text="返回" @click="handleBack"/>
+    </div>
     <div id="allmap"></div>
   </div>
 </template>
 
 <script setup>
+import HoverButton from "@/components/HoverButton.vue";
+import {useRouter} from "vue-router";
 import { onMounted } from "vue";
+
+const router=useRouter();
+
+const handleBack = () => {
+  router.push('/')
+}
+
 onMounted(() => {
   loadMapScript(); // 加载百度地图资源
 });
@@ -62,10 +74,18 @@ const loadMapScript = () => {
   height: 100vh; /* 父容器明确高度 */
 }
 
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px; /* 添加与地图的间距 */
+}
+
 h2 {
   padding: 16px;
   text-align: center;
-  background: #f0f0f0;
+  font-weight: bold;
+  font-size: 20px;
   margin: 0; /* 去除默认margin */
 }
 
