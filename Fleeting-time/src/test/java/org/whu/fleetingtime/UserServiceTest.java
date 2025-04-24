@@ -23,13 +23,18 @@ public class UserServiceTest {
 
         // 测试注册
         boolean registerResult = userService.register(user);
-        assertTrue(registerResult); // 不强求，可能用户已存在
+        System.out.println(registerResult);
 
         // 测试登录
         User loginUser = userService.login("jwt_user", "nopass");
         assertNotNull(loginUser);
         assertEquals("jwt_user", loginUser.getUsername());
 
-        System.out.println("Service 登录测试成功 ✅");
+        System.out.println("Service 登录测试成功");
+    }
+
+    @Test
+    public void testWebhook() {
+        System.out.println("测试流水线触发");
     }
 }
