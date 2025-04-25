@@ -10,9 +10,23 @@ spring:
 # mybatis log out
 mybatis:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
 jwt:
   secret: YourSuperSecretKeyForJwtMustBeLongEnough123!
   duration: 30
+
+logging:
+  file:
+    name: logs/fleeting-time.log # 主日志文件路径
+#  logback:
+#    rollingpolicy:
+#      file-name-pattern: logs/fleeting-time-%d{yyyy-MM-dd}.log # 每天一个日志文件
+#      max-history: 30  # 最多保留30天
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+#    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.whu.fleetingtime: DEBUG # 如果你想让自己项目下的日志更详细
