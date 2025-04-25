@@ -1,12 +1,11 @@
-package org.whu.fleetingtime;
+package org.whu.fleetingtime.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.whu.fleetingtime.mapper.UserMapper;
 import org.whu.fleetingtime.pojo.User;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +22,8 @@ public class UserMapperTest {
             User user = new User();
             user.setUsername(UUID.randomUUID().toString());
             user.setPassword("1234dsa56");
-            user.setCreatedTime(new Date());
-            user.setUpdatedTime(new Date());
+            user.setCreatedTime(LocalDateTime.now());
+            user.setUpdatedTime(LocalDateTime.now());
 
             int result = userMapper.insertUser(user);
             assertEquals(1, result); // 确保插入成功
