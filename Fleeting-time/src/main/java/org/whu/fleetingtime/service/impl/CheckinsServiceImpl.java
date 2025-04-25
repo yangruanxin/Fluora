@@ -14,7 +14,6 @@ import org.whu.fleetingtime.util.JwtUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 @Service
 public class CheckinsServiceImpl implements CheckinsService {
