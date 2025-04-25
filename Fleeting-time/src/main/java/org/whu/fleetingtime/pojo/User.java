@@ -2,9 +2,7 @@ package org.whu.fleetingtime.pojo;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class User {

@@ -15,7 +15,7 @@ import org.whu.fleetingtime.util.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-//@CrossOrigin
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
