@@ -25,8 +25,6 @@ public class CheckinsServiceImpl implements CheckinsService {
     @Autowired
     CheckinRecordMapper checkinRecordMapper;
 
-    private static final Random random = new Random();
-
     @Override
     public CheckinResponseDTO checkin(String token, CheckinRequestDTO request) {
         // 0. 输入校验

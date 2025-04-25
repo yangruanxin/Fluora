@@ -16,9 +16,9 @@ public enum BizExceptionEnum {
     INVALID_CHECKIN_PARAMETER(10004, "latitude, longitude, city or timestamp is null");
 
 
-    private Integer code;
-    private String msg;
-    private BizExceptionEnum(Integer code, String msg) {
+    private final Integer code;
+    private final String msg;
+    BizExceptionEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
