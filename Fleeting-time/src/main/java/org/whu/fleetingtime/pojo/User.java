@@ -2,15 +2,13 @@ package org.whu.fleetingtime.pojo;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
     private Long id;
     private String username;
     private String password;
-    private Date createdTime;
-    private Date updatedTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }

@@ -2,39 +2,44 @@ package org.whu.fleetingtime.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.whu.fleetingtime.pojo.Result;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(RuntimeException.class)
-    public Map<String, Object> handleRuntime(RuntimeException e) {
-        return buildError(500, e.getMessage());
+    public Result<Object> handleRuntime(RuntimeException e) {
+        logger.error("运行时异常：{}", e.getMessage(), e);
+        return Result.failure(500, "internal server error");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public Map<String, Object> handleIllegalArgument(IllegalArgumentException e) {
-        return buildError(400, "非法请求参数：" + e.getMessage());
+    public Result<Object> handleIllegalArgument(IllegalArgumentException e) {
+        logger.warn("参数异常：{}", e.getMessage());
+        return Result.failure(400, "invalid parameters");
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public Map<String, Object> handleExpiredJwt(ExpiredJwtException e) {
-        return buildError(401, "Token 已过期，请重新登录。" + e.getMessage());
+    public Result<Object> handleExpiredJwt(ExpiredJwtException e) {
+        logger.warn("JWT已过期：{}", e.getMessage());
+        return Result.failure(401, "expired token");
     }
 
     @ExceptionHandler(JwtException.class)
-    public Map<String, Object> handleJwt(JwtException e) {
-        return buildError(401, "无效的Token：" + e.getMessage());
+    public Result<Object> handleJwt(JwtException e) {
+        logger.warn("无效的JWT：{}", e.getMessage());
+        return Result.failure(401, "invalid token");
     }
 
-    private Map<String, Object> buildError(int code, String msg) {
-        Map<String, Object> res = new HashMap<>();
-        res.put("code", code);
-        res.put("msg", msg);
-        return res;
+    @ExceptionHandler(BizException.class)
+    public Result<Object> handleBiz(BizException e) {
+        logger.info("业务异常，代码: {}，消息: {}", e.getCode(), e.getMsg());
+        return Result.failure(e.getCode(), e.getMsg());
     }
 }
