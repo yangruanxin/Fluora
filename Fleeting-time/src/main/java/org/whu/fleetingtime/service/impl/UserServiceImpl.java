@@ -8,6 +8,7 @@ import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -40,8 +41,8 @@ public class UserServiceImpl implements UserService {
             logger.warn("[UserServiceRegister]注册失败，改用户名已存在: {}", user.getUsername());
             return false; // 用户名已存在
         }
-        user.setCreatedTime(new Date());
-        user.setUpdatedTime(new Date());
+        user.setCreatedTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
         int result = userMapper.insertUser(user);
         logger.info("[UserServiceRegister]注册成功，用户名，id: {}, {}", user.getUsername(), user.getPassword());
         return result == 1;

@@ -23,7 +23,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader("Authorization");
 
-        logger.debug("[JwtInterceptor]拦截请求路径: {}，方法: {}，Token: {}", request.getRequestURI(), request.getMethod(), token);
+        logger.info("[JwtInterceptor]拦截请求路径: {}，方法: {}，Token: {}", request.getRequestURI(), request.getMethod(), token);
 
         if (token == null || token.isEmpty()) {
             logger.warn("[JwtInterceptor]请求被拦截：未携带Token");
