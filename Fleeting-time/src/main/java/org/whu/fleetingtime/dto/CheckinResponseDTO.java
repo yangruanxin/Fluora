@@ -3,6 +3,8 @@ package org.whu.fleetingtime.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class CheckinResponseDTO {
@@ -11,7 +13,7 @@ public class CheckinResponseDTO {
     private Double longitude;
     private String city;
     private String province;
-    private String timestamp;
+    private LocalDateTime timestamp;
     private String note;
     private String device;
     private Boolean isNewCity;
