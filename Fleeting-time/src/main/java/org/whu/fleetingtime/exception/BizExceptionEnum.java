@@ -2,6 +2,7 @@ package org.whu.fleetingtime.exception;
 
 import lombok.Getter;
 
+@Getter
 public enum BizExceptionEnum {
 
     //====用户模块====
@@ -15,9 +16,7 @@ public enum BizExceptionEnum {
     INVALID_CHECKIN_PARAMETER(10004, "latitude, longitude, city or timestamp is null");
 
 
-    @Getter
     private Integer code;
-    @Getter
     private String msg;
     private BizExceptionEnum(Integer code, String msg) {
         this.code = code;
