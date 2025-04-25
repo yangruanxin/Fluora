@@ -39,7 +39,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             response.getWriter().write(json);
             return false;
         }
-        logger.warn("[JwtInterceptor]请求被放行：已携带Token");
+        logger.info("[JwtInterceptor]请求被放行：已携带Token");
         return true;
     }
 }
