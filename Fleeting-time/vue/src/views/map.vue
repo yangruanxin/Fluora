@@ -3,7 +3,7 @@
   <div class="map-container">
     <div class="header-row">
       <h2>点击地图，选择你的旅行目的地</h2>
-      <HoverButton text="返回" @click="handleBack"/>
+      <HoverButton text="返回" @click="handleBack" class="back"/>
     </div>
     <div id="allmap"></div>
   </div>
