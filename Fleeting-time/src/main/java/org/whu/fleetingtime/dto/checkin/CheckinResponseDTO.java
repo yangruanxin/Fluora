@@ -1,4 +1,4 @@
-package org.whu.fleetingtime.dto;
+package org.whu.fleetingtime.dto.checkin;
 
 import lombok.Builder;
 import lombok.Data;

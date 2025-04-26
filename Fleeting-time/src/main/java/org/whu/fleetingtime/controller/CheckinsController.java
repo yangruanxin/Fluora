@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whu.fleetingtime.dto.CheckinRequestDTO;
-import org.whu.fleetingtime.dto.CheckinResponseDTO;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
+import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
+import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.service.CheckinsService;
 
 @CrossOrigin

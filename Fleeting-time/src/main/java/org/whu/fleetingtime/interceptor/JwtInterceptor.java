@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.common.Result;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {

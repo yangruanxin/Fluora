@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
