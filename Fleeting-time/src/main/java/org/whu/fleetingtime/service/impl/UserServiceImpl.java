@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
 import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
@@ -152,6 +153,23 @@ public class UserServiceImpl implements UserService {
                 .avatarUrl(newAvatarUrl)
                 .isPasswordUpdated(isPasswordUpdated)
                 .updatedTime(updatedUser.getUpdatedTime())
+                .build();
+    }
+
+    @Override
+    public UserInfoResponseDTO getUserInfoById(Long userId) {
+        logger.info("[UserGetUserInfoById]用户信息查询，用户id: {}", userId);
+        User user = userMapper.selectByUserId(userId);
+        if (user == null){
+            throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+        }
+        logger.info("[UserGetUserInfoById]用户信息查询成功，用户id: {}", userId);
+        return UserInfoResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .avatarUrl(user.getAvatarUrl())
+                .createdTime(user.getCreatedTime())
+                .updatedTime(user.getUpdatedTime())
                 .build();
     }
 }

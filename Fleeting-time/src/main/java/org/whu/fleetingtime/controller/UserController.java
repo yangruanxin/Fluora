@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
+import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
 import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,5 +100,15 @@ public class UserController {
             logger.warn("【用户信息更新失败】用户id: {}, 原因: {}", userId, e.getMessage());
             throw e;
         }
+    }
+
+    @GetMapping("/me")
+    public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户个人信息查询】用户id: {}", userId);
+        UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
+        logger.info("【用户信息查询成功】用户id: {}", userId);
+        return Result.success(userInfo);
     }
 }
