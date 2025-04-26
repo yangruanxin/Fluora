@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
 import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
 import org.whu.fleetingtime.common.Result;
-import org.whu.fleetingtime.service.CheckinsService;
+import org.whu.fleetingtime.service.CheckinService;
 
 @CrossOrigin
 @RestController
@@ -16,7 +16,7 @@ public class CheckinsController {
     private static final Logger logger = LoggerFactory.getLogger(CheckinsController.class);
 
     @Autowired
-    private CheckinsService checkinsService;
+    private CheckinService checkinsService;
 
     @PostMapping("/checkin")
     public Result<CheckinResponseDTO> checkin(

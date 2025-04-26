@@ -11,14 +11,14 @@ import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.CheckinRecordMapper;
 import org.whu.fleetingtime.pojo.CheckinRecord;
-import org.whu.fleetingtime.service.CheckinsService;
+import org.whu.fleetingtime.service.CheckinService;
 import org.whu.fleetingtime.util.JwtUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class CheckinsServiceImpl implements CheckinsService {
+public class CheckinsServiceImpl implements CheckinService {
 
     @Value("${jwt.secret}")
     private String secretKey;
