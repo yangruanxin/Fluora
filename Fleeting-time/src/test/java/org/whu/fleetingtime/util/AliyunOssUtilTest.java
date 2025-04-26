@@ -9,7 +9,7 @@ import java.util.UUID;
 public class AliyunOssUtilTest {
 
     @Test
-    public void testUpload() throws InterruptedException {
+    public void testUpload() {
         String userId = "testUser";
         String fileName = UUID.randomUUID() + ".txt";
         String objectPath = "user/" + userId + "/" + fileName;
@@ -22,7 +22,7 @@ public class AliyunOssUtilTest {
         String url = AliyunOssUtils.upload(objectPath, inputStream);
         System.out.println("上传成功！访问链接: " + url);
 
-        Thread.sleep(10000);
+//        Thread.sleep(10000);
 
         AliyunOssUtils.delete(objectPath);
         System.out.println("删除成功：" + objectPath);
