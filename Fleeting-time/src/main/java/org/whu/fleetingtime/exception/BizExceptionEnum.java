@@ -23,7 +23,13 @@ public enum BizExceptionEnum {
 
     //====checkin模块
     //非法的打卡参数
-    INVALID_CHECKIN_PARAMETER(10100, "latitude, longitude, city or timestamp is null");
+    INVALID_CHECKIN_PARAMETER(10100, "latitude, longitude, city or timestamp is null"),
+
+    //====map模块
+    // 请求超时
+    REQUEST_TIMEOUT(10200,"request baidu api timeout"),
+    // 未知其他错误
+    API_ERROR(10201, "api error");
 
 
     private final Integer code;
