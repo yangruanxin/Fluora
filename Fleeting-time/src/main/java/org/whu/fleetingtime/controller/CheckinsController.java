@@ -1,5 +1,6 @@
 package org.whu.fleetingtime.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,15 @@ public class CheckinsController {
 
     @PostMapping("/checkin")
     public Result<CheckinResponseDTO> checkin(
-            @RequestHeader("Authorization") String token,
-            @RequestBody CheckinRequestDTO request
+            HttpServletRequest request,
+            @RequestBody CheckinRequestDTO checkinRequestDTO
     ) {
-        logger.info("【打卡请求】{}", request);
-        CheckinResponseDTO response = checkinsService.checkin(token, request);
+        logger.info("【打卡请求】{}", checkinRequestDTO);
+        // 从拦截器注入的 request 属性中拿 userId
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+
+        CheckinResponseDTO response = checkinsService.checkin(userId, checkinRequestDTO);
         logger.info("【打卡成功】{}", response);
         return Result.success("checkin success", response);
     }

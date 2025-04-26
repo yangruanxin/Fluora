@@ -1,5 +1,6 @@
 package org.whu.fleetingtime.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.whu.fleetingtime.exception.BizException;
@@ -30,16 +31,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // helloTest
     @GetMapping("/hello")
-    public Result<String> secretHello(@RequestHeader("Authorization") String token) {
-        // 从 token 中解析用户名
-        logger.info("【Token校验】收到请求，Token: {}", token);
-        String userId = (String) JwtUtils.parseJWT(secretKey, token).get("id");
+    public Result<String> secretHello(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        String userId = (String) request.getAttribute("userId");
+        logger.info("【hello测试token校验】拦截器已注入 userId: {}", userId);
         User user = userService.findUserById(Long.parseLong(userId));
         logger.info("【Token有效】用户ID: {}，用户名: {}", userId, user.getUsername());
         return Result.success("Hello, " + user.getUsername() + "!");
     }
+
 
     // 登录接口
     @PostMapping("/login")
