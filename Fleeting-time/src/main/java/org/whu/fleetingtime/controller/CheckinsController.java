@@ -9,6 +9,7 @@ import org.whu.fleetingtime.dto.CheckinResponseDTO;
 import org.whu.fleetingtime.pojo.Result;
 import org.whu.fleetingtime.service.CheckinsService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/checkins")
 public class CheckinsController {
@@ -24,7 +25,7 @@ public class CheckinsController {
     ) {
         logger.info("【打卡请求】{}", request);
         CheckinResponseDTO response = checkinsService.checkin(token, request);
-        logger.info("【打卡成功】");
+        logger.info("【打卡成功】{}", response);
         return Result.success("checkin success", response);
     }
 

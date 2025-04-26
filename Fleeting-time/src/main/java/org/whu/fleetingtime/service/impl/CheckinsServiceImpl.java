@@ -1,5 +1,7 @@
 package org.whu.fleetingtime.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,23 +22,27 @@ public class CheckinsServiceImpl implements CheckinsService {
 
     @Value("${jwt.secret}")
     private String secretKey;
+    private static final Logger logger = LoggerFactory.getLogger(CheckinsServiceImpl.class);
 
     @Autowired
     CheckinRecordMapper checkinRecordMapper;
 
     @Override
     public CheckinResponseDTO checkin(String token, CheckinRequestDTO request) {
+        logger.info("[CheckinsServiceCheckin]收到打卡请求");
         // 0. 输入校验
         if (request.getLatitude() == null ||
                 request.getLongitude() == null ||
                 request.getCity() == null ||
                 request.getTimestamp() == null) {
+            logger.warn("[CheckinsServiceCheckin]请求参数无效");
             throw new BizException(BizExceptionEnum.INVALID_CHECKIN_PARAMETER);
         }
 
         // 1. 解析 token 获取 userId
         String userIdStr = (String) JwtUtil.parseJWT(secretKey, token).get("id");
         Long userId = Long.parseLong(userIdStr);
+        logger.info("[CheckinsServiceCheckin]JWT令牌解析成功，用户id: {}", userIdStr);
 
         // 2. 查询该城市是否第一次打卡
         boolean isNewCity = !checkinRecordMapper.existsByUserIdAndCity(userId, request.getCity());
@@ -64,6 +70,7 @@ public class CheckinsServiceImpl implements CheckinsService {
 
         // 6. 查询用户的高亮城市数量
         int highlightedCitiesCount = checkinRecordMapper.countDistinctCitiesByUserId(userId);
+        logger.info("[CheckinsServiceCheckin]打卡请求已完成");
 
         // 7. 构建响应
         return CheckinResponseDTO.builder()
