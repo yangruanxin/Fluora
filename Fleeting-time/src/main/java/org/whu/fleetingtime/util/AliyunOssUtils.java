@@ -14,7 +14,7 @@ public class AliyunOssUtils {
 
     private static final String ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
     private static final String REGION = "cn-hangzhou";
-    private static final String BUCKET_NAME = "raitocc";
+    private static final String BUCKET_NAME = "fleeting-time";
 
     private static final OSS ossClient;
 
@@ -58,6 +58,17 @@ public class AliyunOssUtils {
      */
     public static void delete(String objectName) {
         ossClient.deleteObject(BUCKET_NAME, objectName);
+    }
+
+    // 从url获取路径
+    public static String extractObjectNameFromUrl(String url) {
+        // 例子: https://your-bucket.oss-region.aliyuncs.com/user/10001/avatar.png
+        // 提取 user/10001/avatar.png
+        int index = url.indexOf(".com/");
+        if (index != -1 && index + 5 < url.length()) {
+            return url.substring(index + 5);
+        }
+        return null;
     }
 
     /**

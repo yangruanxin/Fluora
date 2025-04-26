@@ -3,6 +3,8 @@ package org.whu.fleetingtime.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
+import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
@@ -76,6 +78,26 @@ public class UserController {
             logger.warn("【注册失败】用户名已存在: {}", user.getUsername());
             throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
             //return Result.failure("username already exists");
+        }
+    }
+
+    @PutMapping
+    public Result<UserUpdateResponseDTO> updateUser(
+            @RequestParam(value = "avatar", required = false) MultipartFile avatarFile,
+            @RequestParam(value = "username", required = false) String updatedUsername,
+            @RequestParam(value = "originPassword", required = false) String originPassword,
+            @RequestParam(value = "password", required = false) String updatedPassword,
+            HttpServletRequest request) {
+        // 通过 token 拿到 userId
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户信息更新请求】用户id: {}", userId);
+        try {
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId, updatedUsername, originPassword, updatedPassword, avatarFile);
+            logger.info("【用户信息更新成功】用户id: {}", userId);
+            return Result.success(responseDTO);
+        } catch (BizException e) {
+            logger.warn("【用户信息更新失败】用户id: {}, 原因: {}", userId, e.getMessage());
+            throw e;
         }
     }
 }
