@@ -12,7 +12,7 @@ import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.CheckinRecordMapper;
 import org.whu.fleetingtime.pojo.CheckinRecord;
 import org.whu.fleetingtime.service.CheckinService;
-import org.whu.fleetingtime.util.JwtUtil;
+import org.whu.fleetingtime.util.JwtUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +40,7 @@ public class CheckinsServiceImpl implements CheckinService {
         }
 
         // 1. 解析 token 获取 userId
-        String userIdStr = (String) JwtUtil.parseJWT(secretKey, token).get("id");
+        String userIdStr = (String) JwtUtils.parseJWT(secretKey, token).get("id");
         Long userId = Long.parseLong(userIdStr);
         logger.info("[CheckinsServiceCheckin]JWT令牌解析成功，用户id: {}", userIdStr);
 

@@ -10,7 +10,7 @@ import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whu.fleetingtime.util.JwtUtil;
+import org.whu.fleetingtime.util.JwtUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class UserController {
     public Result<String> secretHello(@RequestHeader("Authorization") String token) {
         // 从 token 中解析用户名
         logger.info("【Token校验】收到请求，Token: {}", token);
-        String userId = (String) JwtUtil.parseJWT(secretKey, token).get("id");
+        String userId = (String) JwtUtils.parseJWT(secretKey, token).get("id");
         User user = userService.findUserById(Long.parseLong(userId));
         logger.info("【Token有效】用户ID: {}，用户名: {}", userId, user.getUsername());
         return Result.success("Hello, " + user.getUsername() + "!");
@@ -52,7 +52,7 @@ public class UserController {
             Long userId = userService.findUserByUsername(user.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
-            String token = JwtUtil.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
+            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);

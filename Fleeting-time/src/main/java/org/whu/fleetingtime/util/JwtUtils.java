@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
-public class JwtUtil {
+public class JwtUtils {
     public static String createJwt(String secretKey, long ttlMillis, Map<String, Object> claims) {
         // 生成JWT的时间
         long expMillis = System.currentTimeMillis() + ttlMillis;
