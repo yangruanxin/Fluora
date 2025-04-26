@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 public class UserUpdateResponseDTO {
     private String username;
     private String avatarUrl;
-    private boolean isPasswordUpdated;
+    private Boolean hasPasswordUpdated;
     private LocalDateTime updatedTime;
 }
