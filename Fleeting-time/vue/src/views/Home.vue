@@ -13,7 +13,7 @@
             <HoverButton text="注册" @click="handleRegister"/>
           </template>
           <template v-else>
-            <HoverButton text="我的" />
+            <HoverButton text="我的" @click="handleProfile"/>
             <HoverButton text="退出登录" @click="handleLogout"/>
           </template>
         </div>
@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth.js'
 import { onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 

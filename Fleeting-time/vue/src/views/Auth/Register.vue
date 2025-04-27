@@ -1,3 +1,4 @@
+<!-- 注册页面 -->
 <template>
     <div class="register-body">
       <div class="register-form">
