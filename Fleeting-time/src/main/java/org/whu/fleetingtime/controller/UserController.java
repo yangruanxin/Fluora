@@ -1,16 +1,20 @@
 package org.whu.fleetingtime.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
+import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
+import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whu.fleetingtime.util.JwtUtil;
+import org.whu.fleetingtime.util.JwtUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,16 +34,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // helloTest
     @GetMapping("/hello")
-    public Result<String> secretHello(@RequestHeader("Authorization") String token) {
-        // 从 token 中解析用户名
-        logger.info("【Token校验】收到请求，Token: {}", token);
-        String userId = (String) JwtUtil.parseJWT(secretKey, token).get("id");
+    public Result<String> secretHello(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        String userId = (String) request.getAttribute("userId");
+        logger.info("【hello测试token校验】拦截器已注入 userId: {}", userId);
         User user = userService.findUserById(Long.parseLong(userId));
         logger.info("【Token有效】用户ID: {}，用户名: {}", userId, user.getUsername());
         return Result.success("Hello, " + user.getUsername() + "!");
     }
+
 
     // 登录接口
     @PostMapping("/login")
@@ -52,7 +56,7 @@ public class UserController {
             Long userId = userService.findUserByUsername(user.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
-            String token = JwtUtil.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
+            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);
@@ -76,5 +80,35 @@ public class UserController {
             throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
             //return Result.failure("username already exists");
         }
+    }
+
+    @PutMapping
+    public Result<UserUpdateResponseDTO> updateUser(
+            @RequestParam(value = "avatar", required = false) MultipartFile avatarFile,
+            @RequestParam(value = "username", required = false) String updatedUsername,
+            @RequestParam(value = "originPassword", required = false) String originPassword,
+            @RequestParam(value = "password", required = false) String updatedPassword,
+            HttpServletRequest request) {
+        // 通过 token 拿到 userId
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户信息更新请求】用户id: {}", userId);
+        try {
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId, updatedUsername, originPassword, updatedPassword, avatarFile);
+            logger.info("【用户信息更新成功】用户id: {}", userId);
+            return Result.success(responseDTO);
+        } catch (BizException e) {
+            logger.warn("【用户信息更新失败】用户id: {}, 原因: {}", userId, e.getMessage());
+            throw e;
+        }
+    }
+
+    @GetMapping("/me")
+    public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户个人信息查询】用户id: {}", userId);
+        UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
+        logger.info("【用户信息查询成功】用户id: {}", userId);
+        return Result.success(userInfo);
     }
 }

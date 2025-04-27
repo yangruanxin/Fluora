@@ -1,10 +1,9 @@
-package org.whu.fleetingtime;
+package org.whu.fleetingtime.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.whu.fleetingtime.pojo.User;
-import org.whu.fleetingtime.service.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

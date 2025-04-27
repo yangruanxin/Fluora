@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.common.Result;
+
+import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,6 +37,18 @@ public class GlobalExceptionHandler {
     public Result<Object> handleJwt(JwtException e) {
         logger.warn("无效的JWT：{}", e.getMessage());
         return Result.failure(401, "invalid token");
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public Result<?> handleDateParse(DateTimeParseException e) {
+        logger.warn("日期格式错误：{}", e.getMessage());
+        return Result.failure(400, "invalid date format");
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public Result<?> handleNumber(NumberFormatException e) {
+        logger.warn("数字格式错误：{}", e.getMessage());
+        return Result.failure(400, "invalid number");
     }
 
     @ExceptionHandler(BizException.class)

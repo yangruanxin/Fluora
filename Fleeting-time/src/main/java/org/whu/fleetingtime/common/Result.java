@@ -1,4 +1,4 @@
-package org.whu.fleetingtime.pojo;
+package org.whu.fleetingtime.common;
 
 import lombok.Getter;
 import lombok.Setter;
