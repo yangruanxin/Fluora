@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
+import org.whu.fleetingtime.dto.user.UserRegisterRequestDTO;
 import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
@@ -42,15 +43,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(User user) {
-        logger.info("[UserServiceRegister]尝试注册，用户名，密码: {}, {}", user.getUsername(), user.getPassword());
-        User existing = userMapper.selectByUsername(user.getUsername());
+    public boolean register(UserRegisterRequestDTO userRegisterRequestDTO) {
+        logger.info("[UserServiceRegister]尝试注册，用户名，密码: {}, {}", userRegisterRequestDTO.getUsername(), userRegisterRequestDTO.getPassword());
+        User existing = userMapper.selectByUsername(userRegisterRequestDTO.getUsername());
         if (existing != null) {
-            logger.warn("[UserServiceRegister]注册失败，改用户名已存在: {}", user.getUsername());
+            logger.warn("[UserServiceRegister]注册失败，改用户名已存在: {}", userRegisterRequestDTO.getUsername());
             return false; // 用户名已存在
         }
+        User user = new User();
         user.setCreatedTime(LocalDateTime.now());
         user.setUpdatedTime(LocalDateTime.now());
+        user.setUsername(userRegisterRequestDTO.getUsername());
+        user.setPassword(userRegisterRequestDTO.getPassword());
         int result = userMapper.insertUser(user);
         logger.info("[UserServiceRegister]注册成功，用户名，id: {}, {}", user.getUsername(), user.getPassword());
         return result == 1;
@@ -151,7 +155,7 @@ public class UserServiceImpl implements UserService {
         return UserUpdateResponseDTO.builder()
                 .username(newUsername)
                 .avatarUrl(newAvatarUrl)
-                .isPasswordUpdated(isPasswordUpdated)
+                .hasPasswordUpdated(isPasswordUpdated)
                 .updatedTime(updatedUser.getUpdatedTime())
                 .build();
     }

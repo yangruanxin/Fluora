@@ -3,9 +3,7 @@ package org.whu.fleetingtime.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.MultipartFile;
-import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
-import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
+import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
@@ -47,20 +45,21 @@ public class UserController {
 
     // 登录接口
     @PostMapping("/login")
-    public Result<Map<String, Object>> login(@RequestBody User user) {
-        logger.info("【登录请求】用户名: {}", user.getUsername());
-        User loggedInUser = userService.login(user.getUsername(), user.getPassword());
+    public Result<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+        logger.info("【登录请求】用户名: {}", userLoginRequestDTO.getUsername());
+        User loggedInUser = userService.login(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
+
         if (loggedInUser != null) {
             // 登录成功后返回JWT
-
-            Long userId = userService.findUserByUsername(user.getUsername()).getId();
+            Long userId = userService.findUserByUsername(userLoginRequestDTO.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
             String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
-            Map<String, Object> result = new HashMap<>();
-            result.put("token", token);
             logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);
-            return Result.success("login successful", result);
+            UserLoginResponseDTO response = UserLoginResponseDTO.builder()
+                    .token(token)
+                    .build();
+            return Result.success("login successful", response);
         } else {
             throw new BizException(BizExceptionEnum.USER_PASSWORD_OR_USERNAME_ERROR);
             //return Result.failure("invalid username or password");
@@ -69,31 +68,31 @@ public class UserController {
 
     // 注册接口
     @PostMapping("/register")
-    public Result<String> register(@RequestBody User user) {
-        logger.info("【注册请求】用户名: {}", user.getUsername());
-        boolean success = userService.register(user);
+    public Result<String> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDTO) {
+        logger.info("【注册请求】用户名: {}", userRegisterRequestDTO.getUsername());
+        boolean success = userService.register(userRegisterRequestDTO);
         if (success) {
-            logger.info("【注册成功】用户名: {}", user.getUsername());
+            logger.info("【注册成功】用户名: {}", userRegisterRequestDTO.getUsername());
             return Result.success("registration successful");
         } else {
-            logger.warn("【注册失败】用户名已存在: {}", user.getUsername());
+            logger.warn("【注册失败】用户名已存在: {}", userRegisterRequestDTO.getUsername());
             throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
             //return Result.failure("username already exists");
         }
     }
 
     @PutMapping
-    public Result<UserUpdateResponseDTO> updateUser(
-            @RequestParam(value = "avatar", required = false) MultipartFile avatarFile,
-            @RequestParam(value = "username", required = false) String updatedUsername,
-            @RequestParam(value = "originPassword", required = false) String originPassword,
-            @RequestParam(value = "password", required = false) String updatedPassword,
-            HttpServletRequest request) {
+    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
+                                                    HttpServletRequest request) {
         // 通过 token 拿到 userId
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
-        logger.info("【用户信息更新请求】用户id: {}", userId);
+        logger.info("【用户信息更新请求】用户id: {}", userUpdateRequestDTO);
         try {
-            UserUpdateResponseDTO responseDTO = userService.updateUser(userId, updatedUsername, originPassword, updatedPassword, avatarFile);
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId,
+                    userUpdateRequestDTO.getUsername(),
+                    userUpdateRequestDTO.getOriginPassword(),
+                    userUpdateRequestDTO.getPassword(),
+                    userUpdateRequestDTO.getAvatar());
             logger.info("【用户信息更新成功】用户id: {}", userId);
             return Result.success(responseDTO);
         } catch (BizException e) {
