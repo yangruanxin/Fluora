@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
+import org.whu.fleetingtime.mapper.CheckinRecordMapper;
 import org.whu.fleetingtime.mapper.UserMapper;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CheckinRecordMapper checkinRecordMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -177,5 +180,25 @@ public class UserServiceImpl implements UserService {
                 .createdTime(user.getCreatedTime())
                 .updatedTime(user.getUpdatedTime())
                 .build();
+    }
+
+    @Override
+    public void deleteUserAndAllRelatedData(Long userId) {
+        User user = userMapper.selectByUserId(userId);
+        if (user == null) {
+            throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+        }
+        // 删除头像文件
+        if (user.getAvatarUrl() != null) {
+            String oldAvatarUrl = user.getAvatarUrl();
+            String oldObjectName = AliyunOssUtils.extractObjectNameFromUrl(oldAvatarUrl);
+            AliyunOssUtils.delete(oldObjectName);
+            logger.info("[UserServiceDelete]旧头像删除成功，用户id: {}, 旧头像URL: {}", userId, oldAvatarUrl);
+        }
+        // 删除打卡记录
+        // 删除打卡记录
+        int deletedRecords = checkinRecordMapper.deleteByUserId(userId);
+        logger.info("[UserServiceDelete]删除打卡记录 {} 条，用户id: {}", deletedRecords, userId);
+        logger.info("[UserServiceDelete]用户id: {}，已全部删除完毕", userId);
     }
 }

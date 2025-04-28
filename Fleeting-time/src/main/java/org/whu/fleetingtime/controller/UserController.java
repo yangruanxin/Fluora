@@ -84,7 +84,7 @@ public class UserController {
 
     // 更新用户信息接口
     @PutMapping
-    public Result<UserUpdateResponseDTO> updateUser(@ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO,
+    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
         // 通过 token 拿到 userId
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
@@ -108,5 +108,16 @@ public class UserController {
         UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
         logger.info("【用户信息查询成功】用户id: {}", userId);
         return Result.success(userInfo);
+    }
+
+    // 注销删除账号
+    @DeleteMapping
+    public Result<String> deleteUserAllData(HttpServletRequest request){
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户删除账号】用户id: {}", userId);
+        userService.deleteUserAndAllRelatedData(userId);
+        logger.info("【账号删除成功】用户id: {}", userId);
+        return Result.success("delete successful");
     }
 }
