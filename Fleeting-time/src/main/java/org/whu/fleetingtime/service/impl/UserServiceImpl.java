@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.whu.fleetingtime.dto.user.UserInfoResponseDTO;
-import org.whu.fleetingtime.dto.user.UserRegisterRequestDTO;
-import org.whu.fleetingtime.dto.user.UserUpdateResponseDTO;
+import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.UserMapper;
@@ -31,10 +29,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User login(String username, String password) {
-        logger.info("[UserServiceLogin]尝试登录，用户名，密码: {}, {}", username, password);
-        User user = userMapper.selectByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
+    public User login(UserLoginRequestDTO userLoginRequestDTO) {
+        logger.info("[UserServiceLogin]尝试登录，用户名，密码: {}, {}", userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
+        User user = userMapper.selectByUsername(userLoginRequestDTO.getUsername());
+        if (user != null && user.getPassword().equals(userLoginRequestDTO.getPassword())) {
             logger.info("[UserServiceLogin]登录成功");
             return user; // 登录成功
         }
@@ -73,7 +71,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserUpdateResponseDTO updateUser(Long userId, String updatedUsername, String originPassword, String updatedPassword, MultipartFile avatarFile) {
+    public UserUpdateResponseDTO updateUser(Long userId, UserUpdateRequestDTO userUpdateRequestDTO) {
+        String updatedUsername = userUpdateRequestDTO.getUsername();
+        String originPassword = userUpdateRequestDTO.getOriginPassword();
+        String updatedPassword = userUpdateRequestDTO.getPassword();
+        MultipartFile avatarFile = userUpdateRequestDTO.getAvatar();
         logger.info("[UserServiceUpdate]开始更新用户信息，用户id: {}", userId);
 
         // 返回字段

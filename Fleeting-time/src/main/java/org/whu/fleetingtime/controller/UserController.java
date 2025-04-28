@@ -48,7 +48,7 @@ public class UserController {
     @PostMapping("/login")
     public Result<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
         logger.info("【登录请求】用户名: {}", userLoginRequestDTO.getUsername());
-        User loggedInUser = userService.login(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
+        User loggedInUser = userService.login(userLoginRequestDTO);
 
         if (loggedInUser != null) {
             // 登录成功后返回JWT
@@ -84,17 +84,13 @@ public class UserController {
 
     // 更新用户信息接口
     @PutMapping
-    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
+    public Result<UserUpdateResponseDTO> updateUser(@ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
         // 通过 token 拿到 userId
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
-        logger.info("【用户信息更新请求】用户id: {}", userUpdateRequestDTO);
+        logger.info("【用户信息更新请求】用户id: {}, 请求: {}", userId, userUpdateRequestDTO);
         try {
-            UserUpdateResponseDTO responseDTO = userService.updateUser(userId,
-                    userUpdateRequestDTO.getUsername(),
-                    userUpdateRequestDTO.getOriginPassword(),
-                    userUpdateRequestDTO.getPassword(),
-                    userUpdateRequestDTO.getAvatar());
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId, userUpdateRequestDTO);
             logger.info("【用户信息更新成功】用户id: {}", userId);
             return Result.success(responseDTO);
         } catch (BizException e) {
