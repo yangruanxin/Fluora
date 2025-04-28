@@ -32,6 +32,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Token验证测试
     @GetMapping("/hello")
     public Result<String> secretHello(HttpServletRequest request) {
         // 从 request 获取 userId（由拦截器注入）
@@ -81,6 +82,7 @@ public class UserController {
         }
     }
 
+    // 更新用户信息接口
     @PutMapping
     public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
@@ -101,6 +103,7 @@ public class UserController {
         }
     }
 
+    // 已经登录的用户查询自己的个人信息
     @GetMapping("/me")
     public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
         // 从 request 获取 userId（由拦截器注入）
