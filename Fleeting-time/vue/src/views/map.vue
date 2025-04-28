@@ -14,9 +14,11 @@
     <div class="modal">
       <h3>添加旅行记录</h3>
       <p>目的地：{{ locationInfo.name }}</p>
-      <FileSubmit class="additional-class">
-      </FileSubmit>
-      <textarea v-model="description" placeholder="记录一下你的感受吧..." rows="4"></textarea>
+      <div class="upload">
+        <FileSubmit class="additional-class">
+        </FileSubmit>
+        <textarea v-model="description" placeholder="记录一下你的感受吧..." rows="4"></textarea>
+      </div>
       <div class="buttons">
         <el-button type="primary" @click="submit">提交</el-button>
         <el-button type="primary" @click="closeModal">取消</el-button>
@@ -234,4 +236,25 @@ h2 {
   background-color: #0056b3;
 }
 
+.back{
+  margin-right: 10px;
+}
+
+.upload {
+  display: flex;
+  gap: 20px; /* 控制上传图片和文字之间的间距 */
+  align-items: stretch; /* 顶对齐 */
+  margin-bottom: 20px; /* 和下面的提交按钮拉开点距离 */
+}
+
+.upload textarea {
+  flex: 1; /* 让textarea尽量占满剩余空间 */
+  resize: vertical; /* 允许用户上下拉伸文本框 */
+}
+
+.addtional-class{
+  flex:1;
+  width: 400px;
+  resize:vertical;
+}
 </style>
