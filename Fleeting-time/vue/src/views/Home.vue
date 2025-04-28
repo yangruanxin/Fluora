@@ -8,21 +8,44 @@
           <span>流光</span>
         </div>
         <div class="header-links">
-          <HoverButton text="登录" @click="handleLogin"/>
-          <HoverButton text="注册" @click="handleRegister"/>
-          <HoverButton text="我的" />
+          <template v-if="!authStore.isLoggedIn">
+            <HoverButton text="登录" @click="handleLogin"/>
+            <HoverButton text="注册" @click="handleRegister"/>
+          </template>
+          <template v-else>
+            <HoverButton text="我的" @click="handleProfile"/>
+            <HoverButton text="退出登录" @click="handleLogout"/>
+          </template>
         </div>
       </el-header>
       <!-- 主内容 -->
       <el-main class="main">
         <!-- 垂直布局容器 -->
         <div class="vertical-layout">
-          <!-- Hover组件 -->
-          <div class="hover-section">
-            <Hover imageUrl="/src/assets/地图.png">
-              <p>探索更多旅程</p>
-              <HoverButton text="点击查看地图" @click="handleMap"/>
-            </Hover>
+            <!-- Hover组件和旅行意义文本块 -->
+            <div class="content-section">
+              
+              <!-- Hover组件 -->
+              <div class="hover-section">
+                <Hover imageUrl="/src/assets/地图.png">
+                  <p>探索更多旅程</p>
+                  <HoverButton text="点击查看地图" @click="handleMap" :disabled="!authStore.isLoggedIn"/>
+                </Hover>
+              </div>
+              
+              <!-- 旅行意义文本块 -->
+              <div class="travel-meaning">
+                <div class="meaning-card">
+                  <p class="meaning-text">旅行的意义</p>
+                  <p class="meaning-quote">我在山河间找路<br>用短暂的生命贴一贴这颗星球的嶙峋一角</p>            
+                </div>
+
+                <div class="text-content">
+                  <p class="cue">互动提示</p>
+                  <p class="hint">将鼠标移至左侧地图上方<br>记录下新的旅程吧</p>
+                  <div class="hint-arrow">← 试试看</div>
+                </div>
+              </div>
           </div>
           
           <!-- 图片轮播 -->
@@ -42,7 +65,7 @@
         <div class="footer-content">
           <!-- 版权信息 -->
           <div class="copyright">
-            © 2025 流光 | 记录每一段旅程的故事
+            Copyright © 2025 流光 | 记录每一段旅程的故事
           </div>
         </div>
       </el-footer>
@@ -62,6 +85,10 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
+import { useAuthStore } from '@/stores/auth.js'
+import { onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+
 import HoverButton from '@/components/HoverButton.vue';
 import Snow from '@/components/Snow.vue';
 import AnimatedTestimonials from '@/components/AnimatedTestimonials.vue';
@@ -69,6 +96,13 @@ import Hover from '@/components/Hover.vue';
 
 //导入路由实例
 const router =useRouter()
+
+const authStore = useAuthStore()
+
+// 检查本地存储中的 token
+onMounted(() => {
+  authStore.checkAuth()
+})
 
 //处理登录按钮点击事件
 const handleLogin = () =>{
@@ -80,10 +114,22 @@ const handleRegister = () =>{
   router.push('/register')
 }
 
+//处理个人中心点击事件
+const handleProfile = () => {
+  router.push('/profile')
+}
+
 //处理查看地图按钮点击事件
 const handleMap = () =>{
   router.push('/map')
 }
+
+//处理退出登录按钮点击事件
+const handleLogout = () => {
+  authStore.logout()
+  ElMessage.success('已退出登录')
+  router.push('/'); // 跳转到首页
+};
 
 
 //图片轮播
@@ -143,9 +189,11 @@ const testimonials = [
 
 
 .logo{
-  font-size: 24px;
+  font-family: HYShangWeiShouShuW;
+  font-size: 26px;
   font-weight: bold;
   display: flex;
+  color: rgb(35, 133, 244);
 }
 
 /* logo图标 */
@@ -170,6 +218,73 @@ const testimonials = [
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+/* 水平布局容器 */
+.horizontal-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* 内容区域（Hover组件+旅行意义） */
+.content-section {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+/* Hover组件调整 */
+.hover-section {
+  flex: 1;
+}
+
+/* 旅行意义文本块 */
+.travel-meaning {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+}
+
+.meaning-card {
+  padding: 25px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  text-align: end;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meaning-text{
+  font-size: 40px;
+}
+
+.meaning-quote{
+  font-size: 24px;
+  color: rgba(51, 50, 50, 0.746);
+  text-align: end;
+}
+
+.text-content{
+  padding: 25px;
+  text-align: end;
+}
+
+.cue{
+  color:rgba(124, 121, 121, 0.926);
+}
+
+.hint{
+  color:rgba(255, 255, 255, 0.769);
+  font-size: 18px;
+}
+
+.hint-arrow{
+  color:rgb(242, 240, 237);
 }
 
 /* 垂直布局容器 */

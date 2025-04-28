@@ -20,6 +20,12 @@ const routes =[
     },
 
     {
+        path:'/profile',
+        name:'个人主页',
+        component:() =>import('../views/Auth/Profile.vue')
+    },
+
+    {
         path:'/map',
         name:'地图',
         component:() =>import('../views/map.vue')

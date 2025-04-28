@@ -1,18 +1,23 @@
 package org.whu.fleetingtime.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
-import org.whu.fleetingtime.pojo.Result;
+import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whu.fleetingtime.util.JwtUtil;
+import org.whu.fleetingtime.util.JwtUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -22,31 +27,39 @@ public class UserController {
     @Value("${jwt.duration}")
     private int duration; // minutes
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
-    // helloTest
     @GetMapping("/hello")
-    public Result<String> secretHello(@RequestHeader("Authorization") String token) {
-        // 从 token 中解析用户名
-        String userId = (String) JwtUtil.parseJWT(secretKey, token).get("id");
+    public Result<String> secretHello(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        String userId = (String) request.getAttribute("userId");
+        logger.info("【hello测试token校验】拦截器已注入 userId: {}", userId);
         User user = userService.findUserById(Long.parseLong(userId));
+        logger.info("【Token有效】用户ID: {}，用户名: {}", userId, user.getUsername());
         return Result.success("Hello, " + user.getUsername() + "!");
     }
 
+
     // 登录接口
     @PostMapping("/login")
-    public Result<Map<String, Object>> login(@RequestBody User user) {
-        User loggedInUser = userService.login(user.getUsername(), user.getPassword());
+    public Result<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+        logger.info("【登录请求】用户名: {}", userLoginRequestDTO.getUsername());
+        User loggedInUser = userService.login(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
+
         if (loggedInUser != null) {
             // 登录成功后返回JWT
-            Long userId = userService.findUserByUsername(user.getUsername()).getId();
+            Long userId = userService.findUserByUsername(userLoginRequestDTO.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
-            String token = JwtUtil.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
-            Map<String, Object> result = new HashMap<>();
-            result.put("token", token);
-            return Result.success("login successful", result);
+            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
+            logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);
+            UserLoginResponseDTO response = UserLoginResponseDTO.builder()
+                    .token(token)
+                    .build();
+            return Result.success("login successful", response);
         } else {
             throw new BizException(BizExceptionEnum.USER_PASSWORD_OR_USERNAME_ERROR);
             //return Result.failure("invalid username or password");
@@ -55,13 +68,46 @@ public class UserController {
 
     // 注册接口
     @PostMapping("/register")
-    public Result<String> register(@RequestBody User user) {
-        boolean success = userService.register(user);
+    public Result<String> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDTO) {
+        logger.info("【注册请求】用户名: {}", userRegisterRequestDTO.getUsername());
+        boolean success = userService.register(userRegisterRequestDTO);
         if (success) {
+            logger.info("【注册成功】用户名: {}", userRegisterRequestDTO.getUsername());
             return Result.success("registration successful");
         } else {
+            logger.warn("【注册失败】用户名已存在: {}", userRegisterRequestDTO.getUsername());
             throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
             //return Result.failure("username already exists");
         }
+    }
+
+    @PutMapping
+    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
+                                                    HttpServletRequest request) {
+        // 通过 token 拿到 userId
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户信息更新请求】用户id: {}", userUpdateRequestDTO);
+        try {
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId,
+                    userUpdateRequestDTO.getUsername(),
+                    userUpdateRequestDTO.getOriginPassword(),
+                    userUpdateRequestDTO.getPassword(),
+                    userUpdateRequestDTO.getAvatar());
+            logger.info("【用户信息更新成功】用户id: {}", userId);
+            return Result.success(responseDTO);
+        } catch (BizException e) {
+            logger.warn("【用户信息更新失败】用户id: {}, 原因: {}", userId, e.getMessage());
+            throw e;
+        }
+    }
+
+    @GetMapping("/me")
+    public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户个人信息查询】用户id: {}", userId);
+        UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
+        logger.info("【用户信息查询成功】用户id: {}", userId);
+        return Result.success(userInfo);
     }
 }

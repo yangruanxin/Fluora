@@ -1,3 +1,4 @@
+<!-- 登录页面 -->
 <template>
   <div class="login-body">
     <div class="login-form">
@@ -6,24 +7,33 @@
         </div>
         <el-form
             ref="ruleFormRef"
-            :model="ruleForm"
+            :model="LoginForm"
             :rules="rules"
             label-width="auto"
         >
-            <p> 开启你的旅程吧！</p>
+            <p> 继续你的旅程吧！</p>
             <br>
+
             <!-- 账号框 -->
             <el-form-item label="账号" prop="account">
                 <el-input  placeholder="请输入您的账号" v-model="LoginForm.account"/>
             </el-form-item>
+
             <!-- 密码框 -->
             <el-form-item label="密码" prop="password">
                 <el-input  placeholder="请输入您的密码" type="password" v-model="LoginForm.password" show-password/>
             </el-form-item>
+
+            <!-- 登录和取消按钮 -->
             <el-form-item label="" class="button-group">
                 <div class="button-row">
-                    <el-button type="primary" class="login-btn">登录</el-button>
-                    <el-button type="primary" class="cancel-btn" @click="handleCancel">取消</el-button>
+                    <el-button type="primary" class="login-btn" @click="handleLogin"   :loading="loading" :disabled="loading">{{ loading ? '登录中...' : '登录' }}</el-button>
+                    <el-button type="primary" class="cancel-btn" @click="handleCancel" :disabled="loading">取消</el-button>
+                </div>
+
+                <div class="register-link">
+                  还没有账号？
+                  <el-button type="primary" @click="goToRegister" :disabled="loading" style="padding: 0; margin-left: 5px;">立即注册</el-button>
                 </div>
             </el-form-item>
         </el-form>
@@ -35,18 +45,71 @@
 
 import {reactive,ref} from "vue"
 import {useRouter} from "vue-router"
+import { authAxios } from "@/utils/request"
+import { ElMessage } from 'element-plus'
+import { useAuthStore } from '@/stores/auth'
+
+const loading = ref(false) // 控制加载状态
+const authStore = useAuthStore()
 
 const LoginForm = reactive({
   account: '',
   password: ''
 })
 
+const ruleFormRef = ref()
+
+const rules = {
+  account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+}
+
 //获取路由事例
 const router=useRouter()
+
+// 登录按钮点击事件
+const handleLogin = () => {
+  ruleFormRef.value.validate(async (valid) => {
+    if (valid) {
+      loading.value = true // 开始加载，禁用按钮
+      try {
+        const response = await authAxios.post('user/login', {
+          username: LoginForm.account,
+          password: LoginForm.password
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (response.data.code === 200) {
+          ElMessage.success('登录成功！')
+          // 使用authStore的login方法保存token和状态
+          authStore.login(response.data.data.token)
+
+          // 跳转到主页
+          router.push('/')
+        } else {
+          ElMessage.error(response.data.message || '登录失败')
+        }
+      } catch (error) {
+        console.error(error)
+        ElMessage.error('网络错误或服务器异常')
+      }finally {
+        loading.value = false // 无论成功失败，都结束加载
+      }
+    }
+  })
+}
 
 //“取消”按钮点击事件
 const handleCancel = () =>{
     router.push('/')
+}
+
+// 跳转注册页面
+const goToRegister = () => {
+  router.push('/register')
 }
 
 </script>
@@ -115,13 +178,28 @@ p{
 }
 
 .button-group {
-    margin-top: 20px; 
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  width: 100%;
 }
 
 .button-row {
     display: flex;
     gap: 10px; /* 按钮之间的间距 */
     width: 100%;
+}
+
+.register-link {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .login-btn, .cancel-btn {

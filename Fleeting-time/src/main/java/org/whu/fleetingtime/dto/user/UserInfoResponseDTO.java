@@ -1,17 +1,15 @@
-package org.whu.fleetingtime.pojo;
+package org.whu.fleetingtime.dto.user;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class User {
+@Builder
+public class UserInfoResponseDTO {
     private Long id;
-    @NotBlank
     private String username;
-    @NotBlank
-    private String password;
     private String avatarUrl;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
