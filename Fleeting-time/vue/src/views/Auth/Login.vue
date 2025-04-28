@@ -45,7 +45,7 @@
 
 import {reactive,ref} from "vue"
 import {useRouter} from "vue-router"
-import { authAxios } from "@/utils/request"
+import { publicAxios } from "@/utils/request"
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 
@@ -73,7 +73,7 @@ const handleLogin = () => {
     if (valid) {
       loading.value = true // 开始加载，禁用按钮
       try {
-        const response = await authAxios.post('user/login', {
+        const response = await publicAxios.post('user/login', {
           username: LoginForm.account,
           password: LoginForm.password
         }, {
@@ -95,12 +95,13 @@ const handleLogin = () => {
       } catch (error) {
         console.error(error)
         ElMessage.error('网络错误或服务器异常')
-      }finally {
+      } finally {
         loading.value = false // 无论成功失败，都结束加载
       }
     }
   })
 }
+
 
 //“取消”按钮点击事件
 const handleCancel = () =>{
