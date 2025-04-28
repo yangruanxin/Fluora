@@ -3,6 +3,7 @@ package org.whu.fleetingtime.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,7 +84,7 @@ public class UserController {
     }
 
     // 更新用户信息接口
-    @PutMapping
+    @PutMapping("/info")
     public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
         // 通过 token 拿到 userId
@@ -97,6 +98,14 @@ public class UserController {
             logger.warn("【用户信息更新失败】用户id: {}, 原因: {}", userId, e.getMessage());
             throw e;
         }
+    }
+
+    @PutMapping("/avatar")
+    public Result<String> updateUserAvatar(@RequestBody MultipartFile avatarFile, HttpServletRequest request) {
+            Long userId = Long.parseLong((String) request.getAttribute("userId"));
+            logger.info("【头像上传请求】用户id: {}", userId);
+            String newAvatarUrl = userService.updateUserAvatar(userId, avatarFile);
+            return Result.success("success", newAvatarUrl);
     }
 
     // 已经登录的用户查询自己的个人信息
