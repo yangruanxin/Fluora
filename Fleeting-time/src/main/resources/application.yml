@@ -6,6 +6,10 @@ spring:
     username: raitocc
     password: WTZor9EQYQpUS2Y4
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 64MB
 
 # mybatis log out
 mybatis:
