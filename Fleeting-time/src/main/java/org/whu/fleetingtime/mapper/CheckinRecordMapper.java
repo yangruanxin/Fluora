@@ -20,4 +20,8 @@ public interface CheckinRecordMapper {
 
     // 查某用户的所有打卡记录
     List<CheckinRecord> selectByUserId(@Param("userId") Long userId);
+
+    // 删除某个用户的所有打卡记录
+    int deleteByUserId(@Param("userId") Long userId);
+
 }

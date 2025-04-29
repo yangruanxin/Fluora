@@ -3,6 +3,7 @@ package org.whu.fleetingtime.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Token验证测试
     @GetMapping("/hello")
     public Result<String> secretHello(HttpServletRequest request) {
         // 从 request 获取 userId（由拦截器注入）
@@ -47,7 +49,7 @@ public class UserController {
     @PostMapping("/login")
     public Result<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
         logger.info("【登录请求】用户名: {}", userLoginRequestDTO.getUsername());
-        User loggedInUser = userService.login(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword());
+        User loggedInUser = userService.login(userLoginRequestDTO);
 
         if (loggedInUser != null) {
             // 登录成功后返回JWT
@@ -81,18 +83,15 @@ public class UserController {
         }
     }
 
-    @PutMapping
+    // 更新用户信息接口
+    @PutMapping("/info")
     public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
         // 通过 token 拿到 userId
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
-        logger.info("【用户信息更新请求】用户id: {}", userUpdateRequestDTO);
+        logger.info("【用户信息更新请求】用户id: {}, 请求: {}", userId, userUpdateRequestDTO);
         try {
-            UserUpdateResponseDTO responseDTO = userService.updateUser(userId,
-                    userUpdateRequestDTO.getUsername(),
-                    userUpdateRequestDTO.getOriginPassword(),
-                    userUpdateRequestDTO.getPassword(),
-                    userUpdateRequestDTO.getAvatar());
+            UserUpdateResponseDTO responseDTO = userService.updateUser(userId, userUpdateRequestDTO);
             logger.info("【用户信息更新成功】用户id: {}", userId);
             return Result.success(responseDTO);
         } catch (BizException e) {
@@ -101,6 +100,15 @@ public class UserController {
         }
     }
 
+    @PutMapping("/avatar")
+    public Result<String> updateUserAvatar(@RequestBody MultipartFile avatarFile, HttpServletRequest request) {
+            Long userId = Long.parseLong((String) request.getAttribute("userId"));
+            logger.info("【头像上传请求】用户id: {}", userId);
+            String newAvatarUrl = userService.updateUserAvatar(userId, avatarFile);
+            return Result.success("success", newAvatarUrl);
+    }
+
+    // 已经登录的用户查询自己的个人信息
     @GetMapping("/me")
     public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
         // 从 request 获取 userId（由拦截器注入）
@@ -109,5 +117,16 @@ public class UserController {
         UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
         logger.info("【用户信息查询成功】用户id: {}", userId);
         return Result.success(userInfo);
+    }
+
+    // 注销删除账号
+    @DeleteMapping
+    public Result<String> deleteUserAllData(HttpServletRequest request){
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户删除账号】用户id: {}", userId);
+        userService.deleteUserAndAllRelatedData(userId);
+        logger.info("【账号删除成功】用户id: {}", userId);
+        return Result.success("delete successful");
     }
 }

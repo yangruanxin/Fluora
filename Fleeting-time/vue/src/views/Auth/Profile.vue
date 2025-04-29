@@ -44,7 +44,6 @@
             <!-- 地图部分 -->
             <div ref="mapSection" class="section map-section">
                 <h3>Map Area</h3>
-                <p>Here is the map (to be implemented)</p>
             </div>
 
             <!-- 时间线部分 -->
@@ -59,9 +58,12 @@
   
   <script setup>
   import HoverButton from '@/components/HoverButton.vue'
+  import TimeLine from '@/components/TimeLine.vue' 
+  
   import {useRouter} from 'vue-router'
   import { ref, onMounted, onUnmounted } from 'vue'
-  import TimeLine from '@/components/TimeLine.vue' 
+  import { authAxios } from '@/utils/request'
+
   
   const activeTab = ref('map')
   const mapSection = ref(null)

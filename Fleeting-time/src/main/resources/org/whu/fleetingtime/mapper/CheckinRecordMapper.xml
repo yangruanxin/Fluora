@@ -27,4 +27,9 @@
         SELECT * FROM fleeting_time.checkin_record WHERE user_id = #{userId} ORDER BY timestamp DESC
     </select>
 
+<!--    删除某个用户的所有打卡记录-->
+    <delete id="deleteByUserId">
+        DELETE FROM checkin_record WHERE user_id = #{userId}
+    </delete>
+
 </mapper>
