@@ -27,3 +27,4 @@ logging:
   level:
     root: INFO
     org.whu.fleetingtime: DEBUG # 如果你想让自己项目下的日志更详细
+#    org.springframework.jdbc.support.JdbcTransactionManager: debug # 事务管理debug信息开关
