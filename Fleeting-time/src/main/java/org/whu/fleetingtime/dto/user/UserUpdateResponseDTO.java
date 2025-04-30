@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class UserUpdateResponseDTO {
     private String username;
-    private String avatarUrl;
+//    private String avatarUrl;
     private Boolean hasPasswordUpdated;
     private LocalDateTime updatedTime;
 }

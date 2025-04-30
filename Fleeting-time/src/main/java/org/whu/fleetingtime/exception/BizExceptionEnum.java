@@ -20,6 +20,8 @@ public enum BizExceptionEnum {
     ALL_NULL_PARAMETERS(10006, "parameters cannot all be null"),
     //新旧密码不能一样
     SAME_PASSWORD(10007, "old and new passwords cannot be the same"),
+    //文件为空
+    NULL_FILE(10008, "file cannot be null"),
 
     //====checkin模块
     //非法的打卡参数

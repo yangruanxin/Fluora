@@ -3,6 +3,7 @@ package org.whu.fleetingtime.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,8 +84,8 @@ public class UserController {
     }
 
     // 更新用户信息接口
-    @PutMapping
-    public Result<UserUpdateResponseDTO> updateUser(@ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO,
+    @PutMapping("/info")
+    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
                                                     HttpServletRequest request) {
         // 通过 token 拿到 userId
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
@@ -99,6 +100,14 @@ public class UserController {
         }
     }
 
+    @PutMapping("/avatar")
+    public Result<String> updateUserAvatar(@RequestBody MultipartFile avatarFile, HttpServletRequest request) {
+            Long userId = Long.parseLong((String) request.getAttribute("userId"));
+            logger.info("【头像上传请求】用户id: {}", userId);
+            String newAvatarUrl = userService.updateUserAvatar(userId, avatarFile);
+            return Result.success("success", newAvatarUrl);
+    }
+
     // 已经登录的用户查询自己的个人信息
     @GetMapping("/me")
     public Result<UserInfoResponseDTO> getMyInfo(HttpServletRequest request) {
@@ -108,5 +117,16 @@ public class UserController {
         UserInfoResponseDTO userInfo = userService.getUserInfoById(userId);
         logger.info("【用户信息查询成功】用户id: {}", userId);
         return Result.success(userInfo);
+    }
+
+    // 注销删除账号
+    @DeleteMapping
+    public Result<String> deleteUserAllData(HttpServletRequest request){
+        // 从 request 获取 userId（由拦截器注入）
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        logger.info("【用户删除账号】用户id: {}", userId);
+        userService.deleteUserAndAllRelatedData(userId);
+        logger.info("【账号删除成功】用户id: {}", userId);
+        return Result.success("delete successful");
     }
 }

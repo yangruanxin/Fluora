@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
+import org.whu.fleetingtime.mapper.CheckinRecordMapper;
 import org.whu.fleetingtime.mapper.UserMapper;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CheckinRecordMapper checkinRecordMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -75,18 +78,15 @@ public class UserServiceImpl implements UserService {
         String updatedUsername = userUpdateRequestDTO.getUsername();
         String originPassword = userUpdateRequestDTO.getOriginPassword();
         String updatedPassword = userUpdateRequestDTO.getPassword();
-        MultipartFile avatarFile = userUpdateRequestDTO.getAvatar();
         logger.info("[UserServiceUpdate]开始更新用户信息，用户id: {}", userId);
 
         // 返回字段
         String newUsername = null;
-        String newAvatarUrl = null;
         boolean isPasswordUpdated = false;
 
         // 参数全空
         if ((updatedUsername==null || updatedUsername.isEmpty())
-                &&(updatedPassword==null || updatedPassword.isEmpty())
-                &&(avatarFile==null || avatarFile.isEmpty())) {
+                &&(updatedPassword==null || updatedPassword.isEmpty())) {
             logger.warn("[UserServiceUpdate]修改参数不能全空，用户id: {}", userId);
             throw new BizException(BizExceptionEnum.ALL_NULL_PARAMETERS);
         }
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         // 用户名不能重复
         if (updatedUsername != null && !updatedUsername.isEmpty()) {
             User find = userMapper.selectByUsername(updatedUsername);
-            if (find != null && !find.getUsername().equals(updatedUsername)) {
+            if (find != null) {
                 logger.warn("[UserServiceUpdate]用户名已存在，用户id: {}, 新用户名: {}", userId, updatedUsername);
                 throw new BizException(BizExceptionEnum.USERNAME_ALREADY_EXISTS);
             }
@@ -126,41 +126,51 @@ public class UserServiceImpl implements UserService {
             logger.info("[UserServiceUpdate]用户名更新成功，用户id: {}, 新用户名: {}", userId, updatedUsername);
         }
 
-        // 处理头像上传
-        if (avatarFile != null && !avatarFile.isEmpty()) {
-            try {
-                String suffix = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
-                String objectName = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
-                InputStream inputStream = avatarFile.getInputStream();
-                String url = AliyunOssUtils.upload(objectName, inputStream);
-                updatedUser.setAvatarUrl(url);
-                newAvatarUrl = url;
-                logger.info("[UserServiceUpdate]头像上传成功，用户id: {}, 头像URL: {}", userId, url);
-            } catch (IOException e) {
-                logger.error("[UserServiceUpdate]头像上传失败，用户id: {}", userId, e);
-                throw new BizException(BizExceptionEnum.FILE_UPLOAD_FAILED);
-            }
-        }
-
-        // 删除旧头像
-        if (user.getAvatarUrl() != null) {
-            String oldAvatarUrl = user.getAvatarUrl();
-            String oldObjectName = AliyunOssUtils.extractObjectNameFromUrl(oldAvatarUrl);
-            AliyunOssUtils.delete(oldObjectName);
-            logger.info("[UserServiceUpdate]旧头像删除成功，用户id: {}, 旧头像URL: {}", userId, oldAvatarUrl);
-        }
-
         updatedUser.setUpdatedTime(LocalDateTime.now());
         userMapper.update(updatedUser);
         logger.info("[UserServiceUpdate]用户信息更新完成，用户id: {}", userId);
 
         return UserUpdateResponseDTO.builder()
                 .username(newUsername)
-                .avatarUrl(newAvatarUrl)
                 .hasPasswordUpdated(isPasswordUpdated)
                 .updatedTime(updatedUser.getUpdatedTime())
                 .build();
     }
+
+    @Override
+    public String updateUserAvatar(Long userId, MultipartFile avatarFile) {
+        User user = userMapper.selectByUserId(userId);
+        if (user == null) {
+            throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+        }
+        if (avatarFile == null || avatarFile.isEmpty()) {
+            throw new BizException(BizExceptionEnum.NULL_FILE);
+        }
+        try {
+            String suffix = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
+            String objectName = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
+            InputStream inputStream = avatarFile.getInputStream();
+            String newAvatarUrl = AliyunOssUtils.upload(objectName, inputStream);
+
+            // 删除旧头像
+            if (user.getAvatarUrl() != null) {
+                String oldObjectName = AliyunOssUtils.extractObjectNameFromUrl(user.getAvatarUrl());
+                AliyunOssUtils.delete(oldObjectName);
+            }
+            logger.info("[UserServiceUpdate]旧头像删除成功，用户id: {}, 旧头像URL: {}", userId, user.getAvatarUrl());
+
+            // 更新用户头像地址
+            user.setAvatarUrl(newAvatarUrl);
+            user.setUpdatedTime(LocalDateTime.now());
+            userMapper.update(user);
+            logger.info("[UserServiceUpdate]头像上传成功，用户id: {}, 头像URL: {}", userId, newAvatarUrl);
+
+            return newAvatarUrl;
+        } catch (IOException e) {
+            throw new BizException(BizExceptionEnum.FILE_UPLOAD_FAILED);
+        }
+    }
+
 
     @Override
     public UserInfoResponseDTO getUserInfoById(Long userId) {
@@ -177,5 +187,26 @@ public class UserServiceImpl implements UserService {
                 .createdTime(user.getCreatedTime())
                 .updatedTime(user.getUpdatedTime())
                 .build();
+    }
+
+    @Override
+    public void deleteUserAndAllRelatedData(Long userId) {
+        User user = userMapper.selectByUserId(userId);
+        if (user == null) {
+            throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+        }
+        // 删除头像文件
+        if (user.getAvatarUrl() != null) {
+            String oldAvatarUrl = user.getAvatarUrl();
+            String oldObjectName = AliyunOssUtils.extractObjectNameFromUrl(oldAvatarUrl);
+            AliyunOssUtils.delete(oldObjectName);
+            logger.info("[UserServiceDelete]旧头像删除成功，用户id: {}, 旧头像URL: {}", userId, oldAvatarUrl);
+        }
+        // 删除打卡记录
+        int deletedRecords = checkinRecordMapper.deleteByUserId(userId);
+        logger.info("[UserServiceDelete]删除打卡记录 {} 条，用户id: {}", deletedRecords, userId);
+        // 删除对应数据库诗句
+        userMapper.deleteByUserId(userId);
+        logger.info("[UserServiceDelete]用户id: {}，已全部删除完毕", userId);
     }
 }

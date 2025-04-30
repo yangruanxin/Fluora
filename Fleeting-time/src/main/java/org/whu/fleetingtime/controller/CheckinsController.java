@@ -19,7 +19,7 @@ public class CheckinsController {
     @Autowired
     private CheckinService checkinsService;
 
-    @PostMapping("/checkin")
+    @PostMapping
     public Result<CheckinResponseDTO> checkin(
             HttpServletRequest request,
             @RequestBody CheckinRequestDTO checkinRequestDTO
