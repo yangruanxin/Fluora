@@ -23,9 +23,9 @@ public enum BizExceptionEnum {
     //文件为空
     NULL_FILE(10008, "file cannot be null"),
 
-    //====checkin模块
-    //非法的打卡参数
-    INVALID_CHECKIN_PARAMETER(10100, "latitude, longitude, city or timestamp is null"),
+    //====travelPost模块
+    //非法的记录参数
+    INVALID_POST_PARAMETER(10100, "latitude, longitude, city or timestamp is null"),
 
     //====map模块
     // 请求超时

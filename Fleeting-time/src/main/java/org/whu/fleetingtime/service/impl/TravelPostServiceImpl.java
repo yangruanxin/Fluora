@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
-import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostRequestDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.TravelPostMapper;
-import org.whu.fleetingtime.pojo.CheckinRecord;
+import org.whu.fleetingtime.pojo.TravelPost;
 import org.whu.fleetingtime.service.TravelPostService;
 
 import java.time.LocalDateTime;
@@ -21,60 +21,60 @@ public class TravelPostServiceImpl implements TravelPostService {
     private static final Logger logger = LoggerFactory.getLogger(TravelPostServiceImpl.class);
 
     @Autowired
-    TravelPostMapper checkinRecordMapper;
+    TravelPostMapper travelPostMapper;
 
     @Override
-    public CheckinResponseDTO checkin(Long userId, CheckinRequestDTO request) {
-        logger.info("[CheckinsServiceCheckin]收到打卡请求");
-        // 0. 输入校验
-        if (request.getLatitude() == null ||
+    public TravelPostResponseDTO createTravelPost(Long userId, TravelPostRequestDTO request) {
+        logger.info("[createTravelPost]收到新建旅行记录请求");
+        // 输入校验
+        if (request.getContent() == null ||
+                request.getContent().trim().isEmpty() ||
+                request.getLocationName() == null ||
+                request.getLocationName().trim().isEmpty() ||
+                request.getLatitude() == null ||
                 request.getLongitude() == null ||
-                request.getCity() == null ||
-                request.getTimestamp() == null) {
-            logger.warn("[CheckinsServiceCheckin]请求参数无效");
-            throw new BizException(BizExceptionEnum.INVALID_CHECKIN_PARAMETER);
+                request.getBeginTime() == null ||
+                request.getBeginTime().trim().isEmpty()
+        ) {
+            logger.warn("[createTravelPost]请求参数无效");
+            throw new BizException(BizExceptionEnum.INVALID_POST_PARAMETER);
         }
 
-        // 2. 查询该城市是否第一次打卡
-        boolean isNewCity = !checkinRecordMapper.existsByUserIdAndCity(userId, request.getCity());
-
-        // 3. 获取当前时间作为 createdTime 和 updatedTime
+        // 获取当前时间作为 createdTime 和 updatedTime
         LocalDateTime now = LocalDateTime.now();
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        // 4. 构造打卡记录对象
-        CheckinRecord record = new CheckinRecord();
-        record.setUserId(userId);
-        record.setLatitude(request.getLatitude());
-        record.setLongitude(request.getLongitude());
-        record.setCity(request.getCity());
-        record.setProvince(request.getProvince());
-        record.setTimestamp(LocalDateTime.parse(request.getTimestamp(), fmt));
-        record.setNote(request.getNote());
-        record.setDevice(request.getDevice());
-        record.setCreatedTime(now);
-        record.setUpdatedTime(now);
+        // 处理endTime
+        if (request.getEndTime() == null || request.getEndTime().trim().isEmpty()) {
+            request.setEndTime(request.getBeginTime());
+        }
 
-        // 5. 存入数据库
-        checkinRecordMapper.insert(record);
+        // 构造旅行记录对象
+        TravelPost post = new TravelPost();
+        post.setUserId(userId);
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+        post.setLocationName(request.getLocationName());
+        post.setLatitude(request.getLatitude());
+        post.setLongitude(request.getLongitude());
+        post.setBeginTime(LocalDateTime.parse(request.getBeginTime(), fmt));
+        post.setEndTime(LocalDateTime.parse(request.getEndTime(), fmt));
+        post.setCreatedTime(now);
+        post.setUpdatedTime(now);
 
-        // 6. 查询用户的高亮城市数量
-        int highlightedCitiesCount = checkinRecordMapper.countDistinctCitiesByUserId(userId);
-        logger.info("[CheckinsServiceCheckin]打卡请求已完成");
+        // 存入数据库
+        travelPostMapper.insert(post);
 
         // 7. 构建响应
-        return CheckinResponseDTO.builder()
-                .checkinId(record.getId())  // 注意是插入后自动生成的主键
-                .latitude(record.getLatitude())
-                .longitude(record.getLongitude())
-                .city(record.getCity())
-                .province(record.getProvince())
-                .timestamp(record.getTimestamp())
-                .note(record.getNote())
-                .device(record.getDevice())
-                .isNewCity(isNewCity)
-                .highlightedCitiesCount(highlightedCitiesCount)
+        return TravelPostResponseDTO.builder()
+                .postId(post.getId())
+                .userId(userId)
+                .locationName(post.getLocationName())
+                .latitude(post.getLatitude())
+                .longitude(post.getLongitude())
+                .beginTime(post.getBeginTime())
+                .endTime(post.getEndTime())
                 .build();
     }
 }

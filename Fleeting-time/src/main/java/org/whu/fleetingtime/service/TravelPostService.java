@@ -1,8 +1,8 @@
 package org.whu.fleetingtime.service;
 
-import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
-import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostRequestDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostResponseDTO;
 
 public interface TravelPostService {
-    CheckinResponseDTO checkin(Long userId, CheckinRequestDTO request);
+    TravelPostResponseDTO createTravelPost(Long userId, TravelPostRequestDTO request);
 }
