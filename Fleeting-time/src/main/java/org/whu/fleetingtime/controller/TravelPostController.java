@@ -28,6 +28,7 @@ public class TravelPostController {
         String userIdStr = (String) request.getAttribute("userId");
         Long userId = Long.parseLong(userIdStr);
         logger.info("【创建旅行记录请求】id: {}, {}", userIdStr, travelPostRequestDTO);
+        logger.info("看看数组长度, images:{}, order: {}", travelPostRequestDTO.getImages().size(), travelPostRequestDTO.getOrders().size());
 
         TravelPostResponseDTO response = travelPostService.createTravelPost(userId, travelPostRequestDTO);
         logger.info("【旅行记录创建成功】{}", response);
