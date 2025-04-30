@@ -8,20 +8,20 @@ import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
 import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
-import org.whu.fleetingtime.mapper.CheckinRecordMapper;
+import org.whu.fleetingtime.mapper.TravelPostMapper;
 import org.whu.fleetingtime.pojo.CheckinRecord;
-import org.whu.fleetingtime.service.CheckinService;
+import org.whu.fleetingtime.service.TravelPostService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class CheckinsServiceImpl implements CheckinService {
+public class TravelPostServiceImpl implements TravelPostService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckinsServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TravelPostServiceImpl.class);
 
     @Autowired
-    CheckinRecordMapper checkinRecordMapper;
+    TravelPostMapper checkinRecordMapper;
 
     @Override
     public CheckinResponseDTO checkin(Long userId, CheckinRequestDTO request) {

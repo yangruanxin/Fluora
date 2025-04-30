@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import org.whu.fleetingtime.dto.checkin.CheckinRequestDTO;
 import org.whu.fleetingtime.dto.checkin.CheckinResponseDTO;
 import org.whu.fleetingtime.common.Result;
-import org.whu.fleetingtime.service.CheckinService;
+import org.whu.fleetingtime.service.TravelPostService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/checkins")
-public class CheckinsController {
-    private static final Logger logger = LoggerFactory.getLogger(CheckinsController.class);
+public class TravelPostController {
+    private static final Logger logger = LoggerFactory.getLogger(TravelPostController.class);
 
     @Autowired
-    private CheckinService checkinsService;
+    private TravelPostService checkinsService;
 
     @PostMapping
     public Result<CheckinResponseDTO> checkin(

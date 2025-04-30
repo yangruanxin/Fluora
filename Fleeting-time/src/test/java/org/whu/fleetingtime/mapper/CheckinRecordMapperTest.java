@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CheckinRecordMapperTest {
 
     @Autowired
-    private CheckinRecordMapper checkinRecordMapper;
+    private TravelPostMapper checkinRecordMapper;
 
     // 用于后续测试的全局变量
     private static final Long testUserId = 999L;

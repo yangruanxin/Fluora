@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
-import org.whu.fleetingtime.mapper.CheckinRecordMapper;
+import org.whu.fleetingtime.mapper.TravelPostMapper;
 import org.whu.fleetingtime.mapper.UserMapper;
 import org.whu.fleetingtime.pojo.User;
 import org.whu.fleetingtime.service.UserService;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private CheckinRecordMapper checkinRecordMapper;
+    private TravelPostMapper checkinRecordMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 

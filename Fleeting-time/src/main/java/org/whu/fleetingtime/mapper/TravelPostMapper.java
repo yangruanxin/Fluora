@@ -7,7 +7,7 @@ import org.whu.fleetingtime.pojo.CheckinRecord;
 import java.util.List;
 
 @Mapper
-public interface CheckinRecordMapper {
+public interface TravelPostMapper {
 
     // 插入打卡记录
     int insert(CheckinRecord record);
