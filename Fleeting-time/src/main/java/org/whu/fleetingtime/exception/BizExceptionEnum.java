@@ -26,6 +26,8 @@ public enum BizExceptionEnum {
     //====travelPost模块
     //非法的记录参数
     INVALID_POST_PARAMETER(10100, "latitude, longitude, city or timestamp is null"),
+    //传图片失败
+    IMAGE_UPLOAD_FAILED(10101, "image upload failed"),
 
     //====map模块
     // 请求超时

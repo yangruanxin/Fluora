@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TravelPostMapperTest {
 
     @Autowired
-    private TravelPostMapper checkinRecordMapper;
+    private TravelPostMapper travelPostMapper;
 
     // 用于后续测试的全局变量
 //    private static final Long testUserId = 999L;
@@ -35,7 +35,7 @@ public class TravelPostMapperTest {
         travelPost.setCreatedTime(LocalDateTime.now());
         travelPost.setUpdatedTime(LocalDateTime.now());
 
-        int result = checkinRecordMapper.insert(travelPost);
+        int result = travelPostMapper.insert(travelPost);
         Long insertedId = travelPost.getId();
 
         assertEquals(1, result);

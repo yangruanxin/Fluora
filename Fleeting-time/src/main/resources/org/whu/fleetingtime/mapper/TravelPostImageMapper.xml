@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.whu.fleetingtime.mapper.TravelPostImageMapper">
+
+    <!--    插入新的image-->
+    <insert id="insert" parameterType="org.whu.fleetingtime.pojo.TravelPostImage"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO fleeting_time.travel_post_image (post_id, image_url, sort_order, created_time)
+        VALUES (#{postId}, #{imageUrl}, #{sortOrder}, NOW())
+    </insert>
+
+    <select id="selectByPostId" resultType="org.whu.fleetingtime.pojo.TravelPostImage">
+        SELECT id, post_id, image_url, sort_order, created_time
+        FROM fleeting_time.travel_post_image
+        WHERE post_id = #{postId}
+        ORDER BY sort_order
+    </select>
+
+    <delete id="deleteByPostId">
+        DELETE FROM fleeting_time.travel_post_image
+        WHERE post_id = #{postId}
+    </delete>
+
+    <update id="updateSortOrder">
+        UPDATE fleeting_time.travel_post_image
+        SET sort_order = #{sortOrder}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
