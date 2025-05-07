@@ -81,6 +81,9 @@ public class TravelPostServiceImpl implements TravelPostService {
         List<Integer> orders = request.getOrders();
 
         if (images != null && !images.isEmpty()) {
+            if(images.size() != orders.size()) {
+                throw new BizException(BizExceptionEnum.INVALID_ORDER_ARRAY);
+            }
             for (int i = 0; i < images.size(); i++) {
                 MultipartFile image = images.get(i);
                 if (image == null || image.isEmpty()) {
@@ -99,7 +102,7 @@ public class TravelPostServiceImpl implements TravelPostService {
                 TravelPostImage postImage = new TravelPostImage();
                 postImage.setPostId(post.getId());
                 postImage.setImageUrl(imageUrl);
-                postImage.setSortOrder(orders != null && i < orders.size() ? orders.get(i) : i);
+                postImage.setSortOrder(i < orders.size() ? orders.get(i) : i);
                 postImage.setCreatedTime(now);
                 travelPostImageMapper.insert(postImage);
                 logger.info("[createTravelPost]图片数据插入成功");
