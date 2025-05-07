@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class TravelPostResponseDTO {
+public class TravelPostCreateResponseDTO {
     private Long postId;
     private Long userId;
     private String locationName;

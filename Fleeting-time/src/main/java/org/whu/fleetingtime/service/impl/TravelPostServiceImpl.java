@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.whu.fleetingtime.dto.travelpost.TravelPostRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostGetResponseDTO;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.TravelPostImageMapper;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +37,7 @@ public class TravelPostServiceImpl implements TravelPostService {
     TravelPostImageMapper travelPostImageMapper;
 
     @Override
-    public TravelPostResponseDTO createTravelPost(Long userId, TravelPostRequestDTO request) {
+    public TravelPostCreateResponseDTO createTravelPost(Long userId, TravelPostCreateRequestDTO request) {
         logger.info("[createTravelPost]收到新建旅行记录请求");
         // 输入校验
         if (request.getContent() == null ||
@@ -115,7 +117,7 @@ public class TravelPostServiceImpl implements TravelPostService {
                 .toList();
 
         // 7. 构建响应
-        return TravelPostResponseDTO.builder()
+        return TravelPostCreateResponseDTO.builder()
                 .postId(post.getId())
                 .userId(userId)
                 .locationName(post.getLocationName())
@@ -125,5 +127,34 @@ public class TravelPostServiceImpl implements TravelPostService {
                 .beginTime(post.getBeginTime())
                 .endTime(post.getEndTime())
                 .build();
+    }
+
+    @Override
+    public List<TravelPostGetResponseDTO> getTravelPostsByUserId(Long userId) {
+        List<TravelPost> posts = travelPostMapper.selectByUserId(userId);
+        List<TravelPostGetResponseDTO> result = new ArrayList<>();
+
+        for (TravelPost post : posts) {
+            List<TravelPostImage> images = travelPostImageMapper.selectByPostId(post.getId());
+            List<String> imageUrls = images.stream()
+                    .map(TravelPostImage::getImageUrl)
+                    .toList();
+
+            TravelPostGetResponseDTO dto = TravelPostGetResponseDTO.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .locationName(post.getLocationName())
+                    .latitude(post.getLatitude())
+                    .longitude(post.getLongitude())
+                    .beginTime(post.getBeginTime())
+                    .endTime(post.getEndTime())
+                    .createdTime(post.getCreatedTime())
+                    .updatedTime(post.getUpdatedTime())
+                    .imageUrls(imageUrls)
+                    .build();
+            result.add(dto);
+        }
+        return result;
     }
 }

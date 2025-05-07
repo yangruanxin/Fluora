@@ -1,8 +1,12 @@
 package org.whu.fleetingtime.service;
 
-import org.whu.fleetingtime.dto.travelpost.TravelPostRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostGetResponseDTO;
+
+import java.util.List;
 
 public interface TravelPostService {
-    TravelPostResponseDTO createTravelPost(Long userId, TravelPostRequestDTO request);
+    TravelPostCreateResponseDTO createTravelPost(Long userId, TravelPostCreateRequestDTO request);
+    List<TravelPostGetResponseDTO> getTravelPostsByUserId(Long userId);
 }
