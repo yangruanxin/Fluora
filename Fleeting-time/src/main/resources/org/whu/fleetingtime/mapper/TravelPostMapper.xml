@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.whu.fleetingtime.mapper.TravelPostMapper">
+
+<!--    插入新的旅行日记-->
+    <insert id="insert" parameterType="org.whu.fleetingtime.pojo.TravelPost" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO fleeting_time.travel_post (user_id, title, content, location_name,
+                                               latitude, longitude, begin_time, end_time,
+                                               created_time, updated_time)
+        VALUES (#{userId}, #{title}, #{content}, #{locationName},
+                #{latitude}, #{longitude}, #{beginTime}, #{endTime},
+                #{createdTime},#{updatedTime})
+    </insert>
+
+    <!--    查某用户的所有旅行记录（按打卡时间降序排序）-->
+    <select id="selectByUserId" resultType="org.whu.fleetingtime.pojo.TravelPost">
+        SELECT * FROM fleeting_time.travel_post WHERE user_id = #{userId} ORDER BY begin_time DESC
+    </select>
+
+    <!--    删除某个用户的所有旅行记录-->
+    <delete id="deleteByUserId">
+        DELETE FROM checkin_record WHERE user_id = #{userId}
+    </delete>
+
+
+<!--    插入新的打卡记录-->
+<!--    <insert id="insert" parameterType="org.whu.fleetingtime.pojo.TravelPost" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO fleeting_time.checkin_record (user_id, latitude, longitude, city, province, timestamp, note, device, created_time, updated_time)-->
+<!--        VALUES (#{userId}, #{latitude}, #{longitude}, #{city}, #{province}, #{timestamp}, #{note}, #{device}, #{createdTime}, #{updatedTime})-->
+<!--    </insert>-->
+
+<!--&lt;!&ndash;    查询某个用户是否打过卡&ndash;&gt;-->
+<!--    <select id="existsByUserIdAndCity" resultType="boolean">-->
+<!--        SELECT COUNT(1) > 0 FROM fleeting_time.checkin_record-->
+<!--        WHERE user_id = #{userId} AND city = #{city}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    查询高亮城市数量&ndash;&gt;-->
+<!--    <select id="countDistinctCitiesByUserId" resultType="int">-->
+<!--        SELECT COUNT(DISTINCT city) FROM fleeting_time.checkin_record WHERE user_id = #{userId}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    查某用户的所有打卡记录&ndash;&gt;-->
+<!--    <select id="selectByUserId" resultType="org.whu.fleetingtime.pojo.TravelPost">-->
+<!--        SELECT * FROM fleeting_time.checkin_record WHERE user_id = #{userId} ORDER BY timestamp DESC-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    删除某个用户的所有打卡记录&ndash;&gt;-->
+<!--    <delete id="deleteByUserId">-->
+<!--        DELETE FROM checkin_record WHERE user_id = #{userId}-->
+<!--    </delete>-->
+
+</mapper>

@@ -86,7 +86,7 @@ const handleLogin = () => {
           ElMessage.success('登录成功！')
           // 使用authStore的login方法保存token和状态
           authStore.login(response.data.data.token)
-
+          console.log(response.data.data.token)
           // 跳转到主页
           router.push('/')
         } else {
