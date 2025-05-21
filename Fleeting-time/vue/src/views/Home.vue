@@ -99,6 +99,11 @@ const router =useRouter()
 
 const authStore = useAuthStore()
 
+// 检查本地存储中的 token
+onMounted(() => {
+  authStore.checkAuth()
+})
+
 //处理登录按钮点击事件
 const handleLogin = () =>{
   router.push('/login')

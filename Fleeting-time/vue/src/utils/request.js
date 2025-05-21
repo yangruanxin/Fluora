@@ -29,7 +29,7 @@ authAxios.interceptors.request.use(
     const authStore = useAuthStore()
     console.log(authStore.token)
     if (authStore.token) {
-      config.headers['Authorization'] = ` ${authStore.token}`
+      config.headers['Authorization'] = `${authStore.token}`
     }
     console.log('最终请求 headers:', config.headers)
     return config
