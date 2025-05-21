@@ -4,7 +4,7 @@
       <!-- 导航栏 -->
       <el-header class="header">
         <div class="logo">
-          <img src="/src/assets/图标.jpeg" alt="logo" class="logo-icon" />
+          <img src="/assets/图标.jpeg" alt="logo" class="logo-icon" />
           <span>流光</span>
         </div>
         <div class="header-links">
@@ -27,7 +27,7 @@
               
               <!-- Hover组件 -->
               <div class="hover-section">
-                <Hover imageUrl="/src/assets/地图.png">
+                <Hover imageUrl="/assets/地图.png">
                   <p>探索更多旅程</p>
                   <HoverButton text="点击查看地图" @click="handleMap" :disabled="!authStore.isLoggedIn"/>
                 </Hover>
@@ -138,19 +138,19 @@ const testimonials = [
     name: '中国四川',
     designation: '贡嘎雪山',
     quote: '当你真正站在凛冽的风中，看着雪山一寸寸亮成火炬——你会相信：有些美，本就是宇宙级的浪漫。',
-    image: '/src/assets/风景图/贡嘎雪山.png',
+    image: '/assets/风景图/贡嘎雪山.png',
   },
   {
     name: '挪威特罗姆瑟',
     designation: '极光',
     quote: '在北欧神话中，极光被认为是天空女神雅芬的裙摆，象征着生命的活力和热情。去做世界尽头的追光者。',
-    image: '/src/assets/风景图/挪威极光.png',
+    image: '/assets/风景图/挪威极光.png',
   },
   {
     name: '法国巴黎',
     designation: '埃菲尔铁塔',
     quote: '铁塔是凝固的星群，而我们在其间流动。',
-    image: '/src/assets/风景图/法国巴黎.png',
+    image: '/assets/风景图/法国巴黎.png',
   },
 ];
 
@@ -164,7 +164,7 @@ const testimonials = [
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:url("/src/assets/背景2.jpeg") ;
+  background-image:url("/assets/背景2.jpeg") ;
   background-size: cover;
   background-position: center;/* 居中 */
   filter: brightness(90%);

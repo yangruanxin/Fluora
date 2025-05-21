@@ -570,7 +570,7 @@
   .profile-page {
     display: flex;
     min-height: 100vh;
-    background-image: url("/src/assets/背景3.jpeg");
+    background-image: url("/assets/背景3.jpeg");
     background-size: cover;
     background-position: center;
     z-index: -1;
