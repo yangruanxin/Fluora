@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.whu.fleetingtime.mapper.UserMapper">
+
+<!--    根据username查询-->
+    <select id="selectByUsername" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
+        SELECT * FROM fleeting_time.user WHERE username = #{username}
+    </select>
+
+<!--    根据id查询-->
+    <select id="selectByUserId" parameterType="Long" resultType="org.whu.fleetingtime.pojo.User">
+        SELECT * FROM fleeting_time.user WHERE id = #{id}
+    </select>
+
+<!--    插入新用户，返回自增主键-->
+    <insert id="insertUser"
+            parameterType="org.whu.fleetingtime.pojo.User"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO fleeting_time.user (username, password, created_time, updated_time)
+        VALUES (#{username}, #{password}, NOW(), NOW())
+    </insert>
+
+<!--    根据id删除用户-->
+    <delete id="deleteByUserId" parameterType="Long">
+        DELETE FROM fleeting_time.user
+        WHERE id = #{id}
+    </delete>
+
+<!--    更新修改用户信息-->
+    <update id="update" parameterType="org.whu.fleetingtime.pojo.User">
+        UPDATE fleeting_time.user
+        <set>
+            <if test="username != null"> username = #{username}, </if>
+            <if test="password != null"> password = #{password}, </if>
+            <if test="avatarUrl != null"> avatar_url = #{avatarUrl}, </if>
+            updated_time = #{updatedTime}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>
