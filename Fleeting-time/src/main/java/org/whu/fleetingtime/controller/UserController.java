@@ -101,7 +101,7 @@ public class UserController {
     }
 
     @PutMapping("/avatar")
-    public Result<String> updateUserAvatar(@RequestBody MultipartFile avatarFile, HttpServletRequest request) {
+    public Result<String> updateUserAvatar(@RequestParam MultipartFile avatarFile, HttpServletRequest request) {
             Long userId = Long.parseLong((String) request.getAttribute("userId"));
             logger.info("【头像上传请求】用户id: {}", userId);
             String newAvatarUrl = userService.updateUserAvatar(userId, avatarFile);
