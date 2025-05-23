@@ -12,13 +12,38 @@
   <!-- 上传旅行记录浮窗 -->
   <div v-if="showModal" class="modal-overlay">
     <div class="modal">
-      <h3>添加旅行记录</h3>
+      <h3 
+        class="relative z-20 font-sans text-base font-bold dark:text-neutral-300"
+      >添加旅行记录</h3>
       <p>目的地：{{ locationInfo.name }}</p>
       <div class="upload">
-        <FileSubmit class="additional-class">
-        </FileSubmit>
-        <textarea v-model="description" placeholder="记录一下你的感受吧..." rows="4"></textarea>
+        <FileSubmit class="additional-class" @onChange="handleImageUpload"></FileSubmit>
+        <div style="flex: 1;">
+          <div class="travel-time">
+            <el-date-picker
+              v-model="travelStart"
+              type="date"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              placeholder="选择旅行开始日期"
+              style="width: 100%; margin-bottom: 10px;"
+            />
+            <el-date-picker
+              v-model="travelEnd"
+              type="date"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              placeholder="选择旅行结束日期"
+              style="width: 100%; margin-bottom: 10px;"
+            />
+          </div>
+
+          <!-- 描述文本框 -->
+          <textarea v-model="description" placeholder="记录一下你的感受吧..." rows="4"></textarea>
       </div>
+      </div>
+
+
       <div class="buttons">
         <el-button type="primary" @click="submit">提交</el-button>
         <el-button type="primary" @click="closeModal">取消</el-button>
@@ -33,13 +58,16 @@ import HoverButton from "@/components/HoverButton.vue";
 import FileSubmit from "@/components/FileSubmit.vue";
 import {useRouter} from "vue-router";
 import { ref,onMounted } from "vue";
+import { authAxios } from '@/utils/request'
 
 const router=useRouter();
 
 const showModal = ref(false) // 控制浮窗显示
 const locationInfo = ref({}) // 保存选中的地点信息（名字、经纬度）
-const uploadImage = ref(null) // 保存上传的图片
+const uploadImage = ref([]) // 保存上传的图片
 const description = ref('') // 保存填写的描述
+const travelStart = ref('') // 保存旅行开始日期
+const travelEnd = ref('') // 保存旅行结束日期
 let map=null
 
 //处理返回首页按钮点击事件
@@ -131,21 +159,47 @@ const loadMapScript = () => {
   document.body.appendChild(script);
 };
 
-const handleImageUpload = (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    uploadImage.value = file
+const handleImageUpload = (files) => {
+  if (files.length > 0) {
+    uploadImage.value = files;
   }
 }
 
-const submit = () => {
-  console.log('提交内容：', {
-    location: locationInfo.value,
-    image: uploadImage.value,
-    description: description.value
-  })
-  closeModal()
+const formatDateTime = (dateStr) => {
+  return dateStr ? `${dateStr} 00:00:00` : '';
 }
+
+const submit = async () => {
+  const formData = new FormData();
+  formData.append("locationName", locationInfo.value.name);
+  formData.append("longitude", locationInfo.value.lng);
+  formData.append("latitude", locationInfo.value.lat);
+  formData.append("content", description.value);
+  formData.append("beginTime", formatDateTime(travelStart.value));
+  formData.append("endTime", formatDateTime(travelEnd.value));
+
+  if (uploadImage.value && uploadImage.value.length > 0) {
+    uploadImage.value.forEach((file,index) => {
+      formData.append("images", file);
+      formData.append("orders", index); 
+      console.log(index)
+    });
+  }
+
+  try {
+    const response = await authAxios.post("/travel-posts", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log("提交成功：", response.data);
+    alert("提交成功！");
+    closeModal();
+  } catch (error) {
+    console.error("提交失败：", error);
+    alert("提交失败，请稍后重试！");
+  }
+};
 
 const closeModal = () => {
   showModal.value = false
@@ -220,6 +274,8 @@ h2 {
   padding: 20px;
   border-radius: 8px;
   z-index: 1001; /* 更高，确保弹窗内容在最上面 */
+  width: 800px; /* 增加弹窗宽度 */
+  max-width: 80%; /* 确保在小屏幕下不超出 */
 }
 
 .reset-map {

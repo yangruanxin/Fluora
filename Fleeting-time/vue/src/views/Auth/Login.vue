@@ -3,7 +3,7 @@
   <div class="login-body">
     <div class="login-form">
         <div class="login-image">
-            <img src="/src/assets/图标.jpeg" alt="登录背景图">
+            <img src="/assets/图标.jpeg" alt="登录背景图">
         </div>
         <el-form
             ref="ruleFormRef"
@@ -124,7 +124,7 @@ const goToRegister = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image:url("/src/assets/背景1.jpeg") ;
+    background-image:url("/assets/背景1.jpeg") ;
     background-size: cover;
     background-position: center;/* 居中 */
     filter: brightness(70%); /* 调整亮度 */

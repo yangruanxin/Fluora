@@ -3,23 +3,16 @@
       ref="timelineContainerRef"
       class="w-full bg-white font-sans md:px-10 dark:bg-neutral-950"
     >
-      <div class="mx-auto max-w-7xl px-4 py-20 lg:px-10 md:px-8">
-        <h2 class="mb-4 max-w-4xl text-lg text-black md:text-4xl dark:text-white">
-          {{ title }}
-        </h2>
-        <p class="max-w-sm text-sm text-neutral-700 md:text-base dark:text-neutral-300">
-          {{ description }}
-        </p>
-      </div>
   
-      <div ref="timelineRef" class="relative z-0 mx-auto max-w-7xl pb-20">
+      <div ref="timelineRef" class="relative z-0 w-full pb-20">
         <div
           v-for="(item, index) in props.items"
           :key="item.id + index"
-          class="flex justify-start pt-10 md:gap-10 md:pt-40"
+          class="flex justify-start  md:pt-20 mb-20"
         >
+          <!-- 时间点左侧内容 -->
           <div
-            class="sticky top-40 z-40 flex max-w-xs flex-col items-center self-start lg:max-w-sm md:w-full md:flex-row"
+            class="relative top-40 z-40 flex max-w-xs flex-col items-center self-start lg:max-w-sm md:w-full md:flex-row"
           >
             <div
               class="absolute left-3 flex size-10 items-center justify-center rounded-full bg-white md:left-3 dark:bg-black"
@@ -28,13 +21,10 @@
                 class="size-4 rounded-full border border-neutral-300 bg-neutral-200 p-2 dark:border-neutral-700 dark:bg-neutral-800"
               />
             </div>
-            <h3
-              class="hidden text-xl font-bold text-neutral-500 md:block md:pl-20 md:text-5xl dark:text-neutral-500"
-            >
-              {{ item.label }}
-            </h3>
           </div>
-          <slot :name="item.id"></slot>
+          <div class="w-full mt-16 md:mt-20">
+            <slot :name="item.id"></slot>
+          </div>
         </div>
   
         <!-- 动画线 -->
@@ -55,7 +45,15 @@
   <script lang="ts" setup>
   import { ref, onMounted, nextTick, watch } from 'vue';
   import { Motion, useScroll, useTransform, useMotionValueEvent } from 'motion-v';
-  
+
+  onMounted(async () => {
+    await nextTick();
+    if (timelineRef.value) {
+      height.value = timelineRef.value.scrollHeight;
+    }
+  });
+
+
   interface Props {
     containerClass?: string;
     class?: string;
@@ -63,46 +61,38 @@
     title?: string;
     description?: string;
   }
-  
+
   const props = withDefaults(defineProps<Props>(), {
     items: () => [],
   });
-  
-  const timelineContainerRef = ref<HTMLElement | null>(null);
+
   const timelineRef = ref<HTMLElement | null>(null);
   const height = ref(0);
-  
-  // 计算高度用于背景线
-  onMounted(async () => {
-    await nextTick();
-    if (timelineRef.value) {
-      const rect = timelineRef.value.getBoundingClientRect();
-      height.value = rect.height;
-    }
-  });
-  
-  // 滚动进度和动画映射
+
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start 10%', 'end 50%'],
+    offset: ['start 10%', 'end 100%'],
   });
-  
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
-  let heightTransform = useTransform(scrollYProgress, [0, 1], [0, 0]);
 
-  
-  // 监听滚动进度变化并更新动画值
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
   const animatedOpacity = ref(0);
-  const animatedHeight = ref('0px');
-  
   useMotionValueEvent(opacityTransform, 'change', (latest) => {
     animatedOpacity.value = latest;
   });
-  
 
-    watch(height, (newHeight) => {
-        heightTransform = useTransform(scrollYProgress, [0, 1], [0, newHeight]);
+  // 先声明 heightTransform 变量，稍后赋值
+  let heightTransform = useTransform(scrollYProgress, [0, 1], [0, 0]);
+  const animatedHeight = ref('0px');
+
+  // 监听高度变化，更新 heightTransform 范围
+  watch(height, (newHeight) => {
+    // 先解绑之前的事件监听
+    // 创建新的 transform，绑定监听事件更新 animatedHeight
+    heightTransform = useTransform(scrollYProgress, [0, 1], [0, newHeight]);
+    useMotionValueEvent(heightTransform, 'change', (latest) => {
+      animatedHeight.value = latest + 'px';
     });
+  });
+
 
   </script>
-  
