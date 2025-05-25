@@ -83,12 +83,9 @@ onMounted(() => {
 
 // 初始化地图
 const init = () => {
-  let Bmap = window.BMap; 
-  map = new Bmap.Map("allmap"); // allmap必须和dom上的id一直
-  map.centerAndZoom(
-    new Bmap.Point(108.948024, 34.263161),
-    5
-  ); // 初始化地图,设置中心点坐标和地图级别
+  let BMapGL = window.BMapGL;
+  map = new BMapGL.Map("allmap"); // 使用 BMapGL 初始化地图
+  map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5); // 初始化地图,设置中心点坐标和地图级别
   map.setCurrentCity("陕西省咸阳市泾阳县永乐镇北流村");
   map.enableScrollWheelZoom(true);
 
@@ -142,8 +139,7 @@ const loadMapScript = () => {
   var script = document.createElement("script");
   script.type = "text/javascript";
   script.className = "loadmap"; // 给script一个类名
-  script.src =
-    "https://api.map.baidu.com/getscript?v=3.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
+  script.src = "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
   script.onload = () => {
     console.log("百度地图脚本加载成功");
     // 使用script.onload，待资源加载完成，再初始化地图
@@ -210,9 +206,9 @@ const closeModal = () => {
 
 //重置地图
 const resetMap = () => {
-  let Bmap = window.BMap;
+  let BMapGL = window.BMapGL;
   // 重置为初始的中心点和缩放级别
-  map.centerAndZoom(new Bmap.Point(108.948024, 34.263161), 5); 
+  map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5); 
   map.clearOverlays(); // 可选：清除任何已添加的标记或覆盖物
 };
 
@@ -220,7 +216,7 @@ const resetMap = () => {
 
 <style scoped>
 /* 去除水印 */
-::v-deep(.BMap_cpyCtrl) {
+::v-deep(.BMapGL_cpyCtrl) {
   display: none;
 }
  

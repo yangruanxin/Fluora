@@ -254,20 +254,21 @@
 
   // 初始化地图
   const init = () => {
-    let Bmap = window.BMap;
-    map = new Bmap.Map("allmap"); 
+    let BMapGL = window.BMapGL;
+    map = new BMapGL.Map("allmap"); 
     map.centerAndZoom(
-      new Bmap.Point(108.948024, 34.263161), // 设置地图中心点坐标
+      new BMapGL.Point(108.948024, 34.263161), // 设置地图中心点坐标
       5 // 设置地图级别（缩放级别）
     );
     map.setCurrentCity("陕西省咸阳市泾阳县永乐镇北流村");
 
     // 放大缩小
-    const zoomControl = new Bmap.NavigationControl({
-      anchor: BMAP_ANCHOR_TOP_LEFT, // 控件放置位置：左上角
-      type: BMAP_NAVIGATION_CONTROL_ZOOM // 只显示缩放按钮
+    const zoomControl = new BMapGL.NavigationControl({
+      anchor: BMapGL_ANCHOR_TOP_LEFT, // 控件放置位置：左上角
+      type: BMapGL_NAVIGATION_CONTROL_ZOOM // 只显示缩放按钮
     });
     map.addControl(zoomControl);
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
   };
 
   // 加载地图脚本
@@ -573,15 +574,15 @@
   };
 
   const addMarkers = () => {
-    const Bmap = window.BMap;
+    const BMapGL = window.BMapGL;
     if (!map || !posts.value) return;
 
     posts.value.forEach(item => {
       // 创建标注点坐标
-      const point = new Bmap.Point(item.longitude, item.latitude);
+      const point = new BMapGL.Point(item.longitude, item.latitude);
 
       // 创建标注
-      const marker = new Bmap.Marker(point);
+      const marker = new BMapGL.Marker(point);
       map.addOverlay(marker);
 
       // 创建信息窗口内容，带图片和地点名
@@ -594,8 +595,8 @@
       `;
 
       // 创建信息窗口
-      const infoWindow = new Bmap.InfoWindow(content, {
-        offset: new Bmap.Size(0, -30) // 调整信息窗口偏移，避免覆盖标注点
+      const infoWindow = new BMapGL.InfoWindow(content, {
+        offset: new BMapGL.Size(0, -30) // 调整信息窗口偏移，避免覆盖标注点
       });
 
       // 点击标注弹出信息窗口
@@ -750,7 +751,7 @@
   }
 
   /* 去除水印 */
-  ::v-deep(.BMap_cpyCtrl) {
+  ::v-deep(.BMapGL_cpyCtrl) {
     display: none;
   }
   
