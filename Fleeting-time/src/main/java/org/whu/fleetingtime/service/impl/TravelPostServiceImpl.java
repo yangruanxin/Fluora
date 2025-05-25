@@ -157,4 +157,41 @@ public class TravelPostServiceImpl implements TravelPostService {
         }
         return result;
     }
+
+    // 删除travelPost
+    @Override
+    public void deleteTravelPost(Long userId, Long postId) {
+        logger.info("[deleteTravelPost] 请求删除旅行记录，userId: {}, postId: {}", userId, postId);
+        // 1. 查询 travelPost
+        TravelPost post = travelPostMapper.selectByPostId(postId);
+        if (post == null) {
+            logger.warn("[deleteTravelPost] 记录不存在，postId: {}", postId);
+            throw new BizException(BizExceptionEnum.POST_NOT_FOUND);
+        }
+        // 2. 校验 userId 是否一致
+        if (!post.getUserId().equals(userId)) {
+            logger.warn("[deleteTravelPost] 非法操作：用户 {} 尝试删除不属于自己的记录 {}", userId, postId);
+            throw new BizException(BizExceptionEnum.UNAUTHORIZED_OPERATION);
+        }
+        // 3. 查询图片记录
+        List<TravelPostImage> images = travelPostImageMapper.selectByPostId(postId);
+        for (TravelPostImage image : images) {
+            String imageUrl = image.getImageUrl();
+            String objectName = AliyunOssUtils.extractObjectNameFromUrl(imageUrl);  // 提取 OSS 中的对象路径
+            if (objectName != null && !objectName.isEmpty()) {
+                try {
+                    AliyunOssUtils.delete(objectName);
+                    logger.info("[deleteTravelPost] 成功删除 OSS 文件: {}", objectName);
+                } catch (Exception e) {
+                    logger.warn("[deleteTravelPost] 删除 OSS 文件失败: {}, 原因: {}", objectName, e.getMessage());
+                }
+            }
+        }
+        // 3. 删除图片记录
+        travelPostImageMapper.deleteByPostId(postId);
+        logger.info("[deleteTravelPost] 已删除图片记录，postId: {}", postId);
+        // 4. 删除主记录
+        travelPostMapper.deleteByPostId(postId);
+        logger.info("[deleteTravelPost] 已删除主记录，postId: {}", postId);
+    }
 }
