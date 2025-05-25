@@ -277,7 +277,7 @@
     script.type = "text/javascript";
     script.className = "loadmap";
     script.src =
-      "https://api.map.baidu.com/getscript?v=3.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
+      "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
     script.onload = () => {
       init(); // 脚本加载完成后初始化地图
     };
