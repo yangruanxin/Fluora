@@ -98,7 +98,7 @@ const init = () => {
     console.log('点击了地图', e.point);
     const lng = e.point.lng
     const lat = e.point.lat
-    fetch(`http://121.43.136.251:8080/api/map/reverse-geocode?lat=${lat}&lng=${lng}`)
+    fetch(`https://121.43.136.251:8080/api/map/reverse-geocode?lat=${lat}&lng=${lng}`)
     .then(res => {
       return res.text(); // 获取响应的文本内容
     })
