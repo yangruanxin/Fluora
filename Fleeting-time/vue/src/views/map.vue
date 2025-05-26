@@ -189,7 +189,25 @@ const formatDateTime = (dateStr) => {
 }
 
 const submit = async () => {
+
+    // 校验必填字段
+  if (!uploadImage.value || uploadImage.value.length === 0) {
+    alert("请上传至少一张照片！");
+    return;
+  }
+
+  if (!travelStart.value || !travelEnd.value) {
+    alert("请选择旅行起止时间！");
+    return;
+  }
+
+  if (!description.value || description.value.trim() === "") {
+    alert("请填写描述内容！");
+    return;
+  }
+
   const formData = new FormData();
+  console.log("locationInfo.value",locationInfo.value)
   formData.append("locationName", locationInfo.value.name);
   formData.append("longitude", locationInfo.value.lng);
   formData.append("latitude", locationInfo.value.lat);
