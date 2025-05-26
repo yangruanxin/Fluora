@@ -46,4 +46,12 @@ public class TravelPostController {
         List<TravelPostGetResponseDTO> postList = travelPostService.getTravelPostsByUserId(userId);
         return Result.success(postList);
     }
+
+    @DeleteMapping("/{postId}")
+    public Result<Object> deletePost(HttpServletRequest request, @PathVariable Long postId) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+        travelPostService.deleteTravelPost(userId, postId);
+        return Result.success();
+    }
 }
