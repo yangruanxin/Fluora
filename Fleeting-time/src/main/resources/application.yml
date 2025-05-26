@@ -8,8 +8,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
-      max-file-size: 12MB
-      max-request-size: 256MB
+      max-file-size: 256MB
+      max-request-size: 512MB
 
 # 服务器配置
 server:
