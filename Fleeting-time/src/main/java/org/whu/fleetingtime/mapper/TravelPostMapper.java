@@ -30,4 +30,7 @@ public interface TravelPostMapper {
     // 删除某个用户的所有打卡记录
     int deleteByUserId(@Param("userId") Long userId);
 
+    // 更新某个打卡记录
+    int update(TravelPost post);
+
 }

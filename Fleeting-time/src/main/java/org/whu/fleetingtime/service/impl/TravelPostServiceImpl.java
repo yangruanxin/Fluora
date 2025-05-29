@@ -4,11 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostGetResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.exception.BizExceptionEnum;
 import org.whu.fleetingtime.mapper.TravelPostImageMapper;
@@ -25,11 +24,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TravelPostServiceImpl implements TravelPostService {
 
     private static final Logger logger = LoggerFactory.getLogger(TravelPostServiceImpl.class);
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     TravelPostMapper travelPostMapper;
@@ -83,7 +84,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         List<Integer> orders = request.getOrders();
 
         if (images != null && !images.isEmpty()) {
-            if(images.size() != orders.size()) {
+            if (images.size() != orders.size()) {
                 throw new BizException(BizExceptionEnum.INVALID_ORDER_ARRAY);
             }
             for (int i = 0; i < images.size(); i++) {
@@ -160,6 +161,7 @@ public class TravelPostServiceImpl implements TravelPostService {
 
     // 删除travelPost
     @Override
+    @Transactional // 确保删除操作的原子性
     public void deleteTravelPost(Long userId, Long postId) {
         logger.info("[deleteTravelPost] 请求删除旅行记录，userId: {}, postId: {}", userId, postId);
         // 1. 查询 travelPost
@@ -193,5 +195,95 @@ public class TravelPostServiceImpl implements TravelPostService {
         // 4. 删除主记录
         travelPostMapper.deleteByPostId(postId);
         logger.info("[deleteTravelPost] 已删除主记录，postId: {}", postId);
+    }
+
+    @Override
+    @Transactional // 确保更新操作的原子性
+    public TravelPostUpdateResponseDTO updateTravelPostText(Long userId, Long postId, TravelPostTextUpdateRequestDTO requestDTO) {
+        logger.info("[updateTravelPostText] 用户 {} 请求更新旅行记录 {} 的文字内容, 请求数据: {}", userId, postId, requestDTO);
+
+        // 1. 参数校验 (基础校验)
+        if (requestDTO.getContent() == null || requestDTO.getContent().trim().isEmpty() ||
+                requestDTO.getLocationName() == null || requestDTO.getLocationName().trim().isEmpty() ||
+                requestDTO.getLatitude() == null || requestDTO.getLongitude() == null ||
+                requestDTO.getBeginTime() == null || requestDTO.getBeginTime().trim().isEmpty()) {
+            logger.warn("[updateTravelPostText] 请求参数无效 for postId: {}", postId);
+            throw new BizException(BizExceptionEnum.INVALID_POST_PARAMETER);
+        }
+
+        // 2. 查找现有的 TravelPost
+        TravelPost postToUpdate = travelPostMapper.selectByPostId(postId);
+        if (postToUpdate == null) {
+            logger.warn("[updateTravelPostText] 旅行记录不存在, postId: {}", postId);
+            throw new BizException(BizExceptionEnum.POST_NOT_FOUND);
+        }
+
+        // 3. 校验用户权限 (确保是记录的拥有者)
+        if (!postToUpdate.getUserId().equals(userId)) {
+            logger.warn("[updateTravelPostText] 用户 {} 无权修改 postId: {}. 该记录属于用户 {}", userId, postId, postToUpdate.getUserId());
+            throw new BizException(BizExceptionEnum.UNAUTHORIZED_OPERATION);
+        }
+
+        // 4. 更新 TravelPost 对象的属性
+        // 如果 title 为 null 或空字符串，则不更新 title (允许用户只修改其他字段而不修改标题)
+        // 如果业务要求 title 也可以被清空，则移除这个判断 requestDTO.getTitle() != null
+        if (requestDTO.getTitle() != null) {
+            postToUpdate.setTitle(requestDTO.getTitle().trim().isEmpty() ? null : requestDTO.getTitle().trim());
+        }
+        postToUpdate.setContent(requestDTO.getContent().trim());
+        postToUpdate.setLocationName(requestDTO.getLocationName().trim());
+        postToUpdate.setLatitude(requestDTO.getLatitude());
+        postToUpdate.setLongitude(requestDTO.getLongitude());
+
+        try {
+            postToUpdate.setBeginTime(LocalDateTime.parse(requestDTO.getBeginTime(), DATETIME_FORMATTER));
+            if (requestDTO.getEndTime() != null && !requestDTO.getEndTime().trim().isEmpty()) {
+                postToUpdate.setEndTime(LocalDateTime.parse(requestDTO.getEndTime(), DATETIME_FORMATTER));
+            } else {
+                // 如果 endTime 为空或 null，则将其设置为与 beginTime 相同
+                postToUpdate.setEndTime(postToUpdate.getBeginTime());
+            }
+        } catch (Exception e) {
+            logger.warn("[updateTravelPostText] 日期时间格式错误 for postId: {}. Details: {}", postId, e.getMessage());
+            throw new BizException(BizExceptionEnum.INVALID_POST_PARAMETER);
+        }
+
+        // 校验 beginTime 是否在 endTime 之前或相等
+        if (postToUpdate.getBeginTime().isAfter(postToUpdate.getEndTime())) {
+            logger.warn("[updateTravelPostText] 开始时间不能晚于结束时间 for postId: {}", postId);
+            throw new BizException(BizExceptionEnum.INVALID_POST_PARAMETER);
+        }
+
+        postToUpdate.setUpdatedTime(LocalDateTime.now()); // 更新修改时间
+
+        // 5. 保存更新到数据库
+        int updatedRows = travelPostMapper.update(postToUpdate);
+        if (updatedRows == 0) {
+            // 这种情况理论上不应该发生，因为前面已经查询并校验了 postId 的存在性和用户权限
+            logger.error("[updateTravelPostText] 更新数据库失败，没有行受到影响 for postId: {}", postId);
+            throw new BizException(BizExceptionEnum.DATABASE_ERROR);
+        }
+        logger.info("[updateTravelPostText] 旅行记录 {} 的文字内容更新成功", postId);
+
+        // 6. 获取当前帖子的图片信息 (因为响应 DTO 需要 imageUrls)
+        List<TravelPostImage> images = travelPostImageMapper.selectByPostId(postId);
+        List<String> imageUrls = images.stream()
+                .map(TravelPostImage::getImageUrl)
+                .collect(Collectors.toList());
+
+        // 7. 构建并返回响应 DTO
+        return TravelPostUpdateResponseDTO.builder()
+                .postId(postToUpdate.getId())
+                .userId(postToUpdate.getUserId())
+                .title(postToUpdate.getTitle())
+                .content(postToUpdate.getContent())
+                .locationName(postToUpdate.getLocationName())
+                .latitude(postToUpdate.getLatitude())
+                .longitude(postToUpdate.getLongitude())
+                .beginTime(postToUpdate.getBeginTime())
+                .endTime(postToUpdate.getEndTime())
+                .updatedTime(postToUpdate.getUpdatedTime())
+                .imageUrls(imageUrls) // 包含当前图片列表
+                .build();
     }
 }
