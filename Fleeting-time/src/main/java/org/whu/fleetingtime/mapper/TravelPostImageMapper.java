@@ -10,5 +10,6 @@ public interface TravelPostImageMapper {
     int insert(TravelPostImage travelPostImage);
     List<TravelPostImage> selectByPostId(Long postId);
     int deleteByPostId(Long postId);
+    void deleteById(Long id);
     int updateSortOrder(Long id, Integer sortOrder);
 }

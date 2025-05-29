@@ -68,4 +68,20 @@ public class TravelPostController {
         logger.info("【旅行记录文字内容修改成功】响应: {}", response);
         return Result.success("记录更新成功", response);
     }
+
+    @PostMapping("/images/{postId}") // 使用 POST
+    public Result<TravelPostImageUpdateResponseDTO> updatePostImages(
+            HttpServletRequest request,
+            @PathVariable Long postId,
+            @ModelAttribute TravelPostImageUpdateRequestDTO imageUpdateRequestDTO // form-data 用 @ModelAttribute
+    ) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+        logger.info("【修改旅行记录图片请求】userId: {}, postId: {}, 更新数据: {}", userId, postId, imageUpdateRequestDTO);
+
+        TravelPostImageUpdateResponseDTO response = travelPostService.updateTravelPostImages(userId, postId, imageUpdateRequestDTO);
+
+        logger.info("【旅行记录图片修改成功】响应: {}", response);
+        return Result.success("图片更新成功", response);
+    }
 }
