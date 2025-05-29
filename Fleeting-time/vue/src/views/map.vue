@@ -75,85 +75,108 @@ const handleBack = () => {
   router.push('/')
 }
 
-onMounted(() => {
-  console.log(document.getElementById("allmap")); 
-  loadMapScript(); // 加载百度地图资源
-});
+//为什么说我没修改这个文件啊啊啊
 
+// 动态加载百度地图脚本，返回 Promise
+const loadBMapGL = () => {
+  return new Promise((resolve, reject) => {
+    if (window.BMapGL) {
+      resolve(window.BMapGL);
+      return;
+    }
+
+    // 清理旧脚本
+    const existingScripts = document.querySelectorAll('script[src*="map.baidu.com"]');
+    existingScripts.forEach(script => script.remove());
+
+    // 创建脚本标签
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://api.map.baidu.com/api?type=webgl&v=1.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz&callback=initBMapGL";
+
+    // 设置全局回调
+    window.initBMapGL = () => {
+      if (window.BMapGL) {
+        resolve(window.BMapGL);
+      } else {
+        reject(new Error("BMapGL 未定义"));
+      }
+      delete window.initBMapGL; // 清理回调
+    };
+
+    // 错误处理
+    script.onerror = () => {
+      delete window.initBMapGL;
+      reject(new Error("百度地图脚本加载失败"));
+    };
+
+    document.head.appendChild(script);
+  });
+};
 
 // 初始化地图
-const init = () => {
-  let BMapGL = window.BMapGL;
-  map = new BMapGL.Map("allmap"); // 使用 BMapGL 初始化地图
-  map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5); // 初始化地图,设置中心点坐标和地图级别
-  map.setCurrentCity("陕西省咸阳市泾阳县永乐镇北流村");
+const initMap = (BMapGL) => {
+  map = new BMapGL.Map("allmap");
+  map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5);
   map.enableScrollWheelZoom(true);
 
-  // 处理地图点击事件
-  console.log('准备绑定点击事件');
-  map.addEventListener('click', function(e) {
-    console.log('点击了地图', e.point);
-    const lng = e.point.lng
-    const lat = e.point.lat
+  console.log("地图初始化完成，准备绑定点击事件");
+
+  map.addEventListener("click", (e) => {
+    console.log("点击了地图", e.point);
+    const lng = e.latlng.lng;
+    const lat = e.latlng.lat;
+
     fetch(`https://121.43.136.251:8080/api/map/reverse-geocode?lat=${lat}&lng=${lng}`)
-    .then(res => {
-      return res.text(); // 获取响应的文本内容
-    })
-    .then(text => {
-    console.log(text); // 查看返回的文本内容
-    try {
-      const data = JSON.parse(text); // 尝试解析为JSON
-      if (data.status === 0) {
-        const address = data.result.addressComponent;
-        let name = '';
+      .then(res => res.text())
+      .then(text => {
+        console.log("API响应文本：", text);
+        try {
+          const data = JSON.parse(text);
+          if (data.status === 0) {
+            const address = data.result.addressComponent;
+            let name = '';
 
-        if (address.country === '中国') {
-          name = `${address.province} ${address.city}`;//中国省市
-        } else {
-          name = `${address.country} ${address.city || ''}`.trim(); //国家+城市
+            if (address.country === '中国') {
+              name = `${address.province} ${address.city}`;
+            } else {
+              name = `${address.country} ${address.city || ''}`.trim();
+            }
+
+            locationInfo.value = {
+              name,
+              lng,
+              lat
+            };
+            showModal.value = true;
+          } else {
+            alert('逆地理编码失败');
+          }
+        } catch (e) {
+          console.error("解析 JSON 失败", e);
         }
-
-        locationInfo.value = {
-          name,
-          lng,
-          lat
-        };
-        showModal.value = true;
-      } else {
-        alert('逆地理编码失败');
-      }
-    } catch (e) {
-      console.error('无法解析返回的数据为JSON', e);
-    }
-  })
-  .catch((err) => {
-    console.error(err);
-    alert('请求失败');
+      })
+      .catch(err => {
+        console.error("请求失败", err);
+        alert('请求失败');
+      });
   });
-
-  })
 };
 
+// Vue 生命周期钩子
+onMounted(() => {
+  console.log("DOM 渲染完成，准备加载地图");
 
-const loadMapScript = () => {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.className = "loadmap"; // 给script一个类名
-  script.src = "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
-  script.onload = () => {
-    console.log("百度地图脚本加载成功");
-    // 使用script.onload，待资源加载完成，再初始化地图
-    init();
-  };
-  let loadmap = document.getElementsByClassName("loadmap");
-  if (loadmap) {
-    // 每次append script之前判断一下，避免重复添加script资源标签
-    for (var i = 0; i < loadmap.length; i++) {
-      document.body.removeChild(loadmap[i]);
-    }
-  }
-  document.body.appendChild(script);
-};
+  loadBMapGL()
+    .then(BMapGL => {
+      console.log("百度地图脚本加载成功，开始初始化地图");
+      initMap(BMapGL);
+    })
+    .catch(err => {
+      console.error("地图加载失败：", err);
+      alert("地图加载失败，请稍后重试");
+    });
+});
 
 const handleImageUpload = (files) => {
   if (files.length > 0) {
@@ -166,7 +189,25 @@ const formatDateTime = (dateStr) => {
 }
 
 const submit = async () => {
+
+    // 校验必填字段
+  if (!uploadImage.value || uploadImage.value.length === 0) {
+    alert("请上传至少一张照片！");
+    return;
+  }
+
+  if (!travelStart.value || !travelEnd.value) {
+    alert("请选择旅行起止时间！");
+    return;
+  }
+
+  if (!description.value || description.value.trim() === "") {
+    alert("请填写描述内容！");
+    return;
+  }
+
   const formData = new FormData();
+  console.log("locationInfo.value",locationInfo.value)
   formData.append("locationName", locationInfo.value.name);
   formData.append("longitude", locationInfo.value.lng);
   formData.append("latitude", locationInfo.value.lat);
@@ -193,7 +234,7 @@ const submit = async () => {
     closeModal();
   } catch (error) {
     console.error("提交失败：", error);
-    alert("提交失败，请稍后重试！");
+    alert(`提交失败：${error.response?.data?.message || error.message}`);
   }
 };
 
@@ -294,6 +335,7 @@ h2 {
 
 .upload {
   display: flex;
+  overflow-x:auto;
   gap: 20px; /* 控制上传图片和文字之间的间距 */
   align-items: stretch; /* 顶对齐 */
   margin-bottom: 20px; /* 和下面的提交按钮拉开点距离 */

@@ -18,12 +18,12 @@
         <div class="stats">
           <!-- 旅行过多少地方 -->
           <div>
-            <strong>{{user.places}}</strong>
+            <strong>{{totalPlaces}}</strong>
             <p>places</p>
           </div>
           <!-- 累计打卡次数 -->
           <div>
-            <strong>{{ user.times }}</strong>
+            <strong>{{totalTimes }}</strong>
             <p>times</p>
           </div>
         </div>
@@ -248,55 +248,111 @@
   import { Motion } from "motion-v";
   import draggable from "vuedraggable";
 
+  import { computed } from 'vue'
+
+  // 计算位置数和次数
+  const totalPlaces = computed(() => {
+    const uniquePlaces = new Set(posts.value.map(post => post.locationName))
+    return uniquePlaces.size
+  })
+
+  const totalTimes = computed(() => posts.value.length)
 
 
-  let map = null;
 
-  // 初始化地图
-  const init = () => {
-    let BMapGL = window.BMapGL;
-    map = new BMapGL.Map("allmap"); 
-    map.centerAndZoom(
-      new BMapGL.Point(108.948024, 34.263161), // 设置地图中心点坐标
-      5 // 设置地图级别（缩放级别）
-    );
-    map.setCurrentCity("陕西省咸阳市泾阳县永乐镇北流村");
 
-    // 放大缩小
-    const zoomControl = new BMapGL.NavigationControl({
-      anchor: BMapGL_ANCHOR_TOP_LEFT, // 控件放置位置：左上角
-      type: BMapGL_NAVIGATION_CONTROL_ZOOM // 只显示缩放按钮
-    });
-    map.addControl(zoomControl);
-    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-  };
+// 地图实例变量
+let map = null;
 
-  // 加载地图脚本
-  const loadMapScript = () => {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.className = "loadmap";
-    script.src =
-      "https://api.map.baidu.com/getscript?v=3.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
-    script.onload = () => {
-      init(); // 脚本加载完成后初始化地图
-    };
-    let loadmap = document.getElementsByClassName("loadmap");
-    if (loadmap) {
-      for (var i = 0; i < loadmap.length; i++) {
-        document.body.removeChild(loadmap[i]);
-      }
+const loadBMapGL = () => {
+  return new Promise((resolve, reject) => {
+    // 如果已经加载，直接返回
+    if (window.BMapGL) {
+      resolve(window.BMapGL);
+      return;
     }
-    document.body.appendChild(script);
-  };
 
+    // 清理可能存在的旧脚本
+    const existingScripts = document.querySelectorAll('script[src*="map.baidu.com"]');
+    existingScripts.forEach(script => script.remove());
 
-  const timelineItems = ref([]);
+    // 创建新的脚本标签
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://api.map.baidu.com/api?type=webgl&v=1.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
+    
+    // 添加回调函数名（重要！）
+    script.src += "&callback=initBMapGL";
+    
+    // 全局回调函数
+    window.initBMapGL = () => {
+      if (window.BMapGL) {
+        console.log("百度地图API已加载", window.BMapGL);
+        resolve(window.BMapGL);
+      } else {
+        reject(new Error("BMapGL对象未定义"));
+      }
+      // 清理回调函数
+      delete window.initBMapGL;
+    };
 
-  // 当页面加载完成时，初始化地图
-  onMounted(() => {
-    loadMapScript();
+    // 错误处理
+    script.onerror = (error) => {
+      console.error("脚本加载失败:", error);
+      delete window.initBMapGL;
+      reject(new Error("百度地图脚本加载失败"));
+    };
+
+    // 添加到文档头部
+    document.head.appendChild(script);
   });
+};
+
+// 初始化地图控件
+const initMapControls = (map) => {
+  // 添加缩放控件
+  const zoomControl = new BMapGL.NavigationControl({
+    anchor: window.BMAP_ANCHOR_TOP_LEFT,
+    type: window.BMAP_NAVIGATION_CONTROL_ZOOM
+  });
+  map.addControl(zoomControl);
+  
+  // 启用键盘操作
+  map.enableKeyboard();
+};
+
+// 当页面加载完成时，初始化地图
+onMounted(() => {
+  loadBMapGL().then(BMapGL => {
+    console.log("开始初始化地图...");
+    
+    // 创建地图实例
+    map = new BMapGL.Map("allmap");
+    
+    // 设置中心点和缩放级别
+    map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5);
+    
+    // 启用滚轮缩放
+    map.enableScrollWheelZoom(true);
+    
+    // 初始化地图控件
+    initMapControls(map);
+    
+    console.log("地图初始化完成");
+  }).catch(error => {
+    console.error("地图初始化失败：", error);
+    // 这里可以添加用户友好的错误提示
+  });
+});
+
+// 组件卸载时清理
+onUnmounted(() => {
+  if (map) {
+    map.destroy();
+    map = null;
+  }
+});
+
 
   // 编辑资料弹窗默认隐藏
   const isEditDialogVisible = ref(false)
