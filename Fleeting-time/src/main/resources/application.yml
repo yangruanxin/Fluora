@@ -24,7 +24,7 @@ mybatis:
 
 jwt:
   secret: YourSuperSecretKeyForJwtMustBeLongEnough123!
-  duration: 30
+  duration: 1440
 
 baidu:
   map:

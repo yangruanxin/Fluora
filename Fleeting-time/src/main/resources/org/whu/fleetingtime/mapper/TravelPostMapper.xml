@@ -35,6 +35,19 @@
         DELETE FROM fleeting_time.travel_post WHERE user_id = #{userId}
     </delete>
 
+    <update id="update" parameterType="org.whu.fleetingtime.pojo.TravelPost">
+        UPDATE travel_post
+        SET title         = #{title},
+            content       = #{content},
+            location_name = #{locationName},
+            latitude      = #{latitude},
+            longitude     = #{longitude},
+            begin_time    = #{beginTime},
+            end_time      = #{endTime},
+            updated_time  = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
 
 <!--    插入新的打卡记录-->
 <!--    <insert id="insert" parameterType="org.whu.fleetingtime.pojo.TravelPost" useGeneratedKeys="true" keyProperty="id">-->

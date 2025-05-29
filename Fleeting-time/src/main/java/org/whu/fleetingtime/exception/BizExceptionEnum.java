@@ -34,6 +34,8 @@ public enum BizExceptionEnum {
     POST_NOT_FOUND(10103, "post not found"),
     //操作非自己的post
     UNAUTHORIZED_OPERATION(10104, "unauthorized operation"),
+    //数据库错误
+    DATABASE_ERROR(10105, "database error"),
 
     //====map模块
     // 请求超时

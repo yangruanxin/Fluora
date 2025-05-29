@@ -5,10 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
+import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.common.Result;
-import org.whu.fleetingtime.dto.travelpost.TravelPostGetResponseDTO;
 import org.whu.fleetingtime.service.TravelPostService;
 
 import java.util.List;
@@ -53,5 +51,37 @@ public class TravelPostController {
         Long userId = Long.parseLong(userIdStr);
         travelPostService.deleteTravelPost(userId, postId);
         return Result.success();
+    }
+
+    @PutMapping("/{postId}")
+    public Result<TravelPostUpdateResponseDTO> updatePostText(
+            HttpServletRequest request,
+            @PathVariable Long postId,
+            @ModelAttribute TravelPostTextUpdateRequestDTO updateRequestDTO // form-data 对应 @ModelAttribute
+    ) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+        logger.info("【修改旅行记录文字内容请求】userId: {}, postId: {}, 更新数据: {}", userId, postId, updateRequestDTO);
+
+        TravelPostUpdateResponseDTO response = travelPostService.updateTravelPostText(userId, postId, updateRequestDTO);
+
+        logger.info("【旅行记录文字内容修改成功】响应: {}", response);
+        return Result.success("记录更新成功", response);
+    }
+
+    @PostMapping("/images/{postId}") // 使用 POST
+    public Result<TravelPostImageUpdateResponseDTO> updatePostImages(
+            HttpServletRequest request,
+            @PathVariable Long postId,
+            @ModelAttribute TravelPostImageUpdateRequestDTO imageUpdateRequestDTO // form-data 用 @ModelAttribute
+    ) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+        logger.info("【修改旅行记录图片请求】userId: {}, postId: {}, 更新数据: {}", userId, postId, imageUpdateRequestDTO);
+
+        TravelPostImageUpdateResponseDTO response = travelPostService.updateTravelPostImages(userId, postId, imageUpdateRequestDTO);
+
+        logger.info("【旅行记录图片修改成功】响应: {}", response);
+        return Result.success("图片更新成功", response);
     }
 }
