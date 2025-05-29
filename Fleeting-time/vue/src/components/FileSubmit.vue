@@ -85,7 +85,7 @@
                     as="p"
                     :initial="{ opacity: 0 }"
                     :animate="{ opacity: 1 }"
-                    class="flex-1 max-w-xs truncate text-base text-neutral-700 dark:text-neutral-300"
+                    class="flex-1 max-w-[8rem] break-words text-base text-neutral-700 dark:text-neutral-300"
                   >
                     {{ file.name }}
                   </Motion>

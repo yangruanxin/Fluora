@@ -335,6 +335,7 @@ h2 {
 
 .upload {
   display: flex;
+  overflow-x:auto;
   gap: 20px; /* 控制上传图片和文字之间的间距 */
   align-items: stretch; /* 顶对齐 */
   margin-bottom: 20px; /* 和下面的提交按钮拉开点距离 */
