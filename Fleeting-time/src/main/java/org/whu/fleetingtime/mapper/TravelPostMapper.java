@@ -21,7 +21,16 @@ public interface TravelPostMapper {
     // 查某用户的所有打卡记录
     List<TravelPost> selectByUserId(@Param("userId") Long userId);
 
+    // 查某个postId的记录
+    TravelPost selectByPostId(@Param("postId") Long postId);
+
+    // 删除某个打卡记录
+    int deleteByPostId(@Param("postId") Long postId);
+
     // 删除某个用户的所有打卡记录
     int deleteByUserId(@Param("userId") Long userId);
+
+    // 更新某个打卡记录
+    int update(TravelPost post);
 
 }

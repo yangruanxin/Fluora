@@ -25,6 +25,11 @@
         WHERE post_id = #{postId}
     </delete>
 
+    <delete id="deleteById">
+        DELETE FROM fleeting_time.travel_post_image
+        WHERE id = #{id}
+    </delete>
+
     <update id="updateSortOrder">
         UPDATE fleeting_time.travel_post_image
         SET sort_order = #{sortOrder}

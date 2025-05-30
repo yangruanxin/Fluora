@@ -18,4 +18,9 @@ public class BizException extends RuntimeException {
         this.code = bizExceptionenum.getCode();
         this.msg = bizExceptionenum.getMsg();
     }
+    public BizException(BizExceptionEnum bizExceptionenum, String msg) {
+        super(bizExceptionenum.getMsg());
+        this.code = bizExceptionenum.getCode();
+        this.msg = msg;
+    }
 }

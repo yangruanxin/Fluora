@@ -56,7 +56,7 @@ public class UserController {
             Long userId = userService.findUserByUsername(userLoginRequestDTO.getUsername()).getId();
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userId.toString());
-            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims); // 有效期30分钟
+            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims);
             logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);
             UserLoginResponseDTO response = UserLoginResponseDTO.builder()
                     .token(token)

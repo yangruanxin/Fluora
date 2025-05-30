@@ -29,6 +29,7 @@
       "tests/**/*.tsx"
     ],
     "exclude": [
-      "node_modules"
+      "node_modules",
+      "**/*.BASE.vue", "**/*.LOCAL.vue", "**/*.REMOTE.vue"
     ]
   }

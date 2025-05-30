@@ -30,6 +30,12 @@ public enum BizExceptionEnum {
     INVALID_ORDER_ARRAY(10101, "Picture count and order array length mismatch"),
     //传图片失败
     IMAGE_UPLOAD_FAILED(10102, "image upload failed"),
+    //post不存在
+    POST_NOT_FOUND(10103, "post not found"),
+    //操作非自己的post
+    UNAUTHORIZED_OPERATION(10104, "unauthorized operation"),
+    //数据库错误
+    DATABASE_ERROR(10105, "database error"),
 
     //====map模块
     // 请求超时

@@ -8,8 +8,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
-      max-file-size: 8MB
-      max-request-size: 64MB
+      max-file-size: 256MB
+      max-request-size: 512MB
+
+# 服务器配置
+server:
+  address: 127.0.0.1   # 确保只监听本地回环地址
+  port: 8081           # 将 Spring Boot 应用的监听端口改为 8081 (HTTP)
 
 # mybatis log out
 mybatis:
@@ -19,7 +24,7 @@ mybatis:
 
 jwt:
   secret: YourSuperSecretKeyForJwtMustBeLongEnough123!
-  duration: 30
+  duration: 1440
 
 baidu:
   map:

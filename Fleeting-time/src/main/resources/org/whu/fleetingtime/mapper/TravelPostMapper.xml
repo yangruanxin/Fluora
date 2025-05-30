@@ -20,10 +20,33 @@
         SELECT * FROM fleeting_time.travel_post WHERE user_id = #{userId} ORDER BY begin_time DESC
     </select>
 
+<!--    查postId-->
+    <select id="selectByPostId" resultType="org.whu.fleetingtime.pojo.TravelPost">
+        SELECT * FROM fleeting_time.travel_post WHERE id = #{postId}
+    </select>
+
+<!--    删除特定id的记录-->
+    <delete id="deleteByPostId">
+        DELETE FROM fleeting_time.travel_post WHERE id = #{postId}
+    </delete>
+
     <!--    删除某个用户的所有旅行记录-->
     <delete id="deleteByUserId">
-        DELETE FROM checkin_record WHERE user_id = #{userId}
+        DELETE FROM fleeting_time.travel_post WHERE user_id = #{userId}
     </delete>
+
+    <update id="update" parameterType="org.whu.fleetingtime.pojo.TravelPost">
+        UPDATE travel_post
+        SET title         = #{title},
+            content       = #{content},
+            location_name = #{locationName},
+            latitude      = #{latitude},
+            longitude     = #{longitude},
+            begin_time    = #{beginTime},
+            end_time      = #{endTime},
+            updated_time  = #{updatedTime}
+        WHERE id = #{id}
+    </update>
 
 
 <!--    插入新的打卡记录-->

@@ -59,8 +59,15 @@ public class JwtInterceptor implements HandlerInterceptor {
     }
 
     private void sendUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {
+        // 【添加CORS头部 - 关键修改】
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8082"); // 或者你期望的源
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // 允许常见的头部，特别是 Authorization
+        response.setHeader("Access-Control-Allow-Credentials", "true"); // 如果你的前端设置了 withCredentials
+
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
         Result<Object> result = Result.failure(401, message);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(result);

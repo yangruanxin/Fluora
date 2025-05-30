@@ -18,12 +18,12 @@
         <div class="stats">
           <!-- 旅行过多少地方 -->
           <div>
-            <strong>{{user.places}}</strong>
+            <strong>{{totalPlaces}}</strong>
             <p>places</p>
           </div>
           <!-- 累计打卡次数 -->
           <div>
-            <strong>{{ user.times }}</strong>
+            <strong>{{totalTimes }}</strong>
             <p>times</p>
           </div>
         </div>
@@ -131,33 +131,85 @@
     <!-- 弹窗：编辑旅行记录 -->
     <el-dialog v-model="editPostDialogVisible" title="编辑打卡内容" width="600px">
       <el-form label-position="top">
+        <!-- 标题 -->
+        <el-form-item label="标题">
+          <el-input v-model="editingPost.title" placeholder="请输入打卡标题" clearable/>
+        </el-form-item>
+
+        <!-- 时间 -->
+        <el-form-item label="编辑时间">
+          <el-date-picker
+            v-model="editingPost.beginTime"
+            type="date"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            placeholder="选择旅行开始日期"
+            style="width: 100%; margin-bottom: 10px;"
+          />
+          <el-date-picker
+            v-model="editingPost.endTime"
+            type="date"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            placeholder="选择旅行结束日期"
+            style="width: 100%; margin-bottom: 10px;"
+          />
+        </el-form-item>
+
+
         <!-- 图片预览与切换 -->
         <el-form-item label="图片预览">
-          <div class="image-preview-wrapper">
-            <el-button :icon="ArrowUp" circle @click="prevImage" :disabled="currentImageIndex === 0" />
-            <img
-              :src="editingPost.imageUrls[currentImageIndex]"
-              alt="预览图"
-              class="image-preview"
-            />
-            <el-button :icon="ArrowDown" circle @click="nextImage" :disabled="currentImageIndex >= editingPost.imageUrls.length - 1" />
-          </div>
+          <draggable
+            v-model="editingPost.imageUrls"
+            item-key="url"
+            animation="200"
+            ghost-class="drag-ghost"
+            handle=".drag-handle"
+          >
+            <template #item="{ element: url, index }">
+              <Motion
+                :key="`image-${index}`"
+                :initial="{ opacity: 0, scale: 0.95 }"
+                :animate="{ opacity: 1, scale: 1 }"
+                transition="{ type: 'spring', stiffness: 200 }"
+                class="image-item-wrapper"
+              >
+                <div class="image-item" :class="{ active: index === currentImageIndex }" @click="currentImageIndex = index">
+                  <!-- 拖拽手柄 -->
+                  <span class="drag-handle cursor-move text-xl mr-3 select-none">☰</span>
 
-          <!-- 操作按钮 -->
-          <div class="image-ops">
-            <el-upload
-              action="/upload"
-              :show-file-list="false"
-              :on-success="handleUploadSuccess"
-            >
-              <el-button type="primary" icon="Plus">添加图片</el-button>
-            </el-upload>
-            <el-popconfirm title="确定删除当前图片？" @confirm="deleteCurrentImage">
-              <template #reference>
-                <el-button type="danger" icon="Delete" :disabled="editingPost.imageUrls.length <= 1">删除当前图片</el-button>
-              </template>
-            </el-popconfirm>
-          </div>
+                  <!-- 图片缩略图 -->
+                  <el-image
+                    :src="url"
+                    :preview-src-list="[url]"
+                    :preview-teleported="true"
+                    class="thumbnail-img"
+                    fit="cover"
+                  />
+                </div>
+              </Motion>
+            </template>
+          </draggable>
+        </el-form-item>
+
+        <el-form-item>
+          <el-upload
+            action="/upload"
+            :show-file-list="false"
+            :on-success="handleUploadSuccess"
+          >
+            <el-button type="primary" :icon="Plus">添加图片</el-button>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item>
+          <el-popconfirm title="确定删除当前图片？" @confirm="deleteCurrentImage">
+            <template #reference>
+              <el-button type="danger" :icon="Delete" :disabled="editingPost.imageUrls.length <= 1">
+                删除当前图片
+              </el-button>
+            </template>
+          </el-popconfirm>
         </el-form-item>
 
         <!-- 描述 -->
@@ -173,8 +225,22 @@
 
       <!-- 底部按钮 -->
       <template #footer>
-        <el-button @click="editPostDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEditedPost">保存</el-button>
+        <div class="flex justify-between w-full">
+          <!-- 删除按钮 -->
+          <el-button
+            type="danger"
+            @click="handleDelete"
+            :loading="deleting"
+          >
+            删除记录
+          </el-button>
+
+          <!-- 保存按钮 -->
+          <div class="space-x-2">
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="handleSave">保存</el-button>
+          </div>
+        </div>
       </template>
     </el-dialog>
 
@@ -185,105 +251,122 @@
   <script setup>
   import HoverButton from '@/components/HoverButton.vue'
   import TimeLine from '@/components/TimeLine.vue' 
-  import ProvinceImage from '@/components/ProvinceImageMask.vue' 
 
   
   import {useRouter} from 'vue-router'
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onUnmounted ,defineEmits} from 'vue'
   import { authAxios } from '@/utils/request'
-  import {
-    createProvinceMaskOverlay
-  } from '@/utils/provinceMaskUtils'
   import { useAuthStore } from '@/stores/auth'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
+  import { ArrowUp, ArrowDown ,Plus} from '@element-plus/icons-vue'
+  import { Motion } from "motion-v";
+  import draggable from "vuedraggable";
+
+  import { computed } from 'vue'
+
+  // 计算位置数和次数
+  const totalPlaces = computed(() => {
+    const uniquePlaces = new Set(posts.value.map(post => post.locationName))
+    return uniquePlaces.size
+  })
+
+  const totalTimes = computed(() => posts.value.length)
 
 
 
-  let map = null;
 
-  // 初始化地图
-  const init = () => {
-    let Bmap = window.BMap;
-    map = new Bmap.Map("allmap"); 
-    map.centerAndZoom(
-      new Bmap.Point(108.948024, 34.263161), // 设置地图中心点坐标
-      5 // 设置地图级别（缩放级别）
-    );
-    map.setCurrentCity("陕西省咸阳市泾阳县永乐镇北流村");
+// 地图实例变量
+let map = null;
 
-    // 禁用滚轮缩放
-    map.disableScrollWheelZoom();
-
-    // 禁用双击放大
-    map.disableDoubleClickZoom();
-
-    // 添加图片覆盖物
-    addImageOverlays();
-  };
-
-  const addImageOverlays = () => {
-    if (!posts.value || posts.value.length === 0) return;
-
-    const latestPostsByLocation = {};
-    posts.value.forEach(post => {
-      if (!latestPostsByLocation[post.locationName] || 
-          new Date(post.beginTime) > new Date(latestPostsByLocation[post.locationName].beginTime)) {
-        latestPostsByLocation[post.locationName] = post;
-      }
-    });
-
-    const Bmap = window.BMap;
-
-    Object.values(latestPostsByLocation).forEach(post => {
-      if (post.imageUrls?.length > 0 && post.latitude && post.longitude) {
-        const point = new Bmap.Point(post.longitude, post.latitude);
-        const imageUrl = post.imageUrls[0];
-
-        // 调用 province 遮罩构造函数（以 post.locationName 为省名）
-        createProvinceMaskOverlay(post.locationName, imageUrl, map, Bmap)
-          .then((overlay) => {
-            overlay.addEventListener("click", () => {
-              openEditor(post);
-            });
-            map.addOverlay(overlay);
-          })
-          .catch((err) => {
-            console.warn("创建遮罩失败：", err);
-          });
-      }
-    });
-  };
-
-  // 加载地图脚本
-  const loadMapScript = () => {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.className = "loadmap";
-    script.src =
-      "https://api.map.baidu.com/getscript?v=3.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
-    script.onload = () => {
-      init(); // 脚本加载完成后初始化地图
-      // 如果已经有数据，添加覆盖物
-      if (posts.value && posts.value.length > 0) {
-        addImageOverlays();
-      }
-    };
-    let loadmap = document.getElementsByClassName("loadmap");
-    if (loadmap) {
-      for (var i = 0; i < loadmap.length; i++) {
-        document.body.removeChild(loadmap[i]);
-      }
+const loadBMapGL = () => {
+  return new Promise((resolve, reject) => {
+    // 如果已经加载，直接返回
+    if (window.BMapGL) {
+      resolve(window.BMapGL);
+      return;
     }
-    document.body.appendChild(script);
-  };
 
-  const timelineItems = ref([]);
+    // 清理可能存在的旧脚本
+    const existingScripts = document.querySelectorAll('script[src*="map.baidu.com"]');
+    existingScripts.forEach(script => script.remove());
 
-  // 当页面加载完成时，初始化地图
-  onMounted(() => {
-    loadMapScript();
+    // 创建新的脚本标签
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://api.map.baidu.com/api?type=webgl&v=1.0&ak=OUxgi9tGCKkijW4VW8d5F8FxcFRNfDfz";
+    
+    // 添加回调函数名（重要！）
+    script.src += "&callback=initBMapGL";
+    
+    // 全局回调函数
+    window.initBMapGL = () => {
+      if (window.BMapGL) {
+        console.log("百度地图API已加载", window.BMapGL);
+        resolve(window.BMapGL);
+      } else {
+        reject(new Error("BMapGL对象未定义"));
+      }
+      // 清理回调函数
+      delete window.initBMapGL;
+    };
+
+    // 错误处理
+    script.onerror = (error) => {
+      console.error("脚本加载失败:", error);
+      delete window.initBMapGL;
+      reject(new Error("百度地图脚本加载失败"));
+    };
+
+    // 添加到文档头部
+    document.head.appendChild(script);
   });
+};
+
+// 初始化地图控件
+const initMapControls = (map) => {
+  // 添加缩放控件
+  const zoomControl = new BMapGL.NavigationControl({
+    anchor: window.BMAP_ANCHOR_TOP_LEFT,
+    type: window.BMAP_NAVIGATION_CONTROL_ZOOM
+  });
+  map.addControl(zoomControl);
+  
+  // 启用键盘操作
+  map.enableKeyboard();
+};
+
+// 当页面加载完成时，初始化地图
+onMounted(() => {
+  loadBMapGL().then(BMapGL => {
+    console.log("开始初始化地图...");
+    
+    // 创建地图实例
+    map = new BMapGL.Map("allmap");
+    
+    // 设置中心点和缩放级别
+    map.centerAndZoom(new BMapGL.Point(108.948024, 34.263161), 5);
+    
+    // 启用滚轮缩放
+    map.enableScrollWheelZoom(true);
+    
+    // 初始化地图控件
+    initMapControls(map);
+    
+    console.log("地图初始化完成");
+  }).catch(error => {
+    console.error("地图初始化失败：", error);
+    // 这里可以添加用户友好的错误提示
+  });
+});
+
+// 组件卸载时清理
+onUnmounted(() => {
+  if (map) {
+    map.destroy();
+    map = null;
+  }
+});
+
 
   // 编辑资料弹窗默认隐藏
   const isEditDialogVisible = ref(false)
@@ -404,29 +487,32 @@
       user.value.times = response.data.data.times ?? 0
       user.value.avatarUrl = response.data.data.avatarUrl ?? ''
 
-      console.log(user)
+      console.log('加载用户数据',user)
 
-      try {
-        const response = await authAxios.get('/travel-posts/me');
-        if (response.data.code === 200) {
-          posts.value = response.data.data;
-          console.log(posts.value);
-          posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
+      
+      // 加载用户的游记
+      await loadPosts()
 
-          // 确保地图已经初始化后再添加覆盖物
-          if (map) {
-            addImageOverlays();
-          }
-        } else {
-          console.error('获取游记失败：', response.data.message);
-        }
-      } catch (err) {
-        console.error('请求游记接口出错：', err);
-      }
     } catch (error) {
       console.error('获取个人信息失败：', error)
     }
   })
+
+  const loadPosts = async () => {
+    try {
+      const response = await authAxios.get('/travel-posts/me');
+      if (response.data.code === 200) {
+        posts.value = response.data.data;
+        posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
+        addMarkers();
+      } else {
+        console.error('获取游记失败：', response.data.message);
+      }
+    } catch (err) {
+      console.error('请求游记接口出错：', err);
+    }
+  }
+
   
   const scrollTo = (section) => {
     if (section === 'map' && mapSection.value) {
@@ -562,6 +648,73 @@
       ElMessage.error('请求出错，请稍后重试');
     }
   };
+
+  const addMarkers = () => {
+    const BMapGL = window.BMapGL;
+    if (!map || !posts.value) return;
+
+    posts.value.forEach(item => {
+      // 创建标注点坐标
+      const point = new BMapGL.Point(item.longitude, item.latitude);
+
+      // 创建标注
+      const marker = new BMapGL.Marker(point);
+      map.addOverlay(marker);
+
+      // 创建信息窗口内容，带图片和地点名
+      const content = `
+        <div style="width:220px; height:250px; border: 1px solid #666; border-radius: 8px; background: white; padding: 8px; position: relative; font-family: Arial, sans-serif;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">${item.locationName}</div>
+          <img src="${item.imageUrls && item.imageUrls.length > 0 ? item.imageUrls[0] : '/assets/default.jpg'}" 
+            style="width: 200px; height: 200px; object-fit: cover; border-radius: 6px;"/>
+        </div>
+      `;
+
+      // 创建信息窗口
+      const infoWindow = new BMapGL.InfoWindow(content, {
+        offset: new BMapGL.Size(0, -30) // 调整信息窗口偏移，避免覆盖标注点
+      });
+
+      // 点击标注弹出信息窗口
+      marker.addEventListener('click', () => {
+        map.openInfoWindow(infoWindow, point);
+      });
+    });
+  };
+
+  const deleting = ref(false)
+  // 删除记录
+  const handleDelete = async () => {
+    try {
+      await ElMessageBox.confirm(
+        '确定要删除该游记记录吗？删除后将无法恢复。',
+        '删除确认',
+        {
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+
+      console.log('即将删除的 postId:', editingPost.value.postId)
+
+      deleting.value = true
+      await authAxios.delete(`/travel-posts/${editingPost.value.postId}`)
+
+      ElMessage.success('删除成功')
+      editPostDialogVisible.value = false;
+      await loadPosts()
+      console.log(posts);
+    } catch (error) {
+      if (error !== 'cancel') {
+        ElMessage.error('删除失败')
+        console.error('删除失败：', error)
+      }
+    } finally {
+      deleting.value = false
+    }
+  }
+
 
 
   </script>
@@ -707,7 +860,7 @@
   }
 
   /* 去除水印 */
-  ::v-deep(.BMap_cpyCtrl) {
+  ::v-deep(.BMapGL_cpyCtrl) {
     display: none;
   }
   
@@ -718,4 +871,51 @@
   .el-input{
     border-radius: 8px;
   }
+
+  .image-item-wrapper {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .image-item {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
+    transition: border 0.2s;
+  }
+
+  .image-item.active {
+    border-color: #409EFF;
+  }
+
+  .thumbnail-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  .image-info {
+    flex: 1;
+  }
+
+  .image-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .image-meta {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .el-upload{
+    width: 100px;
+  }
+
   </style>
