@@ -104,13 +104,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean emailregister(EmailRegisterRequestDTO emailRegisterRequestDTO) {
         logger.info("[UserServiceRegister]尝试注册，邮箱，密码: {}, {}", emailRegisterRequestDTO.getEmail(), emailRegisterRequestDTO.getPassword());
-        // 判断邮箱是否已存在
-//        User existing = userMapper.selectByEmail(emailRegisterRequestDTO.getEmail());
-//        if (existing != null) {
-//            logger.warn("[UserServiceRegister]注册失败，该邮箱已存在: {}", emailRegisterRequestDTO.getEmail());
-//            throw new BizException(BizExceptionEnum.EMAIL_ALREADY_EXISTS);
-//            return false; // 邮箱已存在
-//        }
+        //判断邮箱是否已存在
+        User existing = userMapper.selectByEmail(emailRegisterRequestDTO.getEmail());
+        if (existing != null) {
+            logger.warn("[UserServiceRegister]注册失败，该邮箱已存在: {}", emailRegisterRequestDTO.getEmail());
+            throw new BizException(BizExceptionEnum.EMAIL_ALREADY_EXISTS);
+        }
         // 从 Redis 获取验证码
         String code = redisTemplate.opsForValue().get("email:" + emailRegisterRequestDTO.getEmail());
         if (code == null) {

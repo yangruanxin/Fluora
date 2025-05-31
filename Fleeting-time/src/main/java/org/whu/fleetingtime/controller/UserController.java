@@ -69,7 +69,7 @@ public class UserController {
 
     @PostMapping("/unionlogin")
     public Result<UserLoginResponseDTO> Unionlogin(@RequestBody UnionLoginRequestDTO unionLoginRequestDTO) {
-        logger.info("【登录请求】标识符{}", unionLoginRequestDTO.getString());
+        logger.info("【登录请求】标识符{}", unionLoginRequestDTO.getIdentifier());
         User loggedInUser = userService.loginUnion(unionLoginRequestDTO);
         if (loggedInUser != null) {
             // 登录成功后返回JWT

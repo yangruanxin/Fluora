@@ -29,8 +29,8 @@
             parameterType="org.whu.fleetingtime.pojo.User"
             useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO fleeting_time.user (username, password, created_time, updated_time)
-        VALUES (#{username}, #{password}, NOW(), NOW())
+        INSERT INTO fleeting_time.user (username, password, email, phone, created_time, updated_time)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, NOW(), NOW())
     </insert>
 
 <!--    根据id删除用户-->
