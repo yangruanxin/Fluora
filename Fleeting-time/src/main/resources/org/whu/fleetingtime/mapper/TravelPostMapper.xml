@@ -7,7 +7,7 @@
 
 <!--    插入新的旅行日记-->
     <insert id="insert" parameterType="org.whu.fleetingtime.pojo.TravelPost" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO fleeting_time.travel_post (user_id, title, content, location_name,
+        INSERT INTO travel_post (user_id, title, content, location_name,
                                                latitude, longitude, begin_time, end_time,
                                                created_time, updated_time)
         VALUES (#{userId}, #{title}, #{content}, #{locationName},
@@ -17,22 +17,22 @@
 
     <!--    查某用户的所有旅行记录（按打卡时间降序排序）-->
     <select id="selectByUserId" resultType="org.whu.fleetingtime.pojo.TravelPost">
-        SELECT * FROM fleeting_time.travel_post WHERE user_id = #{userId} ORDER BY begin_time DESC
+        SELECT * FROM travel_post WHERE user_id = #{userId} ORDER BY begin_time DESC
     </select>
 
 <!--    查postId-->
     <select id="selectByPostId" resultType="org.whu.fleetingtime.pojo.TravelPost">
-        SELECT * FROM fleeting_time.travel_post WHERE id = #{postId}
+        SELECT * FROM travel_post WHERE id = #{postId}
     </select>
 
 <!--    删除特定id的记录-->
     <delete id="deleteByPostId">
-        DELETE FROM fleeting_time.travel_post WHERE id = #{postId}
+        DELETE FROM travel_post WHERE id = #{postId}
     </delete>
 
     <!--    删除某个用户的所有旅行记录-->
     <delete id="deleteByUserId">
-        DELETE FROM fleeting_time.travel_post WHERE user_id = #{userId}
+        DELETE FROM travel_post WHERE user_id = #{userId}
     </delete>
 
     <update id="update" parameterType="org.whu.fleetingtime.pojo.TravelPost">
