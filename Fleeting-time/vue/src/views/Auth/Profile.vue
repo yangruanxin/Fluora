@@ -225,8 +225,22 @@
 
       <!-- 底部按钮 -->
       <template #footer>
-        <el-button @click="editPostDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEditedPost">保存</el-button>
+        <div class="flex justify-between w-full">
+          <!-- 删除按钮 -->
+          <el-button
+            type="danger"
+            @click="handleDelete"
+            :loading="deleting"
+          >
+            删除记录
+          </el-button>
+
+          <!-- 保存按钮 -->
+          <div class="space-x-2">
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="handleSave">保存</el-button>
+          </div>
+        </div>
       </template>
     </el-dialog>
 
@@ -240,7 +254,7 @@
 
   
   import {useRouter} from 'vue-router'
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { ref, onMounted, onUnmounted ,defineEmits} from 'vue'
   import { authAxios } from '@/utils/request'
   import { useAuthStore } from '@/stores/auth'
   import { ElMessage, ElMessageBox } from 'element-plus'
@@ -475,24 +489,30 @@ onUnmounted(() => {
 
       console.log('加载用户数据',user)
 
-      try {
-        const response = await authAxios.get('/travel-posts/me');
-        if (response.data.code === 200) {
-          posts.value = response.data.data;
-          console.log(posts.value);
-          posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
-          // 添加大头针和信息窗
-          addMarkers();
-        } else {
-          console.error('获取游记失败：', response.data.message);
-        }
-      } catch (err) {
-        console.error('请求游记接口出错：', err);
-      }
+      
+      // 加载用户的游记
+      await loadPosts()
+
     } catch (error) {
       console.error('获取个人信息失败：', error)
     }
   })
+
+  const loadPosts = async () => {
+    try {
+      const response = await authAxios.get('/travel-posts/me');
+      if (response.data.code === 200) {
+        posts.value = response.data.data;
+        posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
+        addMarkers();
+      } else {
+        console.error('获取游记失败：', response.data.message);
+      }
+    } catch (err) {
+      console.error('请求游记接口出错：', err);
+    }
+  }
+
   
   const scrollTo = (section) => {
     if (section === 'map' && mapSection.value) {
@@ -661,6 +681,39 @@ onUnmounted(() => {
       });
     });
   };
+
+  const deleting = ref(false)
+  // 删除记录
+  const handleDelete = async () => {
+    try {
+      await ElMessageBox.confirm(
+        '确定要删除该游记记录吗？删除后将无法恢复。',
+        '删除确认',
+        {
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+
+      console.log('即将删除的 postId:', editingPost.value.postId)
+
+      deleting.value = true
+      await authAxios.delete(`/travel-posts/${editingPost.value.postId}`)
+
+      ElMessage.success('删除成功')
+      editPostDialogVisible.value = false;
+      await loadPosts()
+      console.log(posts);
+    } catch (error) {
+      if (error !== 'cancel') {
+        ElMessage.error('删除失败')
+        console.error('删除失败：', error)
+      }
+    } finally {
+      deleting.value = false
+    }
+  }
 
 
 
