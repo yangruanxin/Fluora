@@ -4735,3 +4735,52 @@ java.lang.ClassCastException: class java.lang.String cannot be cast to class jav
 2025-05-31T12:41:07.493-04:00  INFO 8208 --- [Fleeting-time] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
 2025-05-31T12:41:07.508-04:00  INFO 8208 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-05-31T12:41:07.511-04:00  INFO 8208 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T12:41:12.694-04:00  INFO 21044 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Starting FleetingTimeApplication using Java 23.0.2 with PID 21044 (D:\Files\流光！\fleeting-time\Fleeting-time\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Fleeting-time)
+2025-05-31T12:41:12.696-04:00 DEBUG 21044 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-05-31T12:41:12.697-04:00  INFO 21044 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-05-31T12:41:13.556-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-31T12:41:13.557-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-05-31T12:41:13.570-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 JDBC repository interfaces.
+2025-05-31T12:41:13.581-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-31T12:41:13.583-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-31T12:41:13.593-04:00  INFO 21044 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2025-05-31T12:41:13.991-04:00  INFO 21044 --- [Fleeting-time] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-05-31T12:41:14.000-04:00  INFO 21044 --- [Fleeting-time] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T12:41:14.000-04:00  INFO 21044 --- [Fleeting-time] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-05-31T12:41:14.087-04:00  INFO 21044 --- [Fleeting-time] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T12:41:14.088-04:00  INFO 21044 --- [Fleeting-time] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1331 ms
+2025-05-31T12:41:15.220-04:00  INFO 21044 --- [Fleeting-time] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T12:41:15.573-04:00  INFO 21044 --- [Fleeting-time] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@111fe921
+2025-05-31T12:41:15.575-04:00  INFO 21044 --- [Fleeting-time] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T12:41:15.741-04:00  INFO 21044 --- [Fleeting-time] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-05-31T12:41:15.747-04:00  INFO 21044 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Started FleetingTimeApplication in 3.529 seconds (process running for 4.493)
+2025-05-31T12:41:22.006-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T12:41:22.006-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T12:41:22.007-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-05-31T12:41:22.063-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.controller.UserController          : 【登录请求】标识符2365246549@qq.com
+2025-05-31T12:41:22.064-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]尝试登录，用户名/邮箱/电话，密码: 2365246549@qq.com, 123456
+2025-05-31T12:41:22.103-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.mapper.UserMapper.selectByEmail    : ==>  Preparing: SELECT * FROM user WHERE email = ?
+2025-05-31T12:41:22.121-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.mapper.UserMapper.selectByEmail    : ==> Parameters: 2365246549@qq.com(String)
+2025-05-31T12:41:22.165-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.mapper.UserMapper.selectByEmail    : <==      Total: 1
+2025-05-31T12:41:22.167-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]登录成功
+2025-05-31T12:41:22.231-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.controller.UserController          : 【登录成功】用户ID: 54，Token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU0IiwiZXhwIjoxNzQ4Nzk2MDgyfQ.jFHC8yxLeII2hxZI0cSAiaamzAd2TzYJnPvwPYivups
+2025-05-31T12:41:31.773-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] 拦截请求路径: /api/friend/request，方法: POST，Token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU0IiwiZXhwIjoxNzQ4Nzk2MDgyfQ.jFHC8yxLeII2hxZI0cSAiaamzAd2TzYJnPvwPYivups
+2025-05-31T12:41:31.844-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] Token 解析成功，userId: 54
+2025-05-31T12:41:31.885-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.m.F.selectFriendRequest            : ==>  Preparing: SELECT * FROM friend_request WHERE sender_id = ? AND receiver_id = ?
+2025-05-31T12:41:31.885-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.m.F.selectFriendRequest            : ==> Parameters: 54(Long), 5(Long)
+2025-05-31T12:41:31.914-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.m.F.selectFriendRequest            : <==      Total: 1
+2025-05-31T12:41:31.924-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.exception.GlobalExceptionHandler   : 业务异常，代码: 10401，消息: friend already exists
+2025-05-31T12:41:48.699-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] 拦截请求路径: /api/friend/request，方法: POST，Token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU0IiwiZXhwIjoxNzQ4Nzk2MDgyfQ.jFHC8yxLeII2hxZI0cSAiaamzAd2TzYJnPvwPYivups
+2025-05-31T12:41:48.700-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] Token 解析成功，userId: 54
+2025-05-31T12:41:48.726-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.selectFriendRequest            : ==>  Preparing: SELECT * FROM friend_request WHERE sender_id = ? AND receiver_id = ?
+2025-05-31T12:41:48.726-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.selectFriendRequest            : ==> Parameters: 54(Long), 6(Long)
+2025-05-31T12:41:48.751-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.selectFriendRequest            : <==      Total: 0
+2025-05-31T12:41:48.752-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.insertFriendRequest            : ==>  Preparing: INSERT INTO friend_request (sender_id, receiver_id, status, created_time) VALUES (?, ?, ?, ?)
+2025-05-31T12:41:48.754-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.insertFriendRequest            : ==> Parameters: 54(Long), 6(Long), pending(String), 2025-05-31T12:41:48.751163(LocalDateTime)
+2025-05-31T12:41:48.806-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.F.insertFriendRequest            : <==    Updates: 1
+2025-05-31T12:44:59.214-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] 拦截请求路径: /api/friend/request，方法: POST，Token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU0IiwiZXhwIjoxNzQ4Nzk2MDgyfQ.jFHC8yxLeII2hxZI0cSAiaamzAd2TzYJnPvwPYivups
+2025-05-31T12:44:59.214-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.interceptor.JwtInterceptor         : [JwtInterceptor] Token 解析成功，userId: 54
+2025-05-31T12:44:59.234-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.m.F.selectFriendRequest            : ==>  Preparing: SELECT * FROM friend_request WHERE sender_id = ? AND receiver_id = ?
+2025-05-31T12:44:59.234-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.m.F.selectFriendRequest            : ==> Parameters: 54(Long), 6(Long)
+2025-05-31T12:44:59.263-04:00 DEBUG 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.m.F.selectFriendRequest            : <==      Total: 1
+2025-05-31T12:44:59.263-04:00  INFO 21044 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-5] o.w.f.exception.GlobalExceptionHandler   : 业务异常，代码: 10401，消息: friend already exists
