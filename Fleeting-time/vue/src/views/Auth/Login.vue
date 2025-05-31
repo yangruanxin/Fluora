@@ -5,35 +5,48 @@
         <div class="login-image">
             <img src="/assets/图标.jpeg" alt="登录背景图">
         </div>
-        <el-form
-            ref="ruleFormRef"
-            :model="LoginForm"
-            :rules="rules"
-            label-width="auto"
-        >
+        <el-form ref="ruleFormRef"
+                 :model="LoginForm"
+                 :rules="rules"
+                 label-width="auto">
             <p> 继续你的旅程吧！</p>
             <br>
 
-            <!-- 账号框 -->
-            <el-form-item label="账号" prop="account">
-                <el-input  placeholder="请输入您的账号" v-model="LoginForm.account"/>
+            <!--登录方式切换-->
+            <el-tabs v-model="loginMethod" class="login-tabs">
+                <el-tab-pane label="账号登录" name="account" />
+                <el-tab-pane label="手机登录" name="phone" />
+                <el-tab-pane label="邮箱登录" name="email" />
+            </el-tabs>
+
+            <!-- 动态表单字段 -->
+            <el-form-item v-if="loginMethod === 'account'" label="账号" prop="account">
+                <el-input v-model="LoginForm.account" placeholder="请输入账号" />
             </el-form-item>
 
-            <!-- 密码框 -->
+            <el-form-item v-if="loginMethod === 'phone'" label="手机号" prop="phone">
+                <el-input v-model="LoginForm.phone" placeholder="请输入手机号" />
+            </el-form-item>
+
+            <el-form-item v-if="loginMethod === 'email'" label="邮箱" prop="email">
+                <el-input v-model="LoginForm.email" placeholder="请输入邮箱" />
+            </el-form-item>
+
+            <!-- 通用密码框 -->
             <el-form-item label="密码" prop="password">
-                <el-input  placeholder="请输入您的密码" type="password" v-model="LoginForm.password" show-password/>
+                <el-input placeholder="请输入您的密码" type="password" v-model="LoginForm.password" show-password />
             </el-form-item>
 
             <!-- 登录和取消按钮 -->
             <el-form-item label="" class="button-group">
                 <div class="button-row">
-                    <el-button type="primary" class="login-btn" @click="handleLogin"   :loading="loading" :disabled="loading">{{ loading ? '登录中...' : '登录' }}</el-button>
+                    <el-button type="primary" class="login-btn" @click="handleLogin" :loading="loading" :disabled="loading">{{ loading ? '登录中...' : '登录' }}</el-button>
                     <el-button type="primary" class="cancel-btn" @click="handleCancel" :disabled="loading">取消</el-button>
                 </div>
 
                 <div class="register-link">
-                  还没有账号？
-                  <el-button type="primary" @click="goToRegister" :disabled="loading" style="padding: 0; margin-left: 5px;">立即注册</el-button>
+                    还没有账号？
+                    <el-button type="primary" @click="goToRegister" :disabled="loading" style="padding: 0; margin-left: 5px;">立即注册</el-button>
                 </div>
             </el-form-item>
         </el-form>
@@ -50,18 +63,25 @@ import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 
 const loading = ref(false) // 控制加载状态
+const loginMethod = ref('account') // 登录方式：account、phone、email
 const authStore = useAuthStore()
 
+//登录表单模型
 const LoginForm = reactive({
-  account: '',
-  password: ''
+    account: '',
+    phone: '',
+    email: '',
+    password: ''
 })
 
-const ruleFormRef = ref()
+const ruleFormRef = ref()//表单组件的引用对象
 
+//表单验证规则
 const rules = {
-  account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+    account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+    phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+    email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 
 //获取路由事例
@@ -72,15 +92,19 @@ const handleLogin = () => {
   ruleFormRef.value.validate(async (valid) => {
     if (valid) {
       loading.value = true // 开始加载，禁用按钮
-      try {
-        const response = await publicAxios.post('user/login', {
-          username: LoginForm.account,
-          password: LoginForm.password
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        try {
+            let payload = {}
+            // 根据登录方式发送不同字段
+            if (loginMethod.value === 'account') {
+                payload = { username: LoginForm.account, password: LoginForm.password }
+            } else if (loginMethod.value === 'phone') {
+                payload = { phone: LoginForm.phone, password: LoginForm.password }
+            } else {
+                payload = { email: LoginForm.email, password: LoginForm.password }
+            }
+
+            const response = await publicAxios.post('user/login', payload,
+                { headers: { 'Content-Type': 'application/json' } })
 
         if (response.data.code === 200) {
           ElMessage.success('登录成功！')
@@ -116,6 +140,10 @@ const goToRegister = () => {
 </script>
 
 <style lang="css" scoped>
+
+.login-tabs {
+    margin-bottom: 1rem;
+}
 
 .login-body:before{
     content: "";
