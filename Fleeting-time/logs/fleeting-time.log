@@ -1309,3 +1309,158 @@ java.lang.NullPointerException: Cannot invoke "String.matches(String)" because t
 2025-05-31T05:45:44.033-04:00  INFO 27936 --- [Fleeting-time] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
 2025-05-31T05:45:44.040-04:00  INFO 27936 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-05-31T05:45:44.430-04:00  INFO 27936 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-31T05:45:47.602-04:00  INFO 18944 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Starting FleetingTimeApplication using Java 23.0.2 with PID 18944 (D:\Files\流光！\fleeting-time\Fleeting-time\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Fleeting-time)
+2025-05-31T05:45:47.603-04:00 DEBUG 18944 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-05-31T05:45:47.604-04:00  INFO 18944 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-05-31T05:45:48.329-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-31T05:45:48.330-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-05-31T05:45:48.341-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 JDBC repository interfaces.
+2025-05-31T05:45:48.353-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-31T05:45:48.354-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-31T05:45:48.365-04:00  INFO 18944 --- [Fleeting-time] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2025-05-31T05:45:48.826-04:00  INFO 18944 --- [Fleeting-time] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-05-31T05:45:48.836-04:00  INFO 18944 --- [Fleeting-time] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-31T05:45:48.836-04:00  INFO 18944 --- [Fleeting-time] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-05-31T05:45:48.879-04:00  INFO 18944 --- [Fleeting-time] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-31T05:45:48.879-04:00  INFO 18944 --- [Fleeting-time] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1230 ms
+2025-05-31T05:45:49.916-04:00  INFO 18944 --- [Fleeting-time] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-31T05:45:50.681-04:00  INFO 18944 --- [Fleeting-time] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@252d8df6
+2025-05-31T05:45:50.683-04:00  INFO 18944 --- [Fleeting-time] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-31T05:45:50.825-04:00  INFO 18944 --- [Fleeting-time] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-05-31T05:45:50.830-04:00  INFO 18944 --- [Fleeting-time] [main] o.w.f.FleetingTimeApplication            : Started FleetingTimeApplication in 3.689 seconds (process running for 4.95)
+2025-05-31T05:46:33.490-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-31T05:46:33.491-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-31T05:46:33.491-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-05-31T05:46:33.512-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-1] o.w.f.controller.SmsController           : 【邮件发送请求】邮箱：2365246549@qq.com
+2025-05-31T05:47:09.553-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.controller.UserController          : 【注册请求】邮箱: 2365246549@qq.com
+2025-05-31T05:47:09.554-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.service.impl.UserServiceImpl       : [UserServiceRegister]尝试注册，邮箱，密码: 2365246549@qq.com, 123456
+2025-05-31T05:47:09.601-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.selectByEmail    : ==>  Preparing: SELECT * FROM fleeting_time.user WHERE email = ?
+2025-05-31T05:47:09.626-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.selectByEmail    : ==> Parameters: 2365246549@qq.com(String)
+2025-05-31T05:47:09.683-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.selectByEmail    : <==      Total: 0
+2025-05-31T05:47:09.686-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.UserMapper.selectByUsername      : ==>  Preparing: SELECT * FROM fleeting_time.user WHERE username = ?
+2025-05-31T05:47:09.686-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.UserMapper.selectByUsername      : ==> Parameters: 用户806399(String)
+2025-05-31T05:47:09.712-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.m.UserMapper.selectByUsername      : <==      Total: 0
+2025-05-31T05:47:09.714-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.insertUser       : ==>  Preparing: INSERT INTO fleeting_time.user (username, password, email, phone, created_time, updated_time) VALUES (?, ?, ?, ?, NOW(), NOW())
+2025-05-31T05:47:09.720-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.insertUser       : ==> Parameters: 用户806399(String), 123456(String), 2365246549@qq.com(String), null
+2025-05-31T05:47:09.772-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.mapper.UserMapper.insertUser       : <==    Updates: 1
+2025-05-31T05:47:09.778-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.service.impl.UserServiceImpl       : [UserServiceRegister]注册成功，用户名，密码: 用户806399, 123456
+2025-05-31T05:47:09.778-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-3] o.w.f.controller.UserController          : 【注册成功】邮箱: 2365246549@qq.com
+2025-05-31T05:47:13.596-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.controller.UserController          : 【登录请求】标识符null
+2025-05-31T05:47:13.596-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]尝试登录，用户名/邮箱/电话，密码: null, 123456
+2025-05-31T05:47:13.600-04:00 ERROR 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-2] o.w.f.exception.GlobalExceptionHandler   : 运行时异常：Cannot invoke "String.matches(String)" because the return value of "org.whu.fleetingtime.dto.user.UnionLoginRequestDTO.getIdentifier()" is null
+
+java.lang.NullPointerException: Cannot invoke "String.matches(String)" because the return value of "org.whu.fleetingtime.dto.user.UnionLoginRequestDTO.getIdentifier()" is null
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.loginUnion(UserServiceImpl.java:141) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.Unionlogin(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.39.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.39.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-05-31T05:47:15.263-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-4] o.w.f.controller.UserController          : 【登录请求】标识符null
+2025-05-31T05:47:15.263-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-4] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]尝试登录，用户名/邮箱/电话，密码: null, 123456
+2025-05-31T05:47:15.264-04:00 ERROR 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-4] o.w.f.exception.GlobalExceptionHandler   : 运行时异常：Cannot invoke "String.matches(String)" because the return value of "org.whu.fleetingtime.dto.user.UnionLoginRequestDTO.getIdentifier()" is null
+
+java.lang.NullPointerException: Cannot invoke "String.matches(String)" because the return value of "org.whu.fleetingtime.dto.user.UnionLoginRequestDTO.getIdentifier()" is null
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.loginUnion(UserServiceImpl.java:141) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.Unionlogin(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.39.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.5.jar:6.2.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.39.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.5.jar:6.2.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.39.jar:10.1.39]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-05-31T05:48:24.415-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.controller.UserController          : 【登录请求】标识符2365246549@qq.com
+2025-05-31T05:48:24.416-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]尝试登录，用户名/邮箱/电话，密码: 2365246549@qq.com, 123456
+2025-05-31T05:48:24.441-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.mapper.UserMapper.selectByEmail    : ==>  Preparing: SELECT * FROM fleeting_time.user WHERE email = ?
+2025-05-31T05:48:24.447-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.mapper.UserMapper.selectByEmail    : ==> Parameters: 2365246549@qq.com(String)
+2025-05-31T05:48:24.482-04:00 DEBUG 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.mapper.UserMapper.selectByEmail    : <==      Total: 1
+2025-05-31T05:48:24.482-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.service.impl.UserServiceImpl       : [UserServiceLogin]登录成功
+2025-05-31T05:48:24.629-04:00  INFO 18944 --- [Fleeting-time] [http-nio-127.0.0.1-8081-exec-6] o.w.f.controller.UserController          : 【登录成功】用户ID: 53，Token: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzIiwiZXhwIjoxNzQ4NzcxMzA0fQ.ZQph42Tb-cg-LR35rsnEzRNSH8j8x6Xc1LeWP1BxOts
