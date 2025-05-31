@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\lib",
+    "\\src\\router",
+    "\\src\\stores",
+    "\\src\\utils",
+    "\\src\\views",
+    "\\src\\views\\Auth"
+  ],
+  "SelectedNode": "\\src\\views\\Auth\\Register.vue",
+  "PreviewInSolutionExplorer": false
+}

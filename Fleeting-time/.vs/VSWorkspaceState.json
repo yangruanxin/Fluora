@@ -1,0 +1,18 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\test",
+    "\\src\\test\\java",
+    "\\src\\test\\java\\org",
+    "\\src\\test\\java\\org\\whu",
+    "\\src\\test\\java\\org\\whu\\fleetingtime",
+    "\\vue",
+    "\\vue\\src",
+    "\\vue\\src\\router",
+    "\\vue\\src\\views",
+    "\\vue\\src\\views\\Auth"
+  ],
+  "SelectedNode": "\\vue",
+  "PreviewInSolutionExplorer": false
+}
