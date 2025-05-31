@@ -13,4 +13,8 @@ public interface UserService {
     String updateUserAvatar(Long userId, MultipartFile file);
     UserInfoResponseDTO getUserInfoById(Long userId);
     void deleteUserAndAllRelatedData(Long userId);
+
+    User loginUnion(UnionLoginRequestDTO unionLoginRequestDTO);
+    boolean phoneregister(PhoneRegisterRequestDTO phoneRegisterRequestDTO);
+    boolean emailregister(EmailRegisterRequestDTO emailRegisterRequestDTO);
 }

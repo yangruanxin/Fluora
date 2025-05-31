@@ -15,4 +15,7 @@ public class User {
     private String avatarUrl;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+
+    private String email;
+    private String phone;
 }

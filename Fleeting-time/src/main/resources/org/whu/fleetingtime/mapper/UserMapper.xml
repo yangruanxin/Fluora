@@ -15,6 +15,15 @@
         SELECT * FROM fleeting_time.user WHERE id = #{id}
     </select>
 
+<!-- 根据手机号查询 -->
+    <select id="selectByPhone" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
+        SELECT * FROM fleeting_time.user WHERE phone = #{phone}
+    </select>
+
+<!-- 根据邮箱查询 -->
+    <select id="selectByEmail" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
+        SELECT * FROM fleeting_time.user WHERE email = #{email}
+    </select>
 <!--    插入新用户，返回自增主键-->
     <insert id="insertUser"
             parameterType="org.whu.fleetingtime.pojo.User"

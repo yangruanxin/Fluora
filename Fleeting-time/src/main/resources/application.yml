@@ -10,6 +10,37 @@ spring:
     multipart:
       max-file-size: 256MB
       max-request-size: 512MB
+  #email
+  mail:
+    host: smtp.qq.com              # 发送邮件用的 SMTP 服务器地址
+    port: 587                      # SMTP 服务器端口号
+    username: batiluoxuanwan@foxmail.com          # 发件人邮箱（你的邮箱地址）
+    password: yfhuaquyvmjbdiaa       # 邮箱的授权码（不是你的邮箱登录密码）
+    properties:
+      mail:
+        smtp:
+          auth: true               # 启用 SMTP 身份验证
+          starttls:
+            enable: true           # 启用 TLS 安全传输协议（加密邮件通道）
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          qq:
+#            client-id: 1112447218
+#            client-secret: olG9nSdRqhFLssV9
+#            client-name: QQ
+#            provider: qq
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            authorization-grant-type: authorization_code
+#            scope:
+#              - get_user_info
+#        provider:
+#          qq:
+#            authorization-uri: https://graph.qq.com/oauth2.0/authorize
+#            token-uri: https://graph.qq.com/oauth2.0/token
+#            user-info-uri: https://graph.qq.com/user/get_user_info
+#            user-name-attribute: nickname
 
 # 服务器配置
 server:
@@ -37,3 +68,18 @@ logging:
     root: INFO
     org.whu.fleetingtime: DEBUG # 如果你想让自己项目下的日志更详细
 #    org.springframework.jdbc.support.JdbcTransactionManager: debug # 事务管理debug信息开关
+
+#Sms
+sms:
+  host: https://gyytz.market.alicloudapi.com
+  path: /sms/smsSend
+  method: POST
+  appcode: 37d5da8d351c43fea103145f51e4d64c
+  smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
+  templateId: 908e94ccf08b4476ba6c876d13f084ad
+#redis
+redis:
+  host: localhost
+  port: 6379
+  password:
+  database: 0
