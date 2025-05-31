@@ -33,7 +33,14 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String token = request.getHeader("Authorization");
+        //String token = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            logger.warn("[JwtInterceptor] 请求被拦截：无效的 Authorization 头");
+            sendUnauthorizedResponse(response, "invalid authorization header");
+            return false;
+        }
+        String token = authHeader.substring(7); // 截去 "Bearer "
 
         logger.info("[JwtInterceptor] 拦截请求路径: {}，方法: {}，Token: {}", request.getRequestURI(), request.getMethod(), token);
 
@@ -46,6 +53,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             Claims claims = JwtUtils.parseJWT(secretKey, token);
             String userId = claims.get("id", String.class);
+//            String userIdStr = claims.get("id", String.class);
+//            Long userId = Long.parseLong(userIdStr);
+//            request.setAttribute("userId", userId);
             logger.info("[JwtInterceptor] Token 解析成功，userId: {}", userId);
             // 把 userId 放入 request 中，供后续使用
             request.setAttribute("userId", userId);

@@ -7,41 +7,41 @@
 
 <!--    根据username查询-->
     <select id="selectByUsername" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
-        SELECT * FROM fleeting_time.user WHERE username = #{username}
+        SELECT * FROM user WHERE username = #{username}
     </select>
 
 <!--    根据id查询-->
     <select id="selectByUserId" parameterType="Long" resultType="org.whu.fleetingtime.pojo.User">
-        SELECT * FROM fleeting_time.user WHERE id = #{id}
+        SELECT * FROM user WHERE id = #{id}
     </select>
 
 <!-- 根据手机号查询 -->
     <select id="selectByPhone" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
-        SELECT * FROM fleeting_time.user WHERE phone = #{phone}
+        SELECT * FROM user WHERE phone = #{phone}
     </select>
 
 <!-- 根据邮箱查询 -->
     <select id="selectByEmail" parameterType="String" resultType="org.whu.fleetingtime.pojo.User">
-        SELECT * FROM fleeting_time.user WHERE email = #{email}
+        SELECT * FROM user WHERE email = #{email}
     </select>
 <!--    插入新用户，返回自增主键-->
     <insert id="insertUser"
             parameterType="org.whu.fleetingtime.pojo.User"
             useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO user (username, password, created_time, updated_time)
-        VALUES (#{username}, #{password}, NOW(), NOW())
+        INSERT INTO user (username, password, email, phone, created_time, updated_time)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, NOW(), NOW())
     </insert>
 
 <!--    根据id删除用户-->
     <delete id="deleteByUserId" parameterType="Long">
-        DELETE FROM fleeting_time.user
+        DELETE FROM user
         WHERE id = #{id}
     </delete>
 
 <!--    更新修改用户信息-->
     <update id="update" parameterType="org.whu.fleetingtime.pojo.User">
-        UPDATE fleeting_time.user
+        UPDATE user
         <set>
             <if test="username != null"> username = #{username}, </if>
             <if test="password != null"> password = #{password}, </if>

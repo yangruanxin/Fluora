@@ -64,6 +64,28 @@ public enum BizExceptionEnum {
     REGISTER_FAILED(10308, "register failed"),
     //密码错误
     PASSWORD_ERROR(10309, "password error"),
+
+    //===friend模块
+    //好友不存在
+    FRIEND_NOT_FOUND(10400, "friend not found"),
+    //好友已存在
+    FRIEND_ALREADY_EXISTS(10401, "friend already exists"),
+    //好友请求已发送
+    FRIEND_REQUEST_ALREADY_SENT(10402, "friend request already sent"),
+    //好友请求不存在
+    FRIEND_REQUEST_NOT_FOUND(10403, "friend request not found"),
+    //好友请求已处理
+    FRIEND_REQUEST_ALREADY_HANDLED(10404, "friend request already handled"),
+    //好友请求已过期
+    FRIEND_REQUEST_EXPIRED(10405, "friend request expired"),
+    //好友请求已拒绝
+    FRIEND_REQUEST_REJECTED(10406, "friend request rejected"),
+    //好友请求已接受
+    FRIEND_REQUEST_ACCEPTED(10407, "friend request accepted"),
+    //好友请求已删除
+    FRIEND_REQUEST_DELETED(10408, "friend request deleted"),
+    //好友请求已取消
+    FRIEND_REQUEST_CANCELED(10409, "friend request canceled"),
     ;
 
 

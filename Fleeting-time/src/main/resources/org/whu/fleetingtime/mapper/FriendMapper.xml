@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.whu.fleetingtime.mapper.FriendMapper">
+
+    <!-- 发起好友请求 -->
+    <insert id="insertFriendRequest" parameterType="org.whu.fleetingtime.pojo.FriendRequest">
+        INSERT INTO friend_request (sender_id, receiver_id, status, created_time)
+        VALUES (#{senderId}, #{receiverId}, #{status}, #{createdTime})
+    </insert>
+
+    <!-- 查询是否已申请过 -->
+    <select id="selectFriendRequest" resultType="org.whu.fleetingtime.pojo.FriendRequest">
+        SELECT * FROM friend_request
+        WHERE sender_id = #{senderId} AND receiver_id = #{receiverId}
+    </select>
+
+    <!-- 更新好友请求状态 -->
+    <update id="updateFriendRequestStatus">
+        UPDATE friend_request
+        SET status = #{status}, handled_time = #{handledTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 添加好友关系（双向插入） -->
+    <insert id="insertFriend" parameterType="org.whu.fleetingtime.pojo.UserFriend">
+        INSERT INTO user_friend (user_id, friend_id, created_time)
+        VALUES (#{userId}, #{friendId}, #{createdTime})
+    </insert>
+
+    <!-- 查询好友列表 -->
+    <select id="selectFriendsByUserId" resultType="org.whu.fleetingtime.pojo.UserFriend">
+        SELECT * FROM user_friend WHERE user_id = #{userId}
+    </select>
+
+</mapper>
