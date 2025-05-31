@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Register.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Register.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Login.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Login.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Register.vue",
+              "DocumentMoniker": "C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Register.vue",
+              "RelativeDocumentMoniker": "Register.vue",
+              "ToolTip": "C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Register.vue",
+              "RelativeToolTip": "Register.vue",
+              "ViewState": "AgIAAHsBAAAAAAAAAADwv38BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-05-31T14:03:02.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Login.vue",
+              "DocumentMoniker": "C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Login.vue",
+              "RelativeDocumentMoniker": "Login.vue",
+              "ToolTip": "C:\\Users\\HUAWEI\\Desktop\\\u65B0\u5EFA\u6587\u4EF6\u5939 (2)\\fleeting-time\\Fleeting-time\\vue\\src\\views\\Auth\\Login.vue",
+              "RelativeToolTip": "Login.vue",
+              "ViewState": "AgIAANYAAAAAAAAAAAAAAOwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-05-31T14:02:25.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

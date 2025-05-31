@@ -2,6 +2,7 @@ package org.whu.fleetingtime.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
@@ -20,6 +21,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,9 +29,18 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private TravelPostMapper checkinRecordMapper;
-
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    public String generateRandomUsername() {
+        String username=null;
+        do {
+            int randomNum = (int)(Math.random() * 900000) + 100000;
+            username = "用户" + randomNum;
+        } while (userMapper.selectByUsername(username) != null);
+        return username;
+    }
 
     @Override
     public User login(UserLoginRequestDTO userLoginRequestDTO) {
@@ -48,7 +59,7 @@ public class UserServiceImpl implements UserService {
         logger.info("[UserServiceRegister]尝试注册，用户名，密码: {}, {}", userRegisterRequestDTO.getUsername(), userRegisterRequestDTO.getPassword());
         User existing = userMapper.selectByUsername(userRegisterRequestDTO.getUsername());
         if (existing != null) {
-            logger.warn("[UserServiceRegister]注册失败，改用户名已存在: {}", userRegisterRequestDTO.getUsername());
+            logger.warn("[UserServiceRegister]注册失败，该用户名已存在: {}", userRegisterRequestDTO.getUsername());
             return false; // 用户名已存在
         }
         User user = new User();
@@ -61,6 +72,92 @@ public class UserServiceImpl implements UserService {
         return result == 1;
     }
 
+    @Override
+    public boolean phoneregister(PhoneRegisterRequestDTO phoneRegisterRequestDTO)
+    {
+        logger.info("[UserServiceRegister]尝试注册，手机号，密码: {}, {}", phoneRegisterRequestDTO.getPhone(), phoneRegisterRequestDTO.getPassword());
+        //判断手机是否已存在
+        User existing = userMapper.selectByPhone(phoneRegisterRequestDTO.getPhone());
+        if (existing != null) {
+            logger.warn("[UserServiceRegister]注册失败，该手机号已存在: {}", phoneRegisterRequestDTO.getPhone());
+            throw new BizException(BizExceptionEnum.PHONE_ALREADY_EXISTS);// 手机号已存在
+        }
+        String code = redisTemplate.opsForValue().get("sms:" + phoneRegisterRequestDTO.getPhone());
+        if (code == null) {
+            logger.warn("[UserServiceRegister]注册失败，验证码已过期: {}", phoneRegisterRequestDTO.getPhone());
+            throw new BizException(BizExceptionEnum.CODE_EXPIRED);// 验证码已过期
+        }
+        if (!phoneRegisterRequestDTO.getCode().equals(code)) {
+            throw new BizException(BizExceptionEnum.CODE_ERROR);// 验证码错误
+        }
+
+        User user = new User();
+        user.setCreatedTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
+        user.setUsername(generateRandomUsername());
+        user.setPassword(phoneRegisterRequestDTO.getPassword());
+        user.setPhone(phoneRegisterRequestDTO.getPhone());
+        int result = userMapper.insertUser(user);
+        logger.info("[UserServiceRegister]注册成功，用户名，id: {}, {}", user.getUsername(), user.getPassword());
+        return result == 1;
+    }
+    @Override
+    public boolean emailregister(EmailRegisterRequestDTO emailRegisterRequestDTO) {
+        logger.info("[UserServiceRegister]尝试注册，邮箱，密码: {}, {}", emailRegisterRequestDTO.getEmail(), emailRegisterRequestDTO.getPassword());
+        //判断邮箱是否已存在
+        User existing = userMapper.selectByEmail(emailRegisterRequestDTO.getEmail());
+        if (existing != null) {
+            logger.warn("[UserServiceRegister]注册失败，该邮箱已存在: {}", emailRegisterRequestDTO.getEmail());
+            throw new BizException(BizExceptionEnum.EMAIL_ALREADY_EXISTS);
+        }
+        // 从 Redis 获取验证码
+        String code = redisTemplate.opsForValue().get("email:" + emailRegisterRequestDTO.getEmail());
+        if (code == null) {
+            logger.warn("[UserServiceRegister]注册失败，验证码已过期: {}", emailRegisterRequestDTO.getEmail());
+            throw new BizException(BizExceptionEnum.CODE_EXPIRED);
+        }
+
+        if (!emailRegisterRequestDTO.getCode().equals(code)) {
+            logger.warn("[UserServiceRegister]注册失败，验证码错误: {}", emailRegisterRequestDTO.getEmail());
+            throw new BizException(BizExceptionEnum.CODE_ERROR);
+        }
+
+        // 构建用户并插入数据库
+        User user = new User();
+        user.setCreatedTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
+        user.setUsername(generateRandomUsername()); // 随机用户名
+        user.setPassword(emailRegisterRequestDTO.getPassword()); // 可加密
+        user.setEmail(emailRegisterRequestDTO.getEmail());
+        int result = userMapper.insertUser(user);
+
+        logger.info("[UserServiceRegister]注册成功，用户名，密码: {}, {}", user.getUsername(), user.getPassword());
+        return result == 1;
+    }
+    @Override
+    public User loginUnion(UnionLoginRequestDTO unionLoginRequestDTO) {
+        logger.info("[UserServiceLogin]尝试登录，用户名/邮箱/电话，密码: {}, {}", unionLoginRequestDTO.getIdentifier(), unionLoginRequestDTO.getPassword());
+        User user = null;
+        if (unionLoginRequestDTO.getIdentifier().matches("^\\d{11}$")) {
+            // 手机号
+            user = userMapper.selectByPhone(unionLoginRequestDTO.getIdentifier());
+        } else if (unionLoginRequestDTO.getIdentifier().matches("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$")) {
+            // 邮箱
+            user = userMapper.selectByEmail(unionLoginRequestDTO.getIdentifier());
+        } else {
+            // 用户名
+            user = userMapper.selectByUsername(unionLoginRequestDTO.getIdentifier());
+        }
+        if (user == null) {
+            throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+        }
+
+        if (!user.getPassword().equals(unionLoginRequestDTO.getPassword())) {
+            throw new BizException(BizExceptionEnum.PASSWORD_ERROR);
+        }
+        logger.info("[UserServiceLogin]登录成功");
+        return user; // 登录成功
+    }
     @Override
     public User findUserById(Long id) {
         logger.info("[UserServiceFindUserById]根据id查询用户: {}", id);

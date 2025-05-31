@@ -331,11 +331,11 @@ public class TravelPostServiceImpl implements TravelPostService {
 
         // 5. 上传新图片 (先上传，拿到URL后再统一处理数据库)
         List<String> newUploadedImageUrls = new ArrayList<>();
-        List<MultipartFile> validNewImageFiles = newImageFiles.stream().filter(f -> f != null && !f.isEmpty()).collect(Collectors.toList());
+        List<MultipartFile> validNewImageFiles = newImageFiles.stream().filter(f -> f != null && !f.isEmpty()).toList();
 
         for (MultipartFile imageFile : validNewImageFiles) {
             String suffix = StringUtils.getFilenameExtension(imageFile.getOriginalFilename());
-            String objectName = "travelPostImage/" + userId + "/" + UUID.randomUUID().toString() + "." + suffix;
+            String objectName = "travelPostImage/" + userId + "/" + UUID.randomUUID() + "." + suffix;
             InputStream inputStream;
             try {
                 inputStream = imageFile.getInputStream();

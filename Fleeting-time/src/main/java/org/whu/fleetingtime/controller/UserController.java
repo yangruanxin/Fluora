@@ -44,7 +44,6 @@ public class UserController {
         return Result.success("Hello, " + user.getUsername() + "!");
     }
 
-
     // 登录接口
     @PostMapping("/login")
     public Result<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
@@ -68,6 +67,26 @@ public class UserController {
         }
     }
 
+    @PostMapping("/unionlogin")
+    public Result<UserLoginResponseDTO> Unionlogin(@RequestBody UnionLoginRequestDTO unionLoginRequestDTO) {
+        logger.info("【登录请求】标识符{}", unionLoginRequestDTO.getIdentifier());
+        User loggedInUser = userService.loginUnion(unionLoginRequestDTO);
+        if (loggedInUser != null) {
+            // 登录成功后返回JWT
+            Long userId = loggedInUser.getId();
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", userId.toString());
+            String token = JwtUtils.createJwt(secretKey, duration * 60L * 1000L, claims);
+            logger.info("【登录成功】用户ID: {}，Token: {}", userId, token);
+            UserLoginResponseDTO response = UserLoginResponseDTO.builder()
+                    .token(token)
+                    .build();
+            return Result.success("login successful", response);
+        } else {
+            throw new BizException(BizExceptionEnum.USER_PASSWORD_OR_USERNAME_ERROR);
+            //return Result.failure("invalid username or password");
+        }
+    }
     // 注册接口
     @PostMapping("/register")
     public Result<String> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDTO) {
@@ -83,6 +102,32 @@ public class UserController {
         }
     }
 
+    @PostMapping("/registerphone")
+    public Result<String> phoneregister(@RequestBody PhoneRegisterRequestDTO phoneRegisterRequestDTO) {
+        logger.info("【注册请求】手机号: {}", phoneRegisterRequestDTO.getPhone());
+        boolean success = userService.phoneregister(phoneRegisterRequestDTO);
+        if (success) {
+            logger.info("【注册成功】手机号: {}", phoneRegisterRequestDTO.getPhone());
+            return Result.success("registration successful");
+        } else {
+            logger.warn("【注册失败】手机号: {}", phoneRegisterRequestDTO.getPhone());
+            throw new BizException(BizExceptionEnum.REGISTER_FAILED);
+            //return Result.failure("username already exists");
+        }
+    }
+    @PostMapping("/registeremail")
+    public Result<String> emailregister(@RequestBody EmailRegisterRequestDTO emailRegisterRequestDTO) {
+        logger.info("【注册请求】邮箱: {}", emailRegisterRequestDTO.getEmail());
+        boolean success = userService.emailregister(emailRegisterRequestDTO);
+        if (success) {
+            logger.info("【注册成功】邮箱: {}", emailRegisterRequestDTO.getEmail());
+            return Result.success("registration successful");
+        } else {
+            logger.warn("【注册失败】邮箱: {}", emailRegisterRequestDTO.getEmail());
+            throw new BizException(BizExceptionEnum.REGISTER_FAILED);
+            //return Result.failure("username already exists");
+        }
+    }
     // 更新用户信息接口
     @PutMapping("/info")
     public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
