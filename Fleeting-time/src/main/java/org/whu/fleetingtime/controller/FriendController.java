@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.pojo.UserFriend;
 import org.whu.fleetingtime.service.FriendService;
-import org.whu.fleetingtime.service.SmsService;
+import org.whu.fleetingtime.pojo.FriendRequest;
 
 import java.util.List;
 
@@ -30,16 +30,23 @@ public class FriendController {
         return Result.success("好友请求已发送");
     }
 
+    @GetMapping("/requests")
+    public Result<List<FriendRequest>> getReceivedRequests(HttpServletRequest request) {
+        String userIdStr = (String) request.getAttribute("userId");
+        Long userId = Long.parseLong(userIdStr);
+        List<FriendRequest> requests = friendService.listReceivedRequests(userId);
+        return Result.success("查询好友申请成功", requests);
+    }
     @PostMapping("/accept")
     public Result<String> acceptRequest(@RequestParam Long requestId) {
         friendService.acceptRequest(requestId);
         return Result.success("已接受好友请求");
     }
-//    @PostMapping("/reject")
-//    public Result<String> rejectRequest(@RequestParam Long requestId) {
-//        friendService.rejectRequest(requestId);
-//        return Result.success("已拒绝好友请求");
-//    }
+    @PostMapping("/reject")
+    public Result<String> rejectRequest(@RequestParam Long requestId) {
+        friendService.rejectRequest(requestId);
+        return Result.success("已拒绝好友请求");
+    }
     @GetMapping("/list")
     public Result<List<UserFriend>> getFriends(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
