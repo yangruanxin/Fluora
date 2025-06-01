@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         // 从异常中获取第一个校验错误信息作为提示
         String firstErrorMessage = e.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         logger.warn("请求参数校验失败: {}", firstErrorMessage, e); // 记录更详细的异常信息用于调试
-        return Result.failure(HttpStatus.BAD_REQUEST.value(), "参数校验失败: " + firstErrorMessage);
+        return Result.failure(HttpStatus.BAD_REQUEST.value(), "参数校验失败");
     }
 
     // 处理其他常见的运行时异常 (可以根据需要细化)

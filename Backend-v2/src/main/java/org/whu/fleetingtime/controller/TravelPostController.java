@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class TravelPostController {
             )
     )
     public Result<UploadImgResponseDto> uploadImage(
-            UploadImgRequestDto requestDto,
+            @Valid UploadImgRequestDto requestDto,
             HttpServletRequest request) throws IOException {
 
         String originalFilename = requestDto.getFile().getOriginalFilename();
