@@ -42,6 +42,7 @@ public class TravelPostController {
             HttpServletRequest request) {
 
         String userId = (String) request.getAttribute("userId"); // 从JWT拦截器注入的userId
+        userId = "TestUserId";
 
         logger.info("【创建旅行日志】用户 {} 尝试创建新的旅行日志, 请求数据: {}", userId, createRequestDTO);
 
@@ -77,6 +78,7 @@ public class TravelPostController {
 
         // 从 request attribute 中获取 userId
         String userId = (String) request.getAttribute("userId");
+        userId = "TestUser";
         logger.debug("【图片上传接口】从请求属性中获取到的 userId: {}", userId);
 
         UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getFile(), userId);

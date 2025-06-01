@@ -13,7 +13,7 @@ spring:
 
   jpa:
     # 是否在控制台显示Hibernate执行的SQL语句
-    show-sql: true
+    show-sql: false
     hibernate:
       # DDL (Data Definition Language) 自动操作策略:
       #   none: 不做任何操作 (生产环境推荐, 通过迁移脚本管理数据库结构)
