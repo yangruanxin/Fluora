@@ -2,9 +2,12 @@ package org.whu.fleetingtime.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.whu.fleetingtime.controller.UserController;
 import org.whu.fleetingtime.util.JwtUtil;
 
 @Component
@@ -13,8 +16,11 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtUtil jwtUtil;
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtInterceptor.class);
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        logger.info("【JWT拦截器】拦截请求: {}",request.getRequestURI());
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -27,6 +33,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             return false;
         }
         String userId = jwtUtil.getUserIdFromToken(token);
+        logger.info("【JWT解析】userId: {}",userId);
         request.setAttribute("userId", userId);
         return true;
     }

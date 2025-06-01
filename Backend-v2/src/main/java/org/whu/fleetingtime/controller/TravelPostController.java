@@ -71,15 +71,15 @@ public class TravelPostController {
             @Valid UploadImgRequestDto requestDto,
             HttpServletRequest request) throws IOException {
 
-        String originalFilename = requestDto.getFile().getOriginalFilename();
-        long fileSize = requestDto.getFile().getSize();
+        String originalFilename = requestDto.getImage().getOriginalFilename();
+        long fileSize = requestDto.getImage().getSize();
         logger.info("【图片上传接口】接收到上传图片请求: /api/travel-posts/upload/img, 文件名: {}, 文件大小: {} bytes", originalFilename, fileSize);
 
         // 从 request attribute 中获取 userId
         String userId = (String) request.getAttribute("userId");
         logger.debug("【图片上传接口】从请求属性中获取到的 userId: {}", userId);
 
-        UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getFile(), userId);
+        UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getImage(), userId);
 
         logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
         return Result.success(responseDto);

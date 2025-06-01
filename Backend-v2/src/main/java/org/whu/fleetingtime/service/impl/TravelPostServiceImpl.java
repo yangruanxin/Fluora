@@ -80,6 +80,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         // ID 和 createdTime 由注解自动生成
         logger.info("【图片上传服务】准备将图片信息 (objectKey: {}) 保存到数据库...", objectName);
         TravelPostImage savedImage = travelPostImageRepository.save(travelPostImage);
+        travelPostRepository.flush();
         logger.info("【图片上传服务】图片信息成功保存到数据库，图片ID: {}, objectKey: {}", savedImage.getId(), savedImage.getObjectKey());
 
         // 4. 构建并返回响应 DTO
@@ -129,6 +130,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         TravelPost savedPost;
         try {
             savedPost = travelPostRepository.save(post);
+             travelPostRepository.flush();
         } catch (DataAccessException dae) {
             logger.error("【创建旅行日志服务】用户 {} 保存旅行日志主体到数据库失败: {}", userId, dae.getMessage(), dae);
             throw new BizException("创建旅行日志失败，请稍后再试");
@@ -177,7 +179,7 @@ public class TravelPostServiceImpl implements TravelPostService {
                     }
                 } catch (DataAccessException dae) {
                     logger.error("【创建旅行日志服务】用户 {} 更新图片 {} 的关联信息到数据库失败: {}", userId, imageIdToAssociate, dae.getMessage(), dae);
-                    throw new BizException(50003, "出错了，请稍后再试");
+                    throw new BizException("出错了，请稍后再试");
                 }
             }
             logger.info("【创建旅行日志服务】用户 {} 的帖子 {} 图片关联处理完成。", userId, savedPost.getId());

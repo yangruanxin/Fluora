@@ -10,26 +10,20 @@ spring:
   #    username: root
   #    password: H2v4uZwDpBVv4ysHy5wy
   #    driver-class-name: com.mysql.cj.jdbc.Driver
-
+  servlet:
+    multipart:
+      max-file-size: 32MB
+      max-request-size: 512MB
   jpa:
     # 是否在控制台显示Hibernate执行的SQL语句
     show-sql: false
     hibernate:
-      # DDL (Data Definition Language) 自动操作策略:
-      #   none: 不做任何操作 (生产环境推荐, 通过迁移脚本管理数据库结构)
-      #   validate: 校验实体与表结构是否匹配，不匹配则报错
-      #   update: 自动更新表结构以匹配实体 (开发阶段常用，但有风险，不适用于复杂变更)
-      #   create: 每次启动都删除并重新创建表结构 (仅测试初期用，会丢失数据)
-      #   create-drop: 启动时创建，应用关闭时删除 (通常用于测试)
       ddl-auto: update # 开发和测试阶段，'update' 比较方便
     properties:
       hibernate:
-        # 格式化打印到控制台的SQL语句 (使其更易读)
         format_sql: true
-        # 指定Hibernate使用的数据库方言，帮助Hibernate生成针对特定数据库的优化SQL
-        # 对于MySQL 8.x, 可以用 org.hibernate.dialect.MySQLDialect (通常能自动适配)
-        # 或者更精确的 org.hibernate.dialect.MySQL8Dialect (如果你用的Hibernate版本支持)
         dialect: org.hibernate.dialect.MySQLDialect
+
   #email
   mail:
     host: smtp.qq.com              # 发送邮件用的 SMTP 服务器地址
