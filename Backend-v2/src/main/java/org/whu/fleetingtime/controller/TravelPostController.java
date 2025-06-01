@@ -9,14 +9,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.whu.fleetingtime.common.Result;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.dto.travelpost.UploadImgRequestDto;
 import org.whu.fleetingtime.dto.travelpost.UploadImgResponseDto;
+import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.interfaces.ITravelPostService;
 
 import java.io.IOException;
@@ -44,9 +46,9 @@ public class TravelPostController {
                     )
             )
     )
-    public ResponseEntity<?> uploadImage(
+    public Result<UploadImgResponseDto> uploadImage(
             UploadImgRequestDto requestDto,
-            HttpServletRequest request) {
+            HttpServletRequest request) throws IOException {
 
         String originalFilename = requestDto.getFile().getOriginalFilename();
         long fileSize = requestDto.getFile().getSize();
@@ -56,32 +58,9 @@ public class TravelPostController {
         String userId = (String) request.getAttribute("userId");
         logger.debug("【图片上传接口】从请求属性中获取到的 userId: {}", userId);
 
+        UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getFile(), userId);
 
-        // 基本的校验
-//        if (userId == null || userId.trim().isEmpty()) {
-//            logger.warn("【图片上传接口】无法获取用户信息 (userId is null or empty), 请求来自文件名: {}", originalFilename);
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("无法获取用户信息，请先登录。");
-//        }
-        userId = "TEST" ;
-        if (requestDto.getFile().isEmpty()) {
-            logger.warn("【图片上传接口】用户 {} 上传的文件为空, 原始文件名: {}", userId, originalFilename);
-            return ResponseEntity.badRequest().body("上传文件不能为空。");
-        }
-
-        logger.info("【图片上传接口】用户 {} 准备调用 travelPostService.uploadImage 处理图片: {}", userId, originalFilename);
-        try {
-            UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getFile(), userId);
-            logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
-            return ResponseEntity.ok(responseDto);
-        } catch (IllegalArgumentException e) {
-            logger.warn("【图片上传接口】用户 {} 上传图片 {} 失败 (参数错误): {}", userId, originalFilename, e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (IOException e) {
-            logger.error("【图片上传接口】用户 {} 上传图片 {} 失败 (IO异常): {}", userId, originalFilename, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("图片上传失败：" + e.getMessage());
-        } catch (Exception e) {
-            logger.error("【图片上传接口】用户 {} 上传图片 {} 时发生未知错误: {}", userId, originalFilename, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务器内部错误，请稍后再试。");
-        }
+        logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
+        return Result.success(responseDto);
     }
 }

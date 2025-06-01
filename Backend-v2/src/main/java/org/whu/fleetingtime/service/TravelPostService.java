@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.travelpost.UploadImgResponseDto;
 import org.whu.fleetingtime.entity.TravelPostImage;
+import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.interfaces.ITravelPostService;
 import org.whu.fleetingtime.repository.TravelPostImageRepository;
 import org.whu.fleetingtime.util.AliyunOssUtil;
@@ -32,7 +33,7 @@ public class TravelPostService implements ITravelPostService {
 
         if (file.isEmpty()) {
             logger.warn("【图片上传服务】用户 {} 上传的文件为空", userId);
-            throw new IllegalArgumentException("上传的文件不能为空");
+            throw new BizException("上传的文件不能为空");
         }
 
         // 1. 生成在OSS中的唯一对象名 (objectKey)
@@ -49,7 +50,7 @@ public class TravelPostService implements ITravelPostService {
             logger.info("【图片上传服务】图片 {} (objectKey: {}) 成功上传到OSS，访问URL: {}", originalFilename, objectName, imageUrl);
         } catch (Exception e) {
             logger.error("【图片上传服务】用户 {} 上传图片 {} (objectKey: {}) 到OSS失败: {}", userId, originalFilename, objectName, e.getMessage(), e);
-            throw new IOException("上传图片到OSS失败: " + e.getMessage(), e);
+            throw new BizException("上传图片失败");
         }
 
         // 3. 创建 TravelPostImage 实体并保存到数据库
@@ -57,7 +58,6 @@ public class TravelPostService implements ITravelPostService {
         travelPostImage.setObjectKey(objectName);
         travelPostImage.setSortOrder(0); // 默认排序值
         // ID 和 createdTime 由注解自动生成
-
         logger.info("【图片上传服务】准备将图片信息 (objectKey: {}) 保存到数据库...", objectName);
         TravelPostImage savedImage = travelPostImageRepository.save(travelPostImage);
         logger.info("【图片上传服务】图片信息成功保存到数据库，图片ID: {}, objectKey: {}", savedImage.getId(), savedImage.getObjectKey());
