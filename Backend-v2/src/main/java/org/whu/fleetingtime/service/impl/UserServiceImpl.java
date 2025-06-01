@@ -1,7 +1,10 @@
 package org.whu.fleetingtime.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -28,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private JwtUtil jwtUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     public String generateRandomUsername() {
         String username=null;
@@ -41,61 +48,105 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String register(UserRegisterRequestDTO dto) {
-        if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new BizException("用户名已存在");
+        validateUserRegisterDTO(dto);
+        try {
+            if (userRepository.existsByUsername(dto.getUsername())) {
+                throw new BizException("用户名已存在");
+            }
+            User user = new User();
+            user.setUsername(dto.getUsername());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            userRepository.save(user);
+            return jwtUtil.generateToken(user.getId());
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("服务器异常，请稍后重试");
         }
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        //哈希加盐处理
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userRepository.save(user);
-        return jwtUtil.generateToken(user.getId());
     }
+
     @Override
     @Transactional
     public String register_phone(PhoneRegisterRequestDTO dto) {
-        if (userRepository.existsByPhone(dto.getPhone())) {
-            throw new BizException("用户已存在,手机号已被注册");
+        validatePhoneRegisterDTO(dto);
+        try {
+            if (userRepository.existsByPhone(dto.getPhone())) {
+                throw new BizException("手机号已被注册");
+            }
+            String code = redisTemplate.opsForValue().get("sms:" + dto.getPhone());
+            if (code == null) {
+                throw new BizException("验证码已过期");
+            }
+            if (!dto.getCode().equals(code)) {
+                throw new BizException("验证码错误");
+            }
+            User user = new User();
+            user.setUsername(generateRandomUsername());
+            user.setPhone(dto.getPhone());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            userRepository.save(user);
+            return jwtUtil.generateToken(user.getId());
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("服务器异常，请稍后重试");
+        } catch (Exception e) {
+            log.error("验证码服务异常", e);
+            throw new BizException("验证码服务异常，请稍后重试");
         }
-        User user = new User();
-        user.setUsername(generateRandomUsername());
-        user.setPhone(dto.getPhone());
-        //哈希加盐处理
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userRepository.save(user);
-        return jwtUtil.generateToken(user.getId());
     }
+
     @Override
     @Transactional
     public String register_email(EmailRegisterRequestDTO dto) {
-        if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new BizException("用户已存在,邮箱已被注册");
+        validateEmailRegisterDTO(dto);
+        try {
+            if (userRepository.existsByEmail(dto.getEmail())) {
+                throw new BizException("邮箱已被注册");
+            }
+            String code = redisTemplate.opsForValue().get("email:" + dto.getEmail());
+            if (code == null) {
+                throw new BizException("验证码已过期");
+            }
+            if (!dto.getCode().equals(code)) {
+                throw new BizException("验证码错误");
+            }
+            User user = new User();
+            user.setUsername(generateRandomUsername());
+            user.setEmail(dto.getEmail());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            userRepository.save(user);
+            return jwtUtil.generateToken(user.getId());
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("服务器异常，请稍后重试");
+        } catch (Exception e) {
+            log.error("验证码服务异常", e);
+            throw new BizException("验证码服务异常，请稍后重试");
         }
-        User user = new User();
-        user.setUsername(generateRandomUsername());
-        user.setEmail(dto.getEmail());
-        //哈希加盐处理
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userRepository.save(user);
-        return jwtUtil.generateToken(user.getId());
     }
     @Override
     public String login(LoginRequestDTO dto) {
-        User user = null;
-        if (dto.getIdentifier().matches("^\\d{11}$")) {
-            // 手机号
-            user = userRepository.findByPhone(dto.getIdentifier());
-        } else if (dto.getIdentifier().matches("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$")) {
-            // 邮箱
-            user = userRepository.findByEmail(dto.getIdentifier());
-        } else {
-            // 用户名
-            user = userRepository.findByUsername(dto.getIdentifier());
-        }
-        if (user == null) {
-            throw new BizException("用户名错误");
+        if (dto == null || !StringUtils.hasText(dto.getIdentifier()) || !StringUtils.hasText(dto.getPassword())) {
+            throw new BizException("用户名/邮箱/手机号和密码不能为空");
         }
 
+        User user = null;
+        try {
+            if (dto.getIdentifier().matches("^\\d{11}$")) {
+                user = userRepository.findByPhone(dto.getIdentifier());
+
+            } else if (dto.getIdentifier().matches("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$")) {
+                user = userRepository.findByEmail(dto.getIdentifier());
+            } else {
+                user = userRepository.findByUsername(dto.getIdentifier());
+            }
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("服务器异常，请稍后重试");
+        }
+
+        if (user == null) {
+            throw new BizException("用户不存在");
+        }
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new BizException("密码错误");
         }
@@ -104,44 +155,61 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserUpdateResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
+        if (!StringUtils.hasText(userId)) {
+            throw new BizException("用户ID不能为空");
+        }
+        if (dto == null) {
+            throw new BizException("更新信息不能为空");
+        }
+
         User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
         BeanUtils.copyProperties(dto, user);
-        User updatedUser = userRepository.save(user);
-
-        UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO();
-        BeanUtils.copyProperties(updatedUser, responseDTO);
-        return responseDTO;
+        try {
+            User updatedUser = userRepository.save(user);
+            UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO();
+            BeanUtils.copyProperties(updatedUser, responseDTO);
+            return responseDTO;
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("更新失败，请稍后重试");
+        }
     }
 
     @Override
     @Transactional
     public String updateUserAvatar(String userId, MultipartFile avatarFile) {
+        if (!StringUtils.hasText(userId)) throw new BizException("用户ID不能为空");
+        if (avatarFile == null || avatarFile.isEmpty()) throw new BizException("文件不能为空");
+
         User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
-        if (avatarFile == null || avatarFile.isEmpty()) {
-            throw new BizException("文件不存在");
-        }
         try {
             String suffix = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
+            if (suffix == null || suffix.isEmpty()) {
+                throw new BizException("文件格式错误");
+            }
             String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
             InputStream inputStream = avatarFile.getInputStream();
             AliyunOssUtil.upload(newAvatarUrl, inputStream);
 
-            // 删除旧头像
             if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
                 String oldObjectName = AliyunOssUtil.extractObjectNameFromUrl(user.getAvatarUrl());
                 AliyunOssUtil.delete(oldObjectName);
             }
 
-            // 更新用户头像地址及更新时间
             user.setAvatarUrl(newAvatarUrl);
             user.setUpdatedTime(LocalDateTime.now());
-            userRepository.save(user);  // JPA的保存/更新
+            userRepository.save(user);
 
             return newAvatarUrl;
         } catch (IOException e) {
+            log.error("文件上传异常", e);
             throw new BizException("文件上传失败");
+        } catch (Exception e) {
+            log.error("文件上传未知异常", e);
+            throw new BizException("文件上传失败，请稍后重试");
         }
     }
+
 
     @Override
     public UserInfoResponseDTO getUserInfoById(String userId) {
@@ -154,9 +222,98 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean deleteUserAndAllRelatedData(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
-        userRepository.delete(user);
-        // 可扩展删除其他相关数据，如帖子、评论、好友等
-        return true;
+        if (!StringUtils.hasText(userId)) throw new BizException("用户ID不能为空");
+
+        try {
+            User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+            userRepository.delete(user);
+            // TODO: 删除其他关联数据
+            return true;
+        } catch (DataAccessException e) {
+            log.error("数据库异常", e);
+            throw new BizException("删除失败，请稍后重试");
+        }
     }
+
+    //或者有别的校验？
+
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{11}$");
+
+    private void validateUserRegisterDTO(UserRegisterRequestDTO dto) {
+        if (dto == null) throw new BizException("请求参数不能为空");
+
+        String username = dto.getUsername();
+        if (!StringUtils.hasText(username)) throw new BizException("用户名不能为空");
+        if (username.length() < 1 || username.length() > 20) throw new BizException("用户名长度应为1~20位");
+        if (username.matches("^\\d{11}$")) throw new BizException("用户名不能是纯11位数字");
+
+        String password = dto.getPassword();
+        if (!StringUtils.hasText(password)) throw new BizException("密码不能为空");
+        if (!PASSWORD_PATTERN.matcher(password).matches()) throw new BizException("密码必须为6~20位数字和字母组合");
+    }
+
+    private void validatePhoneRegisterDTO(PhoneRegisterRequestDTO dto) {
+        if (dto == null) throw new BizException("请求参数不能为空");
+
+        String phone = dto.getPhone();
+        if (!StringUtils.hasText(phone)) throw new BizException("手机号不能为空");
+        if (!PHONE_PATTERN.matcher(phone).matches()) throw new BizException("手机号格式错误");
+
+        String password = dto.getPassword();
+        if (!StringUtils.hasText(password)) throw new BizException("密码不能为空");
+        if (!PASSWORD_PATTERN.matcher(password).matches()) throw new BizException("密码必须为6~20位数字和字母组合");
+
+        String code = dto.getCode();
+        if (!StringUtils.hasText(code)) throw new BizException("验证码不能为空");
+    }
+
+    private void validateEmailRegisterDTO(EmailRegisterRequestDTO dto) {
+        if (dto == null) throw new BizException("请求参数不能为空");
+
+        String email = dto.getEmail();
+        if (!StringUtils.hasText(email)) throw new BizException("邮箱不能为空");
+        if (!EMAIL_PATTERN.matcher(email).matches()) throw new BizException("邮箱格式错误");
+
+        String password = dto.getPassword();
+        if (!StringUtils.hasText(password)) throw new BizException("密码不能为空");
+        if (!PASSWORD_PATTERN.matcher(password).matches()) throw new BizException("密码必须为6~20位数字和字母组合");
+
+        String code = dto.getCode();
+        if (!StringUtils.hasText(code)) throw new BizException("验证码不能为空");
+    }
+
+    private void validateUserUpdateRequestDTO(UserUpdateRequestDTO dto) {
+        if (dto == null) throw new BizException("请求参数不能为空");
+
+        if (dto.getUsername() != null) {
+            String username = dto.getUsername().trim();
+            if (username.isEmpty()) throw new BizException("用户名不能为空");
+            if (username.length() < 1 || username.length() > 20) throw new BizException("用户名长度应为1~20位");
+            if (username.matches("^\\d{11}$")) throw new BizException("用户名不能是纯11位数字");
+        }
+
+        if (dto.getEmail() != null) {
+            String email = dto.getEmail().trim();
+            if (email.isEmpty()) throw new BizException("邮箱不能为空");
+            if (!EMAIL_PATTERN.matcher(email).matches()) throw new BizException("邮箱格式错误");
+        }
+
+        if (dto.getPhone() != null) {
+            String phone = dto.getPhone().trim();
+            if (phone.isEmpty()) throw new BizException("手机号不能为空");
+            if (!PHONE_PATTERN.matcher(phone).matches()) throw new BizException("手机号格式错误");
+        }
+
+        if (dto.getPassword() != null) {
+            if (!StringUtils.hasText(dto.getOriginPassword())) {
+                throw new BizException("修改密码必须提供原密码");
+            }
+            if (!PASSWORD_PATTERN.matcher(dto.getPassword()).matches()) {
+                throw new BizException("新密码必须为6~20位数字和字母组合");
+            }
+        }
+    }
+
 }
