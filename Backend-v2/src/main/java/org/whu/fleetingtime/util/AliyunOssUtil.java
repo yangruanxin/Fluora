@@ -48,6 +48,7 @@ public class AliyunOssUtil {
      */
     public static void upload(String objectName, InputStream inputStream) {
         ossClient.putObject(BUCKET_NAME, objectName, inputStream);
+        //return "https://" + BUCKET_NAME + ".oss-" + REGION + ".aliyuncs.com/" + objectName;
     }
 
     /**

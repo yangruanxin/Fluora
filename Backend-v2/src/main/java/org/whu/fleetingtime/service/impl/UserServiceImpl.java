@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.entity.User;
@@ -12,6 +13,12 @@ import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.repository.UserRepository;
 import org.whu.fleetingtime.service.UserService;
 import org.whu.fleetingtime.util.JwtUtil;
+import org.whu.fleetingtime.util.AliyunOssUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -110,11 +117,30 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String updateUserAvatar(String userId, MultipartFile avatarFile) {
         User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
-        // 模拟头像上传逻辑，这里建议你替换为真实的文件上传逻辑
-        String fakeUrl = "https://cdn.example.com/avatar/" + avatarFile.getOriginalFilename();
-        user.setAvatarUrl(fakeUrl);
-        userRepository.save(user);
-        return fakeUrl;
+        if (avatarFile == null || avatarFile.isEmpty()) {
+            throw new BizException("文件不存在");
+        }
+        try {
+            String suffix = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
+            String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
+            InputStream inputStream = avatarFile.getInputStream();
+            AliyunOssUtil.upload(newAvatarUrl, inputStream);
+
+            // 删除旧头像
+            if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+                String oldObjectName = AliyunOssUtil.extractObjectNameFromUrl(user.getAvatarUrl());
+                AliyunOssUtil.delete(oldObjectName);
+            }
+
+            // 更新用户头像地址及更新时间
+            user.setAvatarUrl(newAvatarUrl);
+            user.setUpdatedTime(LocalDateTime.now());
+            userRepository.save(user);  // JPA的保存/更新
+
+            return newAvatarUrl;
+        } catch (IOException e) {
+            throw new BizException("文件上传失败");
+        }
     }
 
     @Override

@@ -1,0 +1,206 @@
+2025-06-01T10:22:15.105-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 31048 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-01T10:22:15.106-04:00 DEBUG 31048 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-01T10:22:15.107-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-01T10:22:15.779-04:00  INFO 31048 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01T10:22:15.906-04:00  INFO 31048 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 107 ms. Found 2 JPA repository interfaces.
+2025-06-01T10:22:16.599-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-01T10:22:16.609-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-01T10:22:16.609-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-01T10:22:16.670-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-01T10:22:16.670-04:00  INFO 31048 --- [Fleeting-time-v2] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1528 ms
+2025-06-01T10:22:16.767-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01T10:22:16.802-04:00  INFO 31048 --- [Fleeting-time-v2] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-01T10:22:16.826-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-01T10:22:17.026-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01T10:22:17.046-04:00  INFO 31048 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-01T10:22:17.587-04:00  INFO 31048 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5d9bb69b
+2025-06-01T10:22:17.588-04:00  INFO 31048 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-01T10:22:17.688-04:00  WARN 31048 --- [Fleeting-time-v2] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-01T10:22:18.464-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01T10:22:18.793-04:00  INFO 31048 --- [Fleeting-time-v2] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:22:19.135-04:00  WARN 31048 --- [Fleeting-time-v2] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-01T10:22:19.479-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-01T10:22:19.484-04:00  INFO 31048 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 4.702 seconds (process running for 5.136)
+2025-06-01T10:22:36.578-04:00  INFO 31048 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01T10:22:36.578-04:00  INFO 31048 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-01T10:22:36.579-04:00  INFO 31048 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-01T10:37:32.738-04:00  INFO 31048 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:37:32.742-04:00  INFO 31048 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-01T10:37:33.049-04:00  INFO 31048 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-01T10:37:39.337-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 18692 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-01T10:37:39.338-04:00 DEBUG 18692 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-01T10:37:39.339-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-01T10:37:39.988-04:00  INFO 18692 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01T10:37:40.029-04:00  INFO 18692 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 35 ms. Found 2 JPA repository interfaces.
+2025-06-01T10:37:40.447-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-01T10:37:40.458-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-01T10:37:40.459-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-01T10:37:40.513-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-01T10:37:40.513-04:00  INFO 18692 --- [Fleeting-time-v2] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1122 ms
+2025-06-01T10:37:40.704-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01T10:37:40.764-04:00  INFO 18692 --- [Fleeting-time-v2] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-01T10:37:40.805-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-01T10:37:41.177-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01T10:37:41.207-04:00  INFO 18692 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-01T10:37:41.996-04:00  INFO 18692 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7462ba4b
+2025-06-01T10:37:41.998-04:00  INFO 18692 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-01T10:37:42.122-04:00  WARN 18692 --- [Fleeting-time-v2] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-01T10:37:42.886-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01T10:37:43.222-04:00  INFO 18692 --- [Fleeting-time-v2] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:37:43.547-04:00  WARN 18692 --- [Fleeting-time-v2] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-01T10:37:43.864-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-01T10:37:43.872-04:00  INFO 18692 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 4.996 seconds (process running for 5.575)
+2025-06-01T10:37:47.927-04:00  INFO 18692 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01T10:37:47.927-04:00  INFO 18692 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-01T10:37:47.927-04:00  INFO 18692 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-06-01T10:37:49.354-04:00  INFO 18692 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 901 ms
+2025-06-01T10:48:21.130-04:00  INFO 18692 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:48:21.131-04:00  INFO 18692 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-01T10:48:21.393-04:00  INFO 18692 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-01T10:51:57.792-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 34228 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-01T10:51:57.795-04:00 DEBUG 34228 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-01T10:51:57.796-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-01T10:51:58.406-04:00  INFO 34228 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01T10:51:58.444-04:00  INFO 34228 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 33 ms. Found 2 JPA repository interfaces.
+2025-06-01T10:51:58.765-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-01T10:51:58.773-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-01T10:51:58.773-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-01T10:51:58.819-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-01T10:51:58.820-04:00  INFO 34228 --- [Fleeting-time-v2] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 957 ms
+2025-06-01T10:51:58.925-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01T10:51:59.023-04:00  INFO 34228 --- [Fleeting-time-v2] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-01T10:51:59.059-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-01T10:51:59.483-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01T10:51:59.523-04:00  INFO 34228 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-01T10:52:00.184-04:00  INFO 34228 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6b2e9db2
+2025-06-01T10:52:00.186-04:00  INFO 34228 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-01T10:52:00.320-04:00  WARN 34228 --- [Fleeting-time-v2] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-01T10:52:01.269-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01T10:52:01.590-04:00  INFO 34228 --- [Fleeting-time-v2] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:52:02.072-04:00  WARN 34228 --- [Fleeting-time-v2] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-01T10:52:02.366-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-01T10:52:02.371-04:00  INFO 34228 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 5.086 seconds (process running for 5.819)
+2025-06-01T10:52:02.503-04:00  INFO 34228 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01T10:52:02.503-04:00  INFO 34228 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-01T10:52:02.505-04:00  INFO 34228 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-06-01T10:52:03.174-04:00  INFO 34228 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 348 ms
+2025-06-01T10:52:41.215-04:00 ERROR 34228 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-10] o.w.f.exception.GlobalExceptionHandler   : 未处理的顶层异常: 
+
+org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'avatarFile' is not present.
+	at org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValueInternal(RequestParamMethodArgumentResolver.java:216) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValue(RequestParamMethodArgumentResolver.java:196) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:126) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:224) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:178) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-06-01T10:55:47.686-04:00  INFO 34228 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:55:47.689-04:00  INFO 34228 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-01T10:55:48.012-04:00  INFO 34228 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-01T10:55:52.650-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 22632 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-01T10:55:52.653-04:00 DEBUG 22632 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-01T10:55:52.653-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-01T10:55:53.391-04:00  INFO 22632 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01T10:55:53.457-04:00  INFO 22632 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 2 JPA repository interfaces.
+2025-06-01T10:55:54.286-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-01T10:55:54.332-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-01T10:55:54.332-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-01T10:55:54.402-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-01T10:55:54.403-04:00  INFO 22632 --- [Fleeting-time-v2] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1711 ms
+2025-06-01T10:55:54.541-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01T10:55:54.644-04:00  INFO 22632 --- [Fleeting-time-v2] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-01T10:55:54.710-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-01T10:55:55.061-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01T10:55:55.087-04:00  INFO 22632 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-01T10:55:55.671-04:00  INFO 22632 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@120411ec
+2025-06-01T10:55:55.673-04:00  INFO 22632 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-01T10:55:55.828-04:00  WARN 22632 --- [Fleeting-time-v2] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-01T10:55:56.907-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01T10:55:57.266-04:00  INFO 22632 --- [Fleeting-time-v2] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:55:57.623-04:00  WARN 22632 --- [Fleeting-time-v2] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-01T10:55:57.935-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-01T10:55:57.940-04:00  INFO 22632 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 5.782 seconds (process running for 6.604)
+2025-06-01T10:55:59.223-04:00  INFO 22632 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01T10:55:59.224-04:00  INFO 22632 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-01T10:55:59.226-04:00  INFO 22632 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-06-01T10:56:00.645-04:00  INFO 22632 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 732 ms
+2025-06-01T10:57:51.695-04:00  INFO 22632 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:57:51.697-04:00  INFO 22632 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-01T10:57:52.035-04:00  INFO 22632 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-01T10:57:56.190-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 34376 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-01T10:57:56.192-04:00 DEBUG 34376 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-01T10:57:56.192-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-01T10:57:56.859-04:00  INFO 34376 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01T10:57:56.929-04:00  INFO 34376 --- [Fleeting-time-v2] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 2 JPA repository interfaces.
+2025-06-01T10:57:57.552-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-01T10:57:57.561-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-01T10:57:57.561-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-01T10:57:57.608-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-01T10:57:57.610-04:00  INFO 34376 --- [Fleeting-time-v2] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1380 ms
+2025-06-01T10:57:57.701-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01T10:57:57.736-04:00  INFO 34376 --- [Fleeting-time-v2] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-01T10:57:57.760-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-01T10:57:57.948-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01T10:57:57.974-04:00  INFO 34376 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-01T10:57:58.604-04:00  INFO 34376 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@333a44f2
+2025-06-01T10:57:58.606-04:00  INFO 34376 --- [Fleeting-time-v2] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-01T10:57:58.723-04:00  WARN 34376 --- [Fleeting-time-v2] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-01T10:58:00.114-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01T10:58:00.616-04:00  INFO 34376 --- [Fleeting-time-v2] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T10:58:00.927-04:00  WARN 34376 --- [Fleeting-time-v2] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-01T10:58:01.224-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-01T10:58:01.229-04:00  INFO 34376 --- [Fleeting-time-v2] [main] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 5.335 seconds (process running for 5.735)
+2025-06-01T10:58:09.884-04:00  INFO 34376 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01T10:58:09.885-04:00  INFO 34376 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-01T10:58:09.886-04:00  INFO 34376 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-01T10:58:11.153-04:00  INFO 34376 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 544 ms
+2025-06-01T11:11:32.883-04:00  WARN 34376 --- [Fleeting-time-v2] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m4s71ms747µs).
+2025-06-01T11:38:00.567-04:00  WARN 34376 --- [Fleeting-time-v2] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19m57s594ms314µs700ns).
+2025-06-01T11:39:43.528-04:00  INFO 34376 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01T11:39:43.529-04:00  INFO 34376 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-01T11:39:53.615-04:00  WARN 34376 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.pool.HikariPool        : Timed-out waiting for close connection executor to shutdown
+2025-06-01T11:39:53.615-04:00  INFO 34376 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

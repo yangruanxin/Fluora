@@ -2,9 +2,12 @@ package org.whu.fleetingtime.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.common.Result;
@@ -61,9 +64,10 @@ public class UserController {
     }
 
     // 上传头像
-    @PutMapping("/avatar")
-    public Result<String> updateUserAvatar(@RequestParam MultipartFile avatarFile,
-                                           HttpServletRequest request) {
+    @Operation(summary = "上传用户头像", description = "通过 multipart/form-data 上传头像文件")
+    @PutMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result<String> updateUserAvatar(@Parameter(description = "用户头像", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
+                                               @RequestParam MultipartFile avatarFile,HttpServletRequest request) {
         String userId = (String) request.getAttribute("userId");
         String newAvatarUrl = userService.updateUserAvatar(userId, avatarFile);
         return Result.success("头像上传成功", newAvatarUrl);
