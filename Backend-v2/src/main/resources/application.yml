@@ -14,6 +14,9 @@ spring:
     multipart:
       max-file-size: 32MB
       max-request-size: 512MB
+  devtools:
+    restart:
+      enabled: true
   jpa:
     # 是否在控制台显示Hibernate执行的SQL语句
     show-sql: false

@@ -3,7 +3,7 @@ package org.whu.fleetingtime.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE travel_post SET deleted = true, updated_time = CURRENT_TIMESTAMP WHERE id = ?") // 逻辑删除SQL
+@SoftDelete
 public class TravelPost {
     @Id
     @Column(length = 36)
@@ -48,14 +48,14 @@ public class TravelPost {
     @Column(nullable = false)
     private LocalDateTime updatedTime;
 
-    @Column(nullable = false) // 逻辑删除标记
-    private boolean deleted = Boolean.FALSE;
+    @Column(nullable = false, insertable = false, updatable = false)
+    private boolean deleted = false;
 
     @OneToMany(
             mappedBy = "travelPost", // 指向TravelPostImage实体中名为'travelPost'的字段
             cascade = CascadeType.ALL, // 当TravelPost被（逻辑）删除时，关联的Image也会被级联（逻辑）删除
             orphanRemoval = true,    // 从images集合中移除Image时，该Image会被（逻辑）删除
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @OrderBy("sortOrder ASC")
     private List<TravelPostImage> images = new ArrayList<>();

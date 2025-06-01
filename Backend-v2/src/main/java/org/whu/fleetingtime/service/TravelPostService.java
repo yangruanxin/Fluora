@@ -1,22 +1,25 @@
 package org.whu.fleetingtime.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
-import org.whu.fleetingtime.dto.travelpost.UploadImgResponseDto;
+import org.whu.fleetingtime.dto.PageRequestDTO;
+import org.whu.fleetingtime.dto.PageResponseDTO;
+import org.whu.fleetingtime.dto.TravelPostSummaryDTO;
+import org.whu.fleetingtime.dto.travelpost.*;
 
 import java.io.IOException;
 
 public interface TravelPostService {
-    /**
-     * 上传单个图片文件到OSS，并在数据库中创建 TravelPostImage 记录。
-     *
-     * @param file   上传的文件
-     * @param userId 进行操作的用户ID
-     * @return 包含上传结果的 DTO
-     * @throws IOException 文件处理或上传过程中可能发生的IO异常
-     */
+
     UploadImgResponseDto uploadImage(MultipartFile file, String userId) throws IOException;
 
-    public TravelPostCreateResponseDTO createTravelPost(String userId, TravelPostCreateRequestDTO dto);
+    TravelPostCreateResponseDTO createTravelPost(String userId, TravelPostCreateRequestDTO dto);
+
+    PageResponseDTO<TravelPostSummaryDTO> getMyTravelPosts(String userId, PageRequestDTO pageRequestDTO);
+
+    void deleteTravelPost(String userId, String postId);
+
+    TravelPostUpdateResponseDTO updateTravelPostText(String userId, String postId, TravelPostTextUpdateRequestDTO dto);
+
+    TravelPostImagesUpdateResponseDTO updateTravelPostImages(String userId, String postId, TravelPostImagesUpdateRequestDTO dto);
+
 }

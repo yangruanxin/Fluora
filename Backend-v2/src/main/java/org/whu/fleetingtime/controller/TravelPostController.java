@@ -11,15 +11,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.*;
 import org.whu.fleetingtime.common.Result;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
-import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
-import org.whu.fleetingtime.dto.travelpost.UploadImgRequestDto;
-import org.whu.fleetingtime.dto.travelpost.UploadImgResponseDto;
+import org.whu.fleetingtime.dto.PageRequestDTO;
+import org.whu.fleetingtime.dto.PageResponseDTO;
+import org.whu.fleetingtime.dto.TravelPostSummaryDTO;
+import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.service.TravelPostService;
 
 import java.io.IOException;
@@ -83,5 +82,69 @@ public class TravelPostController {
 
         logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
         return Result.success(responseDto);
+    }
+
+
+    @GetMapping("/me")
+    @Operation(summary = "分页查询当前用户的旅行日志", description = "获取当前登录用户创建的旅行日志列表，支持分页和排序。")
+    public Result<PageResponseDTO<TravelPostSummaryDTO>> getMyTravelPosts(
+            @Valid @ParameterObject PageRequestDTO pageRequestDTO, // 使用 @ParameterObject 让Swagger将DTO字段作为独立参数展示
+            HttpServletRequest request
+    ) {
+        String userId = (String) request.getAttribute("userId");
+
+        logger.info("【查询我的旅行日志】用户 {} 请求分页数据: {}", userId, pageRequestDTO);
+        PageResponseDTO<TravelPostSummaryDTO> responseData = travelPostService.getMyTravelPosts(userId, pageRequestDTO);
+        logger.info("【查询我的旅行日志】用户 {} 查询成功，返回 {} 条记录，总页数 {}", userId, responseData.getNumberOfElements(), responseData.getTotalPages());
+
+        return Result.success(responseData);
+    }
+
+    @DeleteMapping("/{postId}")
+    @Operation(summary = "删除指定的旅行日志", description = "逻辑删除一篇旅行日志及其所有关联图片（包括OSS文件）。")
+    public Result<Void> deleteTravelPost(
+            @PathVariable String postId,
+            HttpServletRequest request
+    ) {
+        String userId = (String) request.getAttribute("userId");
+
+        logger.info("【删除旅行日志接口】用户 {} 请求删除帖子ID: {}", userId, postId);
+        travelPostService.deleteTravelPost(userId, postId); // Service层会处理异常并可能抛出BizException
+        logger.info("【删除旅行日志接口】用户 {} 的帖子ID {} 删除成功", userId, postId);
+        return Result.success("旅行日志删除成功", null); // 成功则返回200 OK 和成功消息
+    }
+
+    @PutMapping("/{postId}")
+    @Operation(summary = "更新旅行日志的文本内容", description = "根据帖子ID更新其标题、内容、地点、时间等信息。")
+    public Result<TravelPostUpdateResponseDTO> updateTravelPostText(
+            @PathVariable String postId,
+            @Valid @org.springframework.web.bind.annotation.RequestBody TravelPostTextUpdateRequestDTO updateRequestDTO,
+            HttpServletRequest request) {
+
+        String userId = (String) request.getAttribute("userId");
+        logger.info("【更新日志文本】用户 {} 请求更新帖子ID: {}, 数据: {}", userId, postId, updateRequestDTO);
+
+        TravelPostUpdateResponseDTO responseDTO = travelPostService.updateTravelPostText(userId, postId, updateRequestDTO);
+
+        logger.info("【更新日志文本】用户 {} 的帖子ID {} 文本内容更新成功", userId, postId);
+        return Result.success("旅行日志文本更新成功", responseDTO);
+    }
+
+    @PutMapping("/{postId}/images")
+    @Operation(summary = "更新旅行日志的关联图片和顺序",
+            description = "接收一个包含图片ID和顺序的完整列表，作为该帖子最终的图片状态。")
+    public Result<TravelPostImagesUpdateResponseDTO> updateTravelPostImages(
+            @PathVariable String postId,
+            @Valid @org.springframework.web.bind.annotation.RequestBody TravelPostImagesUpdateRequestDTO updateImagesRequestDTO,
+            HttpServletRequest request) {
+
+        String userId = (String) request.getAttribute("userId");
+        logger.info("【更新日志图片】用户 {} 请求更新帖子ID: {} 的图片, 新图片列表包含 {} 项",
+                userId, postId, updateImagesRequestDTO.getImages() != null ? updateImagesRequestDTO.getImages().size() : 0);
+
+        TravelPostImagesUpdateResponseDTO responseDTO = travelPostService.updateTravelPostImages(userId, postId, updateImagesRequestDTO);
+
+        logger.info("【更新日志图片】用户 {} 的帖子ID {} 图片更新成功", userId, postId);
+        return Result.success("图片关联和顺序更新成功", responseDTO);
     }
 }

@@ -3,23 +3,23 @@ package org.whu.fleetingtime.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-// 移除了 org.hibernate.annotations.Filter
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE travel_post_image SET deleted = true WHERE id = ?") // 逻辑删除SQL
-// @Table(name = "travel_post_image") // 如果表名不同，请取消注释并修改
+//@SQLDelete(sql = "UPDATE travel_post_image SET deleted = true WHERE id = ?") // 逻辑删除SQL
+@SoftDelete
 public class TravelPostImage {
     @Id
     @Column(length = 36)
     private String id; // UUID
 
     // 多个TravelPostImage对应一个TravelPost
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "travel_post_id") // 外键列定义，允许为null，以便先创建Image再关联Post
     private TravelPost travelPost; // 直接引用TravelPost实体
 
@@ -36,8 +36,12 @@ public class TravelPostImage {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @Column(nullable = false) // 逻辑删除标记
-    private boolean deleted = Boolean.FALSE;
+    @UpdateTimestamp
+    private LocalDateTime updatedTime;
+
+
+    @Column(nullable = false, insertable = false, updatable = false)
+    private boolean deleted = false;
 
     @PrePersist
     protected void onPrePersist() {
