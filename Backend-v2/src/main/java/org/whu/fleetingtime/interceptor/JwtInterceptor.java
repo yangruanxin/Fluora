@@ -15,13 +15,19 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !jwtUtil.validateToken(token)) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
+        String token = authHeader.substring(7); // 截取真正的token部分
+
+        if (!jwtUtil.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
         String userId = jwtUtil.getUserIdFromToken(token);
-        request.setAttribute("userId", userId); // 设置用户信息，供 Controller 使用
+        request.setAttribute("userId", userId);
         return true;
     }
 }

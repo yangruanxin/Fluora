@@ -1,14 +1,14 @@
 package org.whu.fleetingtime.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.whu.fleetingtime.dto.EmailRegisterRequestDTO;
-import org.whu.fleetingtime.dto.LoginRequestDTO;
-import org.whu.fleetingtime.dto.PhoneRegisterRequestDTO;
-import org.whu.fleetingtime.dto.UserRegisterRequestDTO;
+import org.springframework.web.multipart.MultipartFile;
+import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.entity.User;
+import org.whu.fleetingtime.exception.BizException;
 import org.whu.fleetingtime.repository.UserRepository;
 import org.whu.fleetingtime.service.UserService;
 import org.whu.fleetingtime.util.JwtUtil;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String register(UserRegisterRequestDTO dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new RuntimeException("用户名已存在");
+            throw new BizException("用户名已存在");
         }
         User user = new User();
         user.setUsername(dto.getUsername());
@@ -45,9 +45,10 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generateToken(user.getId());
     }
     @Override
+    @Transactional
     public String register_phone(PhoneRegisterRequestDTO dto) {
         if (userRepository.existsByPhone(dto.getPhone())) {
-            throw new RuntimeException("用户已存在,手机号已被注册");
+            throw new BizException("用户已存在,手机号已被注册");
         }
         User user = new User();
         user.setUsername(generateRandomUsername());
@@ -58,9 +59,10 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generateToken(user.getId());
     }
     @Override
+    @Transactional
     public String register_email(EmailRegisterRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("用户已存在,邮箱已被注册");
+            throw new BizException("用户已存在,邮箱已被注册");
         }
         User user = new User();
         user.setUsername(generateRandomUsername());
@@ -84,12 +86,51 @@ public class UserServiceImpl implements UserService {
             user = userRepository.findByUsername(dto.getIdentifier());
         }
         if (user == null) {
-            //throw new BizException(BizExceptionEnum.USER_NOT_FOUND);
+            throw new BizException("用户名错误");
         }
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            //throw new BizException(BizExceptionEnum.PASSWORD_ERROR);
+            throw new BizException("密码错误");
         }
         return jwtUtil.generateToken(user.getId());
+    }
+    @Override
+    @Transactional
+    public UserUpdateResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        BeanUtils.copyProperties(dto, user);
+        User updatedUser = userRepository.save(user);
+
+        UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO();
+        BeanUtils.copyProperties(updatedUser, responseDTO);
+        return responseDTO;
+    }
+
+    @Override
+    @Transactional
+    public String updateUserAvatar(String userId, MultipartFile avatarFile) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        // 模拟头像上传逻辑，这里建议你替换为真实的文件上传逻辑
+        String fakeUrl = "https://cdn.example.com/avatar/" + avatarFile.getOriginalFilename();
+        user.setAvatarUrl(fakeUrl);
+        userRepository.save(user);
+        return fakeUrl;
+    }
+
+    @Override
+    public UserInfoResponseDTO getUserInfoById(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        UserInfoResponseDTO dto = new UserInfoResponseDTO();
+        BeanUtils.copyProperties(user, dto);
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUserAndAllRelatedData(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        userRepository.delete(user);
+        // 可扩展删除其他相关数据，如帖子、评论、好友等
+        return true;
     }
 }
