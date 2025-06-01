@@ -1,6 +1,0 @@
-2025-06-01T00:39:14.769-04:00  WARN 21044 --- [Fleeting-time] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11h24m8s457ms994µs200ns).
-2025-06-01T01:02:54.516-04:00  WARN 21044 --- [Fleeting-time] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m9s369ms707µs600ns).
-2025-06-01T02:10:42.582-04:00  INFO 21044 --- [Fleeting-time] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2025-06-01T02:10:42.593-04:00  INFO 21044 --- [Fleeting-time] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2025-06-01T02:10:42.674-04:00  INFO 21044 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-06-01T02:10:42.678-04:00  INFO 21044 --- [Fleeting-time] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
