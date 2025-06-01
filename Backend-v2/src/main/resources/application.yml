@@ -29,7 +29,18 @@ spring:
         # 对于MySQL 8.x, 可以用 org.hibernate.dialect.MySQLDialect (通常能自动适配)
         # 或者更精确的 org.hibernate.dialect.MySQL8Dialect (如果你用的Hibernate版本支持)
         dialect: org.hibernate.dialect.MySQLDialect
-
+  #email
+  mail:
+    host: smtp.qq.com              # 发送邮件用的 SMTP 服务器地址
+    port: 587                      # SMTP 服务器端口号
+    username: batiluoxuanwan@foxmail.com          # 发件人邮箱（你的邮箱地址）
+    password: yfhuaquyvmjbdiaa       # 邮箱的授权码（不是你的邮箱登录密码）
+    properties:
+      mail:
+        smtp:
+          auth: true               # 启用 SMTP 身份验证
+          starttls:
+            enable: true           # 启用 TLS 安全传输协议（加密邮件通道）
 # 服务器配置
 server:
   address: 127.0.0.1   # 确保只监听本地回环地址
@@ -50,4 +61,19 @@ logging:
     root: INFO
     org.whu.fleetingtime: DEBUG # 如果你想让自己项目下的日志更详细
 #    org.springframework.jdbc.support.JdbcTransactionManager: debug # 事务管理debug信息开关
+
+#Sms
+sms:
+  host: https://gyytz.market.alicloudapi.com
+  path: /sms/smsSend
+  method: POST
+  appcode: 37d5da8d351c43fea103145f51e4d64c
+  smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
+  templateId: 908e94ccf08b4476ba6c876d13f084ad
+#redis
+redis:
+  host: localhost
+  port: 6379
+  password:
+  database: 0
 
