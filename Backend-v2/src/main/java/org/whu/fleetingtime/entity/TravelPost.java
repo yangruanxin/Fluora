@@ -69,12 +69,26 @@ public class TravelPost {
 
     // 维护双向关联的方法
     public void addImage(TravelPostImage image) {
-        images.add(image);
-        image.setTravelPost(this); // 关键：维护双向关联
+        if (image != null) {
+            images.add(image);          // 将图片添加到当前帖子的图片列表中
+            image.setTravelPost(this); // 设置图片实体的travelPost字段指向当前帖子
+            // 关键：当图片被关联到这个帖子时，确保图片的userId与帖子的userId一致
+            // 或者，如果图片上传时已独立记录了上传者userId，这里可以进行校验或根据业务逻辑决定是否覆盖
+            if (this.userId != null) {
+                image.setUserId(this.userId); // 将帖子的userId赋予图片，确保归属一致性
+                // 如果图片的userId是记录“上传者”，而帖子的userId是“帖子所有者”，
+                // 且它们可能不同（比如协作场景），则此逻辑需要调整。
+                // 但对于“私人旅行记录”，它们通常是同一个用户。
+            }
+        }
     }
 
     public void removeImage(TravelPostImage image) {
-        images.remove(image);
-        image.setTravelPost(null); // 关键：解除双向关联
+        if (image != null) {
+            images.remove(image);       // 从当前帖子的图片列表中移除图片
+            image.setTravelPost(null); // 解除图片实体与当前帖子的关联
+            // 注意：此时图片的 userId 仍然保留，因为它记录的是图片的上传者/原始拥有者。
+            // 如果业务逻辑要求解除与帖子的关联后，图片也变为无主（或需要其他处理），则需要额外逻辑。
+        }
     }
 }

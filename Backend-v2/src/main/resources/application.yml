@@ -10,6 +10,7 @@ spring:
   #    username: root
   #    password: H2v4uZwDpBVv4ysHy5wy
   #    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     # 是否在控制台显示Hibernate执行的SQL语句
     show-sql: true

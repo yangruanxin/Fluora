@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.whu.fleetingtime.common.Result;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.whu.fleetingtime.common.Result;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateRequestDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostCreateResponseDTO;
 import org.whu.fleetingtime.dto.travelpost.UploadImgRequestDto;
 import org.whu.fleetingtime.dto.travelpost.UploadImgResponseDto;
-import org.whu.fleetingtime.exception.BizException;
-import org.whu.fleetingtime.interfaces.ITravelPostService;
+import org.whu.fleetingtime.service.TravelPostService;
 
 import java.io.IOException;
 
@@ -30,7 +30,27 @@ import java.io.IOException;
 public class TravelPostController {
     private static final Logger logger = LoggerFactory.getLogger(TravelPostController.class); // 定义 Logger 对象
 
-    private final ITravelPostService travelPostService;
+    private final TravelPostService travelPostService;
+
+    @PostMapping
+    @Operation(summary = "创建新的旅行日志", description = "包含文本内容和关联已上传的图片ID列表。")
+    @ApiResponse(responseCode = "200", description = "旅行日志创建成功",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TravelPostCreateResponseDTO.class)))
+    public Result<TravelPostCreateResponseDTO> createTravelPost(
+            @Valid @org.springframework.web.bind.annotation.RequestBody TravelPostCreateRequestDTO createRequestDTO, // 注意是Spring的@RequestBody
+            HttpServletRequest request) {
+
+        String userId = (String) request.getAttribute("userId"); // 从JWT拦截器注入的userId
+
+        logger.info("【创建旅行日志】用户 {} 尝试创建新的旅行日志, 请求数据: {}", userId, createRequestDTO);
+
+        TravelPostCreateResponseDTO responseDTO = travelPostService.createTravelPost(userId, createRequestDTO);
+
+        logger.info("【创建旅行日志】用户 {} 的旅行日志创建成功, 帖子ID: {}", userId, responseDTO.getPostId());
+        // HTTP 200 Created 通常更适合创建操作，并可选择在Location头中返回新资源的URI
+        return Result.success(responseDTO);
+    }
 
     @PostMapping(value = "/upload/img", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // 明确 consumes 类型
     @Operation(

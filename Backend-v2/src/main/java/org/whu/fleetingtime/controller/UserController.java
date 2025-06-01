@@ -4,21 +4,21 @@ package org.whu.fleetingtime.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.dto.*;
 import org.whu.fleetingtime.service.UserService;
-
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("api/user")
 @Tag(name = "用户接口", description = "")
 public class UserController {
 
-    //private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -53,6 +53,7 @@ public class UserController {
         String token =userService.login(loginRequestDTO);
         return Result.success("登录成功",token);
     }
+
 //    // 更新用户信息
 //    @PutMapping("/info")
 //    public Result<UserUpdateResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO userUpdateRequestDTO,

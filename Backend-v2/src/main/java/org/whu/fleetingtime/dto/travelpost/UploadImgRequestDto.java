@@ -10,4 +10,7 @@ public class UploadImgRequestDto {
     @NotNull
     @Schema(description = "要上传的图片文件", type = "string", format = "binary") // 告诉Swagger这是个文件
     MultipartFile file;
+
+    @Schema(description = "要上传的图片所属的旅行日志的ID", example = "TestPostId")
+    String  travelPostId;
 }
