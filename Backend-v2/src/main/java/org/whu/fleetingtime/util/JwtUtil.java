@@ -1,9 +1,11 @@
 package org.whu.fleetingtime.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,30 +13,45 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    private final long expireTime = 1000 * 60 * 60; // 60min
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 自动生成密钥
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.duration}")
+    private long durationMinutes;
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(String userId) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + durationMinutes * 60 * 1000);
+
         return Jwts.builder()
                 .setSubject(userId)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
-                .signWith(key)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String getUserIdFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject(); // 这里我们用 subject 存 userId
+                .getSubject();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
+        } catch (JwtException ex) {
             return false;
         }
     }

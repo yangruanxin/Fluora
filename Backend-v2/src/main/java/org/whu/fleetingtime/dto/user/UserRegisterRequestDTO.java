@@ -1,4 +1,4 @@
-package org.whu.fleetingtime.dto;
+package org.whu.fleetingtime.dto.user;
 
 
 import lombok.Data;
