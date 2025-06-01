@@ -9,6 +9,8 @@ import com.aliyun.oss.common.comm.SignVersion;
 import com.aliyuncs.exceptions.ClientException;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 
 public class AliyunOssUtil {
 
@@ -41,15 +43,11 @@ public class AliyunOssUtil {
     /**
      * 上传文件到指定路径
      *
-     * @param objectName OSS 包含路径的对象名，例如 user/10001/avatar.png
+     * @param objectName  OSS 包含路径的对象名，例如 user/10001/avatar.png
      * @param inputStream 文件流
-     * @return 公网访问 URL
      */
-    public static String upload(String objectName, InputStream inputStream) {
+    public static void upload(String objectName, InputStream inputStream) {
         ossClient.putObject(BUCKET_NAME, objectName, inputStream);
-        // 拼接访问 URL（默认公开读的前提下）
-        // TODO：后续改成预签名URL
-        return "https://" + BUCKET_NAME + ".oss-" + REGION + ".aliyuncs.com/" + objectName;
     }
 
     /**
@@ -59,6 +57,22 @@ public class AliyunOssUtil {
      */
     public static void delete(String objectName) {
         ossClient.deleteObject(BUCKET_NAME, objectName);
+    }
+
+    /**
+     * 生成阿里云OSS对象的预签名URL (用于GET请求下载/查看)。
+     *
+     * @param objectKey              存储在OSS上的对象的完整路径 (例如: "travel-posts/images/user123/image.jpg")
+     * @param validityDurationMillis URL的有效时长，单位为毫秒 (例如：TimeUnit.HOURS.toMillis(1) 表示1小时)
+     * @return 生成的预签名URL字符串，如果生成失败则返回null（或在内部处理异常）
+     */
+    public static String generatePresignedGetUrl(String objectKey, long validityDurationMillis) {
+        // 计算绝对的过期时间点
+
+        Date expirationTime = new Date(System.currentTimeMillis() + validityDurationMillis);
+        // 生成一个GET请求的预签名URL。
+        URL presignedUrl = ossClient.generatePresignedUrl(BUCKET_NAME, objectKey, expirationTime);
+        return presignedUrl.toString();
     }
 
     // 从url获取路径

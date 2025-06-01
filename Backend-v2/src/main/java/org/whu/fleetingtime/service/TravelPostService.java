@@ -43,10 +43,11 @@ public class TravelPostService implements ITravelPostService {
         logger.debug("【图片上传服务】为用户 {} 的图片 {} 生成的OSS objectKey: {}", userId, originalFilename, objectName);
 
         // 2. 上传文件到OSS
-        String imageUrl;
         logger.info("【图片上传服务】准备将图片 {} (objectKey: {}) 上传到OSS...", originalFilename, objectName);
+        String imageUrl;
         try (InputStream inputStream = file.getInputStream()) {
-            imageUrl = AliyunOssUtil.upload(objectName, inputStream);
+            AliyunOssUtil.upload(objectName, inputStream);
+            imageUrl = AliyunOssUtil.generatePresignedGetUrl(objectName, 5 * 60 * 1000);
             logger.info("【图片上传服务】图片 {} (objectKey: {}) 成功上传到OSS，访问URL: {}", originalFilename, objectName, imageUrl);
         } catch (Exception e) {
             logger.error("【图片上传服务】用户 {} 上传图片 {} (objectKey: {}) 到OSS失败: {}", userId, originalFilename, objectName, e.getMessage(), e);
