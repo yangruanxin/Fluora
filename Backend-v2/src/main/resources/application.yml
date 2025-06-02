@@ -26,7 +26,6 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
-
   #email
   mail:
     host: smtp.qq.com              # 发送邮件用的 SMTP 服务器地址
@@ -39,6 +38,13 @@ spring:
           auth: true               # 启用 SMTP 身份验证
           starttls:
             enable: true           # 启用 TLS 安全传输协议（加密邮件通道）
+  data:
+    redis:
+      host: 121.43.136.251
+      #host: localhost
+      port: 6379
+      password: cloudora100points
+      database: 0
 # 服务器配置
 server:
   address: 127.0.0.1   # 确保只监听本地回环地址
@@ -68,10 +74,5 @@ sms:
   appcode: 37d5da8d351c43fea103145f51e4d64c
   smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
   templateId: 908e94ccf08b4476ba6c876d13f084ad
-#redis
-redis:
-  host: localhost
-  port: 6379
-  password:
-  database: 0
+
 

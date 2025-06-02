@@ -50,9 +50,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public void respondToRequest(String requestId, String action) {
+    public void respondToRequest(String userId, String requestId, String action) {
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new BizException("请求不存在"));
+        // 验证是否是当前用户收到的请求
+        if (!request.getReceiverId().equals(userId)) {
+            throw new BizException("无权处理该好友请求");
+        }
 
         if (!"pending".equals(request.getStatus())) {
             throw new BizException("请求已处理");

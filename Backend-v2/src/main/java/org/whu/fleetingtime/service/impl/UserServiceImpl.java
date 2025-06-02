@@ -155,14 +155,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserUpdateResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
-        if (!StringUtils.hasText(userId)) {
-            throw new BizException("用户ID不能为空");
-        }
-        if (dto == null) {
-            throw new BizException("更新信息不能为空");
-        }
-
+        validateUserUpdateRequestDTO(dto);
         User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        if (dto.getPassword() != null&&!passwordEncoder.matches(dto.getOriginPassword(), user.getPassword()))
+                throw new BizException("密码错误");
         BeanUtils.copyProperties(dto, user);
         try {
             User updatedUser = userRepository.save(user);
@@ -237,7 +233,7 @@ public class UserServiceImpl implements UserService {
 
     //或者有别的校验？
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z\\d]{6,20}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{11}$");
 
