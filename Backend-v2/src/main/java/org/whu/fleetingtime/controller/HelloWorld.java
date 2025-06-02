@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "测试接口", description = "用来进行hello world测试")
 public class HelloWorld {
     @GetMapping("hello")
-    @Operation(summary = "Hello World", description = "你好世界。")
+    @Operation(summary = "Hello World", description = "你好世界！")
      public String hello() {
         return "Hello World!";
     }
