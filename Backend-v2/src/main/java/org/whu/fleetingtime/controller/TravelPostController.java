@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/travel-posts") // 类级别的路径映射
 @RequiredArgsConstructor
+@Tag(name = "旅行日志接口", description = "进行图片的上传，旅行日志的增删改查操作")
 public class TravelPostController {
     private static final Logger logger = LoggerFactory.getLogger(TravelPostController.class); // 定义 Logger 对象
 
