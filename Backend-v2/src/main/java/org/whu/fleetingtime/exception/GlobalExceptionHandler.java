@@ -2,13 +2,20 @@ package org.whu.fleetingtime.exception;
 
 //import io.jsonwebtoken.ExpiredJwtException;
 //import io.jsonwebtoken.JwtException; // MalformedJwtException, SignatureException 等都继承自它
+
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus; // 用于 @ResponseStatus
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException; // 用于处理 @Valid 校验失败
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.whu.fleetingtime.common.Result; // 你的统一返回类
 
 import java.time.format.DateTimeParseException;
@@ -25,6 +32,49 @@ public class GlobalExceptionHandler {
         // 对于业务异常，通常不需要打印完整的堆栈，除非错误码指示了严重问题或用于调试
         logger.warn("业务异常发生: [Code: {}, Message: {}]", e.getCode(), e.getMessage());
         return Result.failure(e.getCode(), e.getMessage());
+    }
+
+    // 专门处理 HttpMessageNotReadableException (HTTP 400 Bad Request) ---
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Result<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request) {
+        String requestPath = request.getRequestURI();
+        // 尝试获取更具体的根本原因，特别是JSON解析相关的错误
+        Throwable cause = e.getCause();
+        logger.warn("请求体JSON解析失败 (400) for path: {} from client: {}. Jackson Error: {}",
+                requestPath, request.getRemoteAddr(), cause.getMessage()); // 日志记录更具体的Jackson错误
+        // 给前端一个相对友好的提示
+        String userMessage = "请检查请求数据的格式或内容是否正确。";
+        return Result.failure(HttpStatus.BAD_REQUEST.value(), userMessage);
+    }
+
+    // 专门处理 NoResourceFoundException (404 Not Found) ---
+    @ExceptionHandler(NoResourceFoundException.class)
+    // @ResponseStatus(HttpStatus.NOT_FOUND) // 如果用ResponseEntity，这个可以省略
+    public Result<?> handleNoResourceFoundException(NoResourceFoundException e, HttpServletRequest request) {
+        String requestUrl = request.getRequestURI();
+        // 对于404错误，通常记录为WARN级别，并包含请求的URL和方法，一般不需要完整堆栈
+        logger.warn("请求的资源未找到 (404): {} {} (Referer: {})",
+                request.getMethod(),
+                requestUrl,
+                request.getHeader("Referer")); // 记录访问来源，有助于分析
+        return Result.failure(HttpStatus.NOT_FOUND.value(), "您访问的页面或资源不存在");
+    }
+
+    // 专门处理 HttpMediaTypeNotSupportedException (415 Unsupported Media Type) ---
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public Result<?> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
+        String requestUrl = request.getRequestURI();
+        MediaType contentType = e.getContentType();
+
+        String message = String.format("请求的内容类型 '%s' 不被支持",
+                contentType != null ? contentType.toString() : "未知/未提供");
+
+        logger.warn("不支持的内容类型 (415): {} {} - Received: {}",
+                request.getMethod(),
+                requestUrl,
+                contentType != null ? contentType.toString() : "N/A"); // 可以记录异常本身，但不一定需要完整堆栈给前端
+
+        return Result.failure(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), message);
     }
 
     // 处理 @Valid 注解参数校验失败的异常
@@ -83,10 +133,10 @@ public class GlobalExceptionHandler {
     }
 
     // 如果需要，可以添加处理 Exception.class 的方法，但通常 RuntimeException 已经能覆盖大部分情况
-     @ExceptionHandler(Exception.class)
-     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-     public Result<?> handleException(Exception e) {
-         logger.error("未处理的顶层异常: ", e);
-         return Result.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器繁忙，请稍后再试");
-     }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result<?> handleException(Exception e) {
+        logger.error("未处理的顶层异常: ", e);
+        return Result.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器繁忙，请稍后再试");
+    }
 }

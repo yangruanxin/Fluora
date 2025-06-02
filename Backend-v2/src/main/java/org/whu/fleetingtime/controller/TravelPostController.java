@@ -13,18 +13,18 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.whu.fleetingtime.common.Result;
 import org.springframework.http.MediaType;
 import org.whu.fleetingtime.dto.PageRequestDTO;
 import org.whu.fleetingtime.dto.PageResponseDTO;
-import org.whu.fleetingtime.dto.TravelPostSummaryDTO;
+import org.whu.fleetingtime.dto.TravelPostDetailsDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostSummaryDTO;
 import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.service.TravelPostService;
 
-import java.io.IOException;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/travel-posts") // 类级别的路径映射
 @RequiredArgsConstructor
@@ -71,7 +71,7 @@ public class TravelPostController {
     )
     public Result<UploadImgResponseDto> uploadImage(
             @Valid UploadImgRequestDto requestDto,
-            HttpServletRequest request) throws IOException {
+            HttpServletRequest request) {
 
         String originalFilename = requestDto.getImage().getOriginalFilename();
         long fileSize = requestDto.getImage().getSize();
@@ -81,7 +81,7 @@ public class TravelPostController {
         String userId = (String) request.getAttribute("userId");
         logger.debug("【图片上传接口】从请求属性中获取到的 userId: {}", userId);
 
-        UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getImage(), userId);
+        UploadImgResponseDto responseDto = travelPostService.uploadImageAndAssociate(requestDto, userId);
 
         logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
         return Result.success(responseDto);
@@ -149,5 +149,23 @@ public class TravelPostController {
 
         logger.info("【更新日志图片】用户 {} 的帖子ID {} 图片更新成功", userId, postId);
         return Result.success("图片关联和顺序更新成功", responseDTO);
+    }
+
+
+    @GetMapping("/{postId}")
+    @Operation(summary = "获取指定ID的旅行日志详情", description = "获取当前用户创建的某一篇特定旅行日志的全部详细信息，包括图片的预签名URL。")
+    public ResponseEntity<Result<TravelPostDetailsDTO>> getMyTravelPostDetailsById(
+            @PathVariable String postId,
+            HttpServletRequest request
+    ) {
+        String userId = (String) request.getAttribute("userId");
+        // if (userId == null || userId.trim().isEmpty()) { ... 处理未授权，理论上拦截器会处理 ... }
+
+        logger.info("【查询帖子详情接口】用户 {} 请求查询帖子ID: {}", userId, postId);
+        TravelPostDetailsDTO responseData = travelPostService.getMyTravelPostDetails(userId, postId);
+        // Service层会处理帖子不存在或无权限的情况并抛出BizException，由GlobalExceptionHandler处理
+
+        logger.info("【查询帖子详情接口】用户 {} 的帖子ID {} 查询成功", userId, postId);
+        return ResponseEntity.ok(Result.success(responseData));
     }
 }
