@@ -14,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.PageRequestDTO;
 import org.whu.fleetingtime.dto.PageResponseDTO;
-import org.whu.fleetingtime.dto.TravelPostSummaryDTO;
+import org.whu.fleetingtime.dto.TravelPostDetailsDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostSummaryDTO;
 import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.entity.TravelPost;
 import org.whu.fleetingtime.entity.TravelPostImage;
@@ -24,7 +25,6 @@ import org.whu.fleetingtime.repository.TravelPostRepository;
 import org.whu.fleetingtime.service.TravelPostService;
 import org.whu.fleetingtime.util.AliyunOssUtil;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -438,6 +438,38 @@ public class TravelPostServiceImpl implements TravelPostService {
     }
 
     @Override
+    public TravelPostDetailsDTO getMyTravelPostDetails(String userId, String postId) {
+        logger.info("【查询帖子详情服务】用户 {} 请求查询帖子ID: {}", userId, postId);
+
+        if (userId == null || userId.isEmpty()) {
+            throw new BizException(401, "用户未认证或认证信息无效");
+        }
+
+        TravelPost post = travelPostRepository.findById(postId)
+                .map(p -> {
+                    if (p.getImages() != null) {
+                        p.getImages().size(); // 访问集合以触发加载
+                    }
+                    return p;
+                })
+                .orElseThrow(() -> {
+                    logger.warn("【查询帖子详情服务】尝试查询不存在的帖子，ID: {}", postId);
+                    return new BizException(404, "旅行日志未找到，ID: " + postId);
+                });
+
+        // 2. 权限校验：确保是帖子所有者
+        if (!post.getUserId().equals(userId)) {
+            logger.warn("【查询帖子详情服务】用户 {} 尝试查询不属于自己的帖子 {} (所有者: {})", userId, postId, post.getUserId());
+            throw new BizException(401, "无权查看此旅行日志");
+        }
+
+        logger.info("【查询帖子详情服务】用户 {} 的帖子 {} 查询成功", userId, postId);
+        // 3. 转换为响应DTO (这个方法内部会处理图片预签名URL)
+        return convertToDetailedResponseDTO(post);
+    }
+
+
+    @Override
     public TravelPostUpdateResponseDTO updateTravelPostText(String userId, String postId, TravelPostTextUpdateRequestDTO dto) {
         logger.info("【更新日志文本服务】用户 {} 开始更新帖子 {} 的文本内容", userId, postId);
 
@@ -519,6 +551,39 @@ public class TravelPostServiceImpl implements TravelPostService {
                 .createdTime(post.getCreatedTime())
                 .updatedTime(post.getUpdatedTime())
                 .imageUrls(imageUrls)
+                .build();
+    }
+
+    // 辅助方法：将TravelPost实体转换为TravelPostResponseDTO
+    // 这个方法之前在updateText接口部分已经定义过，确保它能正确生成预签名URL
+    private TravelPostDetailsDTO convertToDetailedResponseDTO(TravelPost post) {
+        if (post == null) {
+            return null;
+        }
+        List<String> imageUrls = new ArrayList<>();
+        if (post.getImages() != null && !post.getImages().isEmpty()) {
+            // 确保在事务内或images已加载
+            imageUrls = post.getImages().stream()
+                    // 假设 TravelPostImage 有 getObjectKey() 方法
+                    // 并且 AliyunOssUtil.generateUrl 返回的是预签名URL字符串
+                    .map(image -> AliyunOssUtil.generatePresignedGetUrl(image.getObjectKey(), EXPIRED_TIME))
+                    .filter(url -> url != null && !url.isEmpty()) // 过滤掉生成失败或为空的URL
+                    .collect(Collectors.toList());
+        }
+
+        return TravelPostDetailsDTO.builder()
+                .id(post.getId())
+                .userId(post.getUserId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .locationName(post.getLocationName())
+                .latitude(post.getLatitude())
+                .longitude(post.getLongitude())
+                .beginTime(post.getBeginTime())
+                .endTime(post.getEndTime())
+                .createdTime(post.getCreatedTime())
+                .updatedTime(post.getUpdatedTime())
+                .imageUrls(imageUrls) // 这里是预签名URL列表
                 .build();
     }
 }

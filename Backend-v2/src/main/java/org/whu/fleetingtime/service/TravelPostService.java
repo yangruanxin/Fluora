@@ -3,7 +3,8 @@ package org.whu.fleetingtime.service;
 import org.springframework.web.multipart.MultipartFile;
 import org.whu.fleetingtime.dto.PageRequestDTO;
 import org.whu.fleetingtime.dto.PageResponseDTO;
-import org.whu.fleetingtime.dto.TravelPostSummaryDTO;
+import org.whu.fleetingtime.dto.TravelPostDetailsDTO;
+import org.whu.fleetingtime.dto.travelpost.TravelPostSummaryDTO;
 import org.whu.fleetingtime.dto.travelpost.*;
 
 import java.io.IOException;
@@ -22,4 +23,5 @@ public interface TravelPostService {
 
     TravelPostImagesUpdateResponseDTO updateTravelPostImages(String userId, String postId, TravelPostImagesUpdateRequestDTO dto);
 
+    TravelPostDetailsDTO getMyTravelPostDetails(String userId, String postId);
 }
