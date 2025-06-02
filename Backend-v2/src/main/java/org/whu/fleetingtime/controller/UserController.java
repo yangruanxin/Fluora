@@ -14,6 +14,7 @@ import org.whu.fleetingtime.common.Result;
 import org.whu.fleetingtime.dto.user.*;
 import org.whu.fleetingtime.service.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/user")
 @Tag(name = "用户接口", description = "")

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping("api/sms")

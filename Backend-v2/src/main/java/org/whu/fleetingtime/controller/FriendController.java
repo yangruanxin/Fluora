@@ -9,6 +9,7 @@ import org.whu.fleetingtime.service.FriendService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/friend")
 public class FriendController {

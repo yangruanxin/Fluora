@@ -23,6 +23,7 @@ import org.whu.fleetingtime.service.TravelPostService;
 
 import java.io.IOException;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/travel-posts") // 类级别的路径映射
 @RequiredArgsConstructor
