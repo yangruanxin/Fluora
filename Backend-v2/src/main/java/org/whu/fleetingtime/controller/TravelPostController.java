@@ -25,7 +25,6 @@ import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.service.TravelPostService;
 
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/travel-posts") // 类级别的路径映射
 @RequiredArgsConstructor

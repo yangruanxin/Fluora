@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/user/login",
                                     "/api/user/register*",
+                                    "/api/map/**",
                                     "/api/sms/**"); // 放行
     }
 

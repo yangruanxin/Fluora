@@ -29,12 +29,11 @@ public class MapServiceProxyController {
 
     @GetMapping("/reverse-geocode")
     public String reverseGeocode(
-            HttpServletRequest request,
             @RequestParam("lat") String latitude,
             @RequestParam("lng") String longitude
     ) {
         // request url
-        String userId = (String) request.getAttribute("userId");
+        String userId = null;// (String) request.getAttribute("userId");
         logger.info("【全球逆地理编码请求转发】用户：{}, 纬度：{}, 经度：{}", userId, latitude, longitude);
         String url = BAIDU_REVERSE_GEOCODE_URL +
                 "?ak=" + baiduAk +
