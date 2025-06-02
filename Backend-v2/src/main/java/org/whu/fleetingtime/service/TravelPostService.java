@@ -12,6 +12,8 @@ import java.io.IOException;
 public interface TravelPostService {
 
     UploadImgResponseDto uploadImage(MultipartFile file, String userId) throws IOException;
+    // 接收包含可选postId的DTO
+    UploadImgResponseDto uploadImageAndAssociate(UploadImgRequestDto requestDto, String userId);
 
     TravelPostCreateResponseDTO createTravelPost(String userId, TravelPostCreateRequestDTO dto);
 

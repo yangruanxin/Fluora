@@ -24,7 +24,6 @@ import org.whu.fleetingtime.dto.travelpost.TravelPostSummaryDTO;
 import org.whu.fleetingtime.dto.travelpost.*;
 import org.whu.fleetingtime.service.TravelPostService;
 
-import java.io.IOException;
 
 @CrossOrigin
 @RestController
@@ -73,7 +72,7 @@ public class TravelPostController {
     )
     public Result<UploadImgResponseDto> uploadImage(
             @Valid UploadImgRequestDto requestDto,
-            HttpServletRequest request) throws IOException {
+            HttpServletRequest request) {
 
         String originalFilename = requestDto.getImage().getOriginalFilename();
         long fileSize = requestDto.getImage().getSize();
@@ -83,7 +82,7 @@ public class TravelPostController {
         String userId = (String) request.getAttribute("userId");
         logger.debug("【图片上传接口】从请求属性中获取到的 userId: {}", userId);
 
-        UploadImgResponseDto responseDto = travelPostService.uploadImage(requestDto.getImage(), userId);
+        UploadImgResponseDto responseDto = travelPostService.uploadImageAndAssociate(requestDto, userId);
 
         logger.info("【图片上传接口】用户 {} 的图片 {} 上传成功, imageId: {}, 返回 HTTP 200 OK", userId, originalFilename, responseDto.getImageId());
         return Result.success(responseDto);

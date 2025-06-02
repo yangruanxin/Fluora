@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import org.whu.fleetingtime.repository.TravelPostRepository;
 import org.whu.fleetingtime.service.TravelPostService;
 import org.whu.fleetingtime.util.AliyunOssUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -107,6 +109,110 @@ public class TravelPostServiceImpl implements TravelPostService {
         logger.info("【图片上传服务】用户 {} 的图片上传请求处理完成，返回imageId: {}", userId, responseDto.getImageId());
         return responseDto;
     }
+
+    @Override
+    public UploadImgResponseDto uploadImageAndAssociate(UploadImgRequestDto requestDto, String userId) {
+        MultipartFile file = requestDto.getImage();
+        String travelPostId = requestDto.getTravelPostId(); // 获取可选的帖子ID
+
+        // 文件和用户ID的基础校验 (你之前的逻辑)
+        if (file.isEmpty()) {
+            logger.warn("【图片上传服务】用户 {} 上传的文件为空", userId);
+            throw new BizException(HttpStatus.BAD_REQUEST.value(), "上传的文件不能为空");
+        }
+        if (userId == null || userId.trim().isEmpty()) {
+            logger.warn("【图片上传服务】用户ID为空，无法处理图片上传");
+            throw new BizException(HttpStatus.UNAUTHORIZED.value(), "用户认证信息无效");
+        }
+        logger.info("【图片上传服务】开始处理用户 {} 的图片上传，文件名: {}, 可选关联帖子ID: {}",
+                userId, file.getOriginalFilename(), travelPostId);
+
+        // 1. 上传文件到OSS (与之前逻辑类似)
+        String originalFilename = file.getOriginalFilename();
+        String extension = "." + FilenameUtils.getExtension(originalFilename);
+        String objectName = "travel-posts/images/" + userId + "/" + UUID.randomUUID() + extension;
+        String imageUrl; // 用于存储预签名URL
+
+        logger.debug("【图片上传服务】生成OSS objectKey: {}", objectName);
+        logger.info("【图片上传服务】准备上传图片 {} 到OSS...", originalFilename);
+        try (InputStream inputStream = file.getInputStream()) {
+            AliyunOssUtil.upload(objectName, inputStream); // 假设此方法仅上传
+            imageUrl = AliyunOssUtil.generatePresignedGetUrl (objectName, EXPIRED_TIME); // 生成预签名URL
+            if (imageUrl == null) {
+                throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "图片上传成功但生成访问链接失败");
+            }
+            logger.info("【图片上传服务】图片 {} 上传到OSS成功，预签名URL: {}", originalFilename, imageUrl);
+        } catch (IOException ioe) {
+            logger.error("【图片上传服务】处理图片 {} IO错误: {}", originalFilename, ioe.getMessage(), ioe);
+            throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "文件处理失败，请稍后再试");
+        } catch (Exception e) {
+            logger.error("【图片上传服务】上传图片 {} 到OSS失败: {}", originalFilename, e.getMessage(), e);
+            throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "图片上传服务暂时不可用");
+        }
+
+        // 2. 创建TravelPostImage实体
+        TravelPostImage travelPostImage = new TravelPostImage();
+        // ID, createdTime, updatedTime, deleted 由实体注解自动处理
+        travelPostImage.setUserId(userId); // 图片的拥有者是当前上传用户
+        travelPostImage.setObjectKey(objectName);
+
+        // 3. 如果提供了 travelPostId，则尝试关联帖子并设置sortOrder
+        if (travelPostId != null && !travelPostId.trim().isEmpty()) {
+            logger.info("【图片上传服务】检测到提供了帖子ID: {}，尝试关联图片...", travelPostId);
+            TravelPost post = travelPostRepository.findById(travelPostId)
+                    .orElseThrow(() -> {
+                        logger.warn("【图片上传服务】尝试关联图片到帖子失败：未找到帖子ID {}", travelPostId);
+                        AliyunOssUtil.delete(objectName);
+                        return new BizException(HttpStatus.NOT_FOUND.value(), "指定的旅行日志未找到，ID: " + travelPostId);
+                    });
+
+            // 权限校验：确保当前用户是帖子的所有者才能向其添加图片
+            if (!post.getUserId().equals(userId)) {
+                logger.warn("【图片上传服务】用户 {} 尝试向不属于自己的帖子 {} 添加图片 (所有者: {})",
+                        userId, travelPostId, post.getUserId());
+                AliyunOssUtil.delete(objectName);
+                throw new BizException(HttpStatus.UNAUTHORIZED.value(), "无权向此旅行日志添加图片");
+            }
+
+            travelPostImage.setTravelPost(post); // 建立关联
+
+            // 设置 sortOrder：追加到现有图片的末尾
+            // 需要查询当前帖子的最大sortOrder，或者图片数量
+            // 这种方式在高并发下可能有问题（获取最大sortOrder和保存之间可能有其他图片插入）
+            // 更安全的方式可能是数据库序列、或者允许短暂的sortOrder冲突后续调整，或者客户端明确指定顺序。
+            // 简单起见，我们先用基于当前图片数量的方式：
+            long currentImageCount = travelPostImageRepository.countByTravelPost(post); // 需要在Repository中添加此方法
+            travelPostImage.setSortOrder((int) currentImageCount); // 新图片排在最后
+            logger.info("【图片上传服务】图片将关联到帖子 {}，并设置排序为 {}", travelPostId, travelPostImage.getSortOrder());
+        } else {
+            logger.info("【图片上传服务】未提供帖子ID，图片将作为用户 {} 的未分类图片保存", userId);
+            travelPostImage.setSortOrder(0);
+        }
+
+        // 4. 保存TravelPostImage实体到数据库
+        logger.info("【图片上传服务】准备将图片信息 (userId: {}, objectKey: {}, postId: {}) 保存到数据库...",
+                userId, objectName, travelPostImage.getTravelPost() != null ? travelPostImage.getTravelPost().getId() : "N/A");
+        TravelPostImage savedImage;
+        try {
+            savedImage = travelPostImageRepository.saveAndFlush(travelPostImage); // saveAndFlush确保立即获取ID和时间戳
+        } catch (DataAccessException dae) {
+            logger.error("【图片上传服务】保存图片信息 (objectKey: {}) 到数据库失败: {}", objectName, dae.getMessage(), dae);
+            // 应该尝试删除已上传到OSS的文件，作为补偿
+            try { AliyunOssUtil.delete(objectName); }
+            catch (Exception ossEx) { logger.error("【图片上传服务】补偿删除OSS文件 {} 失败", objectName, ossEx); }
+            throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "图片信息保存失败");
+        }
+        logger.info("【图片上传服务】图片信息成功保存到数据库，图片ID: {}, objectKey: {}", savedImage.getId(), savedImage.getObjectKey());
+
+        // 5. 构建并返回响应 DTO
+        return UploadImgResponseDto.builder()
+                .imageId(savedImage.getId())
+                .objectKey(savedImage.getObjectKey())
+                .url(imageUrl) // 预签名URL
+                .createdTime(savedImage.getCreatedTime())
+                .build();
+    }
+
 
     @Override
     @Transactional
