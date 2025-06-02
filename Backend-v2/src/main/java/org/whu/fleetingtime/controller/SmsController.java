@@ -27,7 +27,7 @@ public class SmsController {
     private SmsService smsService;
 
     // 发送短信验证码
-    @GetMapping("/smssend")
+    @PostMapping("/smssend")
     public Result<String> sendSms(@RequestParam String phone) {
         log.info("【短信验证码请求】手机号：{}", phone);
         boolean result = smsService.sendSms(phone);

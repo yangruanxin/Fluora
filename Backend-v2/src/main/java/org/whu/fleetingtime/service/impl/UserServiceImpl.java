@@ -1,7 +1,6 @@
 package org.whu.fleetingtime.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +20,7 @@ import org.whu.fleetingtime.util.AliyunOssUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
             throw new BizException("用户名/邮箱/手机号和密码不能为空");
         }
 
-        User user = null;
+        Optional<User> user = Optional.empty();
         try {
             if (dto.getIdentifier().matches("^\\d{11}$")) {
                 user = userRepository.findByPhone(dto.getIdentifier());
@@ -137,39 +137,94 @@ public class UserServiceImpl implements UserService {
             } else if (dto.getIdentifier().matches("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$")) {
                 user = userRepository.findByEmail(dto.getIdentifier());
             } else {
-                user = userRepository.findByUsername(dto.getIdentifier());
+                user = Optional.ofNullable(userRepository.findByUsername(dto.getIdentifier()));
             }
         } catch (DataAccessException e) {
             log.error("数据库异常", e);
             throw new BizException("服务器异常，请稍后重试");
         }
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new BizException("用户不存在");
         }
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(dto.getPassword(), user.get().getPassword())) {
             throw new BizException("密码错误");
         }
-        return jwtUtil.generateToken(user.getId());
+        return jwtUtil.generateToken(user.get().getId());
     }
     @Override
     @Transactional
     public UserUpdateResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
         validateUserUpdateRequestDTO(dto);
-        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
-        if (dto.getPassword() != null&&!passwordEncoder.matches(dto.getOriginPassword(), user.getPassword()))
-                throw new BizException("密码错误");
-        BeanUtils.copyProperties(dto, user);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BizException("用户不存在"));
+
+        // 如果要修改密码，则验证原密码
+        if (dto.getPassword() != null) {
+            if (dto.getOriginPassword() == null || !passwordEncoder.matches(dto.getOriginPassword(), user.getPassword())) {
+                throw new BizException("原密码错误");
+            }
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
+        // 验证邮箱验证码
+        if (dto.getEmail() != null) {
+            validateCode("email:" + dto.getEmail(), dto.getEmailcode(), "邮箱");
+
+            // 检查邮箱是否被其他账号使用
+            Optional<User> userByEmail = userRepository.findByEmail(dto.getEmail());
+            if (userByEmail.isPresent() && !userByEmail.get().getId().equals(userId)) {
+                throw new BizException("该邮箱已被其他账号绑定");
+            }
+
+            user.setEmail(dto.getEmail());
+        }
+
+        // 验证短信验证码
+        if (dto.getPhone() != null) {
+            validateCode("sms:" + dto.getPhone(), dto.getPhonecode(), "短信");
+            // 检查邮箱是否被其他账号使用
+            Optional<User> userByPhone = userRepository.findByPhone(dto.getPhone());
+            if (userByPhone.isPresent() && !userByPhone.get().getId().equals(userId)) {
+                throw new BizException("该电话已被其他账号绑定");
+            }
+            user.setPhone(dto.getPhone());
+        }
+
+        // 修改用户名（可选）
+        if (dto.getUsername() != null) {
+            if (userRepository.existsByUsername(dto.getUsername())) {
+                throw new BizException("用户名已存在");
+            }
+            user.setUsername(dto.getUsername());
+        }
+
         try {
             User updatedUser = userRepository.save(user);
+
             UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO();
-            BeanUtils.copyProperties(updatedUser, responseDTO);
+            responseDTO.setUsername(updatedUser.getUsername());
+            responseDTO.setEmail(updatedUser.getEmail());
+            responseDTO.setPhone(updatedUser.getPhone());
             return responseDTO;
         } catch (DataAccessException e) {
             log.error("数据库异常", e);
             throw new BizException("更新失败，请稍后重试");
         }
     }
+
+
+    private void validateCode(String key, String providedCode, String type) {
+        String cachedCode = redisTemplate.opsForValue().get(key);
+        if (cachedCode == null) {
+            throw new BizException(type + "验证码已过期");
+        }
+        if (!cachedCode.equals(providedCode)) {
+            throw new BizException(type + "验证码错误");
+        }
+    }
+
 
     @Override
     @Transactional
@@ -209,11 +264,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfoResponseDTO getUserInfoById(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BizException("用户不存在"));
+
+        // 手动将 User 实体类的属性赋值到 UserInfoResponseDTO
         UserInfoResponseDTO dto = new UserInfoResponseDTO();
-        BeanUtils.copyProperties(user, dto);
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhone());
+        dto.setAvatarUrl(user.getAvatarUrl());
+        dto.setCreatedTime(user.getCreatedTime());
+        dto.setUpdatedTime(user.getUpdatedTime());
         return dto;
     }
+
 
     @Override
     @Transactional
@@ -231,7 +296,65 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    //或者有别的校验？
+    @Override
+    @Transactional
+    public void recoverPassword(RecoverPasswordRequestDTO dto) {
+        User user;
+
+        if (dto.getEmail() != null) {
+            String code = redisTemplate.opsForValue().get("email:" + dto.getEmail());
+            if (code == null || !code.equals(dto.getCode())) {
+                throw new BizException("邮箱验证码错误或已过期");
+            }
+            user = userRepository.findByEmail(dto.getEmail())
+                    .orElseThrow(() -> new BizException("邮箱未注册"));
+        } else if (dto.getPhone() != null) {
+            String code = redisTemplate.opsForValue().get("sms:" + dto.getPhone());
+            if (code == null || !code.equals(dto.getCode())) {
+                throw new BizException("短信验证码错误或已过期");
+            }
+            user = userRepository.findByPhone(dto.getPhone())
+                    .orElseThrow(() -> new BizException("手机号未注册"));
+        } else {
+            throw new BizException("邮箱或手机号必须提供一个");
+        }
+        if(passwordEncoder.matches(dto.getNewPassword(), user.getPassword()))
+                throw new BizException("新密码不能与旧密码相同");
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+    }
+    @Override
+    @Transactional
+    public void unbindEmail(String userId, String code) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        if (user.getEmail() == null) throw new BizException("未绑定邮箱");
+
+        String cachedCode = redisTemplate.opsForValue().get("email:" + user.getEmail());
+        if (cachedCode == null || !cachedCode.equals(code)) {
+            throw new BizException("邮箱验证码错误或已过期");
+        }
+
+        user.setEmail(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void unbindPhone(String userId, String code) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
+        if (user.getPhone() == null) throw new BizException("未绑定手机号");
+
+        String cachedCode = redisTemplate.opsForValue().get("sms:" + user.getPhone());
+        if (cachedCode == null || !cachedCode.equals(code)) {
+            throw new BizException("短信验证码错误或已过期");
+        }
+
+        user.setPhone(null);
+        userRepository.save(user);
+    }
+
+
+    //校验？
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z\\d]{6,20}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$");
