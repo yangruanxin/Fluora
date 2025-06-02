@@ -194,8 +194,9 @@
 
         <el-form-item>
           <el-upload
+            multiple
             action="/upload"
-            :show-file-list="false"
+            :show-file-list="true"
             :on-success="handleUploadSuccess"
           >
             <el-button type="primary" :icon="Plus">添加图片</el-button>
@@ -237,8 +238,8 @@
 
           <!-- 保存按钮 -->
           <div class="space-x-2">
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleSave">保存</el-button>
+            <el-button @click="editPostDialogVisible = false">取消</el-button>
+            <el-button type="primary" :loading="isSaving" @click="handleSave">保存</el-button>
           </div>
         </div>
       </template>
@@ -379,6 +380,7 @@ onUnmounted(() => {
   })
 
   const user = ref({
+    id:'',
     username: '',
     bio: '',
     places: 0,
@@ -486,6 +488,7 @@ onUnmounted(() => {
       user.value.places = response.data.data.places ?? 0
       user.value.times = response.data.data.times ?? 0
       user.value.avatarUrl = response.data.data.avatarUrl ?? ''
+      user.value.id = response.data.data.id ?? ''
 
       console.log('加载用户数据',user)
 
@@ -557,6 +560,18 @@ onUnmounted(() => {
     return `${year}.${month}.${day}`; // 拼接成 'YYYY.MM.DD' 格式
   };
 
+  const formatDateTime = (dateStr) => {
+    if (!dateStr) return '';
+
+    if (dateStr.length === 10) {
+      // 只有日期，补时间
+      return dateStr + ' 00:00:00';
+    }
+
+    // 如果有 'T'，用空格替换
+    return dateStr.replace('T', ' ');
+  }
+
   // 点击卡片编辑卡片信息
   const editPostDialogVisible = ref(false)
   const editingPost = ref({
@@ -588,28 +603,82 @@ onUnmounted(() => {
     editPostDialogVisible.value = true;
   };
 
-  const deleteCurrentImage = () => {
-    editingPost.value.imageUrls.splice(currentImageIndex.value, 1)
-    // 防止 currentImageIndex 越界
-    if (currentImageIndex.value >= editingPost.value.imageUrls.length) {
-      currentImageIndex.value = editingPost.value.imageUrls.length - 1
-    }
-  }
+  const newImages = ref([]) // 新增图片文件
+  const deletedImageUrls = ref([]) // 被用户删除的旧图片
 
 
-  // 上一张图片
-  function prevImage() {
-    if (currentImageIndex.value > 0) {
-      currentImageIndex.value--
-    }
+  const handleUploadSuccess = (response, file) => {
+    editingPost.value.imageUrls.push(response.data.url);
+    newImages.value.push(file.raw); // 存原始文件
   }
 
-  // 下一张图片
-  function nextImage() {
-    if (currentImageIndex.value < editingPost.value.imageUrls.length - 1) {
-      currentImageIndex.value++
+  const sortOrders = computed(() =>
+    editingPost.value.imageUrls.map((_, index) => index)
+  )
+
+  const existingImageUrls = computed(() =>
+    editingPost.value.imageUrls.filter(url => !deletedImageUrls.value.includes(url))
+  )
+
+
+
+  const saveEditedImages = async () => {
+    if (!editingPost.value || !editingPost.value.postId) {
+      ElMessage.error('无效的帖子 ID');
+      return;
     }
-  }
+
+    try {
+      const formData = new FormData();
+
+      // 1. 添加新图片文件（newImages 是 File[]）
+      newImages.value.forEach(file => {
+        formData.append('newImages', file);  // 字段名是 newImages[]
+      });
+
+      // 2. 添加被删除的图片 URL（deletedImageUrls 是 string[]）
+      deletedImageUrls.value.forEach(url => {
+        formData.append('deletedImageUrls', url);  // deletedImageUrls[]
+      });
+
+      // 3. 添加保留的图片 URL（existingImageUrls 是 string[]，用于保留顺序）
+      existingImageUrls.value.forEach(url => {
+        formData.append('existingImageUrls', url);  // existingImageUrls[]
+      });
+
+      // 4. 添加排序数组（sortOrders 是 number[]）
+      sortOrders.value.forEach(order => {
+        formData.append('sortOrders', order.toString());  // sortOrders[]
+      });
+
+      console.log('提交图片编辑请求，数据如下：');
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await authAxios.put(
+        `/api/travel-posts/images/${editingPost.value.postId}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      if (response.data.code === 200) {
+        ElMessage.success('图片保存成功');
+        await loadPosts(); // 重新加载帖子以反映新图片顺序
+      } else {
+        console.error('保存失败：', response.data.message);
+        ElMessage.error('保存失败，请检查输入内容');
+      }
+    } catch (err) {
+      console.error('保存图片出错：', err);
+      ElMessage.error('请求出错，请稍后重试');
+    }
+  };
+
 
   const saveEditedPost = async () => {
     try {
@@ -619,13 +688,20 @@ onUnmounted(() => {
       }
 
       const formData = new FormData();
+      formData.append('postId', editingPost.value.postId);
+      formData.append('userId', user.value.id);
       formData.append('title', editingPost.value.title);
       formData.append('content', editingPost.value.content);
       formData.append('locationName', editingPost.value.locationName);
       formData.append('latitude', editingPost.value.latitude);
       formData.append('longitude', editingPost.value.longitude);
-      formData.append('beginTime', formatDate(editingPost.value.beginTime));
-      formData.append('endTime', formatDate(editingPost.value.endTime));
+      formData.append('beginTime',formatDateTime(editingPost.value.beginTime));
+      formData.append('endTime', formatDateTime(editingPost.value.endTime));
+
+      console.log('尝试保存的数据：');
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
       const response = await authAxios.put(
         `/travel-posts/${editingPost.value.postId}`,
@@ -638,6 +714,7 @@ onUnmounted(() => {
       if (response.data.code === 200) {
         console.log('保存成功：', response.data.data);
         ElMessage.success('保存成功');
+        await loadPosts()
         editPostDialogVisible.value = false;
       } else {
         console.error('保存失败：', response.data.message);
@@ -648,6 +725,25 @@ onUnmounted(() => {
       ElMessage.error('请求出错，请稍后重试');
     }
   };
+
+  // 处理保存按钮点击事件
+  const isSaving = ref(false);
+
+  const handleSave = async () => {
+    try {
+      isSaving.value = true;
+      await saveEditedPost();
+      await saveEditedImages();
+      ElMessage.success('所有修改已保存');
+      editPostDialogVisible.value = false;
+    } catch (err) {
+      console.error('保存失败：', err);
+      ElMessage.error('保存失败，请重试');
+    } finally {
+      isSaving.value = false;
+    }
+  };
+
 
   const addMarkers = () => {
     const BMapGL = window.BMapGL;
@@ -714,9 +810,6 @@ onUnmounted(() => {
       deleting.value = false
     }
   }
-
-
-
   </script>
   
   <style lang="css" scoped>

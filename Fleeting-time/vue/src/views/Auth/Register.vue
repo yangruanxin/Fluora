@@ -29,11 +29,25 @@
                     <el-form-item label="手机号" prop="phone">
                         <el-input placeholder="请输入手机号" v-model="RegisterForm.phone" />
                     </el-form-item>
+
                     <el-form-item label="验证码" prop="code">
-                        <el-input v-model="RegisterForm.code" placeholder="短信验证码" style="width: 160px; margin-right: 10px;" />
-                        <el-button @click="sendSmsCode" :loading="smsCaptchaLoading" :disabled="smsCountdown > 0">
+                        <el-row :gutter="5" style="width: 100%;">
+                        <el-col :span="12">
+                            <el-input
+                            v-model="RegisterForm.code"
+                            placeholder="验证码"
+                            />
+                        </el-col>
+                        <el-col :span="12">
+                            <el-button
+                            @click="sendSmsCode"
+                            :loading="smsCaptchaLoading"
+                            :disabled="smsCountdown > 0"
+                            style="width: 100%;">
                             {{ smsCountdown > 0 ? `${smsCountdown}s后重新获取` : '获取验证码' }}
-                        </el-button>
+                            </el-button>
+                        </el-col>
+                        </el-row>
                     </el-form-item>
                 </template>
 
@@ -41,12 +55,24 @@
                     <el-form-item label="邮箱" prop="email">
                         <el-input placeholder="请输入邮箱" v-model="RegisterForm.email" />
                     </el-form-item>
+
                     <el-form-item label="验证码" prop="code">
-                        <el-input v-model="RegisterForm.code" placeholder="输入邮箱验证码" style="width: 160px; margin-right: 10px;" />
-                        <el-button @click="sendEmailCode" :loading="emailCaptchaLoading" :disabled="emailCountdown > 0">
+                    <el-row :gutter="5" style="width: 100%;">
+                        <el-col :span="12">
+                        <el-input v-model="RegisterForm.code" placeholder="验证码" />
+                        </el-col>
+                        <el-col :span="12">
+                        <el-button
+                            @click="sendEmailCode"
+                            :loading="emailCaptchaLoading"
+                            :disabled="emailCountdown > 0"
+                            style="width: 100%;">
                             {{ emailCountdown > 0 ? `${emailCountdown}s后重新获取` : '获取验证码' }}
                         </el-button>
+                        </el-col>
+                    </el-row>
                     </el-form-item>
+
                 </template>
                 
                 <!-- 密码框 -->
