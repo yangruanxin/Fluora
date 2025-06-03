@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private String generateRandomAvatar() {
         Random random = new Random();
         Integer number = random.nextInt(3) + 1; // 生成 0~2，再加 1 得 1~3
-        return "avatar/defaults/d"+number.toString()+".jpg";
+        return "avatar/defaults/d"+number.toString()+".gif";
     }
     public String generateRandomUsername() {
         String username = null;
