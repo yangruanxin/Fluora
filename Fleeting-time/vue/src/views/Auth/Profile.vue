@@ -12,8 +12,6 @@
         <input type="file" ref="fileInput" @change="handleAvatarUpload" style="display: none;" accept="image/*" />
         <!-- 用户名 -->
         <h2 class="username">{{ user.username }}</h2>
-        <!-- 个性签名 -->
-        <p class="bio">{{ user.bio }}</p>
         <!-- 旅行状态 -->
         <div class="stats">
           <!-- 旅行过多少地方 -->
@@ -108,8 +106,11 @@
         <el-form-item label="用户名">
           <el-input v-model="editForm.username" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="个性签名">
-          <el-input v-model="editForm.bio" type="textarea" placeholder="请输入签名" />
+        <el-form-item label="原始密码">
+          <el-input v-model="editForm.originPassword" type="password" placeholder="若要更改密码请输入原始密码以确认" />
+        </el-form-item>
+        <el-form-item label="新密码">
+          <el-input v-model="editForm.password" type="password" placeholder="请输入新密码" />
         </el-form-item>
       </el-form>
 
@@ -195,8 +196,10 @@
         <el-form-item>
           <el-upload
             multiple
-            action="/upload"
+            action="https://121.43.136.251:8080/api/travel-posts/upload/img"
             :show-file-list="true"
+            accept="image/*"
+            :headers="uploadHeaders"
             :on-success="handleUploadSuccess"
           >
             <el-button type="primary" :icon="Plus">添加图片</el-button>
@@ -376,13 +379,13 @@ onUnmounted(() => {
 
   const editForm = ref({
     username: '',
-    bio: ''
+    originPassword:'',
+    password: ''
   })
 
   const user = ref({
     id:'',
     username: '',
-    bio: '',
     places: 0,
     times: 0,
     avatarUrl: '',
@@ -417,7 +420,8 @@ onUnmounted(() => {
         },
       })
       console.log('上传返回结果：', response)
-      user.value.avatarUrl = response.data.data // 后端返回上传后的头像 URL
+      user.value.avatarUrl = response.data.data 
+      // console.log('user.value.avatarUrl:',user.value.avatarUrl)
     } catch (err) {
         console.error('上传头像失败：', err)
       }
@@ -433,18 +437,42 @@ onUnmounted(() => {
   // 保存用户信息
   const saveProfile = async () => {
     try {
-      const response = await authAxios.put('/user/info', {
-        username: editForm.value.username,
-        bio: editForm.value.bio
-      })
-      user.value.username = editForm.value.username
-      user.value.bio = editForm.value.bio
+      const payload = {}
+
+      // 只有修改了用户名才加入 payload
+      if (editForm.value.username !== user.value.username) {
+        payload.username = editForm.value.username
+      }
+
+      // 如果输入了原始密码，说明可能要改密码
+      if (editForm.value.originPassword) {
+        payload.originPassword = editForm.value.originPassword
+
+        // 只有输入了新密码才加入
+        if (editForm.value.password) {
+          payload.password = editForm.value.password
+        }
+      }
+
+      // 如果没有改任何东西，就提示并返回
+      if (Object.keys(payload).length === 0) {
+        ElMessage.info('没有需要更新的内容')
+        return
+      }
+
+      const response = await authAxios.put('/user/info', payload)
+
+      // 更新本地数据（仅同步修改过的字段）
+      if (payload.username) user.value.username = payload.username
+      if (payload.password) user.value.password = payload.password
+
       ElMessage.success('资料更新成功')
       isEditDialogVisible.value = false
     } catch (error) {
       ElMessage.error('更新失败，请重试')
     }
   }
+
 
   // 处理注销账号按钮点击事件
   const showLogoutDialog = () => {
@@ -484,10 +512,9 @@ onUnmounted(() => {
 
       // 把后端返回的数据填充到 user
       user.value.username = response.data.data.username ?? '游客'
-      user.value.bio = response.data.data.bio ?? 'This is a bio...'
       user.value.places = response.data.data.places ?? 0
       user.value.times = response.data.data.times ?? 0
-      user.value.avatarUrl = response.data.data.avatarUrl ?? ''
+      user.value.avatarUrl = response.data.data.avatarUrl ?? '/assets/default.jpg'
       user.value.id = response.data.data.id ?? ''
 
       console.log('加载用户数据',user)
@@ -505,7 +532,7 @@ onUnmounted(() => {
     try {
       const response = await authAxios.get('/travel-posts/me');
       if (response.data.code === 200) {
-        posts.value = response.data.data;
+        posts.value = response.data.data.content;
         posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
         addMarkers();
       } else {
@@ -607,9 +634,17 @@ onUnmounted(() => {
   const deletedImageUrls = ref([]) // 被用户删除的旧图片
 
 
-  const handleUploadSuccess = (response, file) => {
+  // 从 Pinia 获取 token，处理图片上传
+  const authStore = useAuthStore()
+
+  const uploadHeaders = computed(() => {
+    return {
+      Authorization: `Bearer ${authStore.token}`
+    }
+  })
+
+  const handleUploadSuccess = (response) => {
     editingPost.value.imageUrls.push(response.data.url);
-    newImages.value.push(file.raw); // 存原始文件
   }
 
   const sortOrders = computed(() =>

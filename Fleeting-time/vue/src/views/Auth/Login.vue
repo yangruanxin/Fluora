@@ -90,11 +90,11 @@
                 try {
                     let payload = {}
                     if (loginMethod.value === 'account') {
-                        payload = { username: LoginForm.account, password: LoginForm.password }
+                        payload = { identifier: LoginForm.account, password: LoginForm.password }
                     } else if (loginMethod.value === 'phone') {
-                        payload = { phone: LoginForm.phone, password: LoginForm.password }
+                        payload = { identifier: LoginForm.phone, password: LoginForm.password }
                     } else {
-                        payload = { email: LoginForm.email, password: LoginForm.password }
+                        payload = { identifier: LoginForm.email, password: LoginForm.password }
                     }
 
                     const response = await publicAxios.post('user/login', payload, {
@@ -103,7 +103,8 @@
 
                     if (response.data.code === 200) {
                         ElMessage.success('登录成功！')
-                        authStore.login(response.data.data.token)
+                        console.log(response)
+                        authStore.login(response.data.data)
                         router.push('/')
                     } else {
                         ElMessage.error(response.data.message || '登录失败')
