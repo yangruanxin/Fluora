@@ -19,8 +19,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/user/login",
                                     "/api/user/register*",
-                                    "/api/map/**",
-                                    "/api/sms/**"); // 放行
+                                    "/api/sms/**",
+                                    "/api/user/recover-password",// 放行
+                                    "/api/map/**");// 放行
     }
 
     @Override

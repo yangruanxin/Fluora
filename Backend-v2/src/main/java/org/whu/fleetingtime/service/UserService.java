@@ -13,5 +13,7 @@ public interface UserService {
     String updateUserAvatar(String userId, MultipartFile avatarFile);
     UserInfoResponseDTO getUserInfoById(String userId);
     boolean deleteUserAndAllRelatedData(String userId);
-
+    void unbindPhone(String userId, String code);
+    void unbindEmail(String userId, String code);
+    void recoverPassword(RecoverPasswordRequestDTO dto);
 }
