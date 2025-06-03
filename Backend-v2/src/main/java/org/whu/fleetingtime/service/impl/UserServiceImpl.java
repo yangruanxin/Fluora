@@ -238,7 +238,8 @@ public class UserServiceImpl implements UserService {
             if (suffix == null || suffix.isEmpty()) {
                 throw new BizException("文件格式错误");
             }
-            String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
+            //String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
+            String newAvatarUrl = "avatar/defaults/d1.jpg";
             InputStream inputStream = avatarFile.getInputStream();
             AliyunOssUtil.upload(newAvatarUrl, inputStream);
 
