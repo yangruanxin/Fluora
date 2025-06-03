@@ -89,19 +89,19 @@ public class UserController {
         userService.deleteUserAndAllRelatedData(userId);
         return Result.success("账号注销成功");
     }
-    @PostMapping("/recover-password")
+    @PostMapping("/recover_password")
     public Result<String> recoverPassword(@RequestBody RecoverPasswordRequestDTO dto) {
         userService.recoverPassword(dto);
         return Result.success("密码重置成功");
     }
-    @DeleteMapping("/unbind-email")
+    @DeleteMapping("/unbind_email")
     public Result<String> unbindEmail(HttpServletRequest request, @RequestParam String code) {
         String userId = (String) request.getAttribute("userId");
         userService.unbindEmail(userId, code);
         return Result.success("邮箱解绑成功");
     }
 
-    @DeleteMapping("/unbind-phone")
+    @DeleteMapping("/unbind_phone")
     public Result<String> unbindPhone(HttpServletRequest request, @RequestParam String code) {
         String userId = (String) request.getAttribute("userId");
         userService.unbindPhone(userId, code);
