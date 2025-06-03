@@ -243,8 +243,7 @@ public class UserServiceImpl implements UserService {
             AliyunOssUtil.upload(newAvatarUrl, inputStream);
 
             if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-                String oldObjectName = AliyunOssUtil.extractObjectNameFromUrl(user.getAvatarUrl());
-                AliyunOssUtil.delete(oldObjectName);
+                AliyunOssUtil.delete(user.getAvatarUrl());
             }
 
             user.setAvatarUrl(newAvatarUrl);
