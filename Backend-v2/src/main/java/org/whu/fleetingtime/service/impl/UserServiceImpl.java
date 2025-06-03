@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -39,6 +40,11 @@ public class UserServiceImpl implements UserService {
 
     private static final long EXPIRE_TIME = 1000 * 60 * 5; //  5 分钟
 
+    private String generateRandomAvatar() {
+        Random random = new Random();
+        Integer number = random.nextInt(3) + 1; // 生成 0~2，再加 1 得 1~3
+        return "avatar/defaults/d"+number.toString()+".jpg";
+    }
     public String generateRandomUsername() {
         String username = null;
         do {
@@ -58,6 +64,7 @@ public class UserServiceImpl implements UserService {
             }
             User user = new User();
             user.setUsername(dto.getUsername());
+            user.setAvatarUrl(generateRandomAvatar());
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
@@ -85,6 +92,7 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setUsername(generateRandomUsername());
             user.setPhone(dto.getPhone());
+            user.setAvatarUrl(generateRandomAvatar());
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
@@ -116,6 +124,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(generateRandomUsername());
             user.setEmail(dto.getEmail());
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            user.setAvatarUrl(generateRandomAvatar());
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
         } catch (DataAccessException e) {
@@ -243,8 +252,8 @@ public class UserServiceImpl implements UserService {
             if (suffix == null || suffix.isEmpty()) {
                 throw new BizException("文件格式错误");
             }
-            //String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
-            String newAvatarUrl = "avatar/defaults/d1.jpg";
+            String newAvatarUrl = "user/" + userId + "/" + UUID.randomUUID() + "." + suffix;
+            //String newAvatarUrl = "avatar/defaults/d3.jpg";
             InputStream inputStream = avatarFile.getInputStream();
             AliyunOssUtil.upload(newAvatarUrl, inputStream);
 
