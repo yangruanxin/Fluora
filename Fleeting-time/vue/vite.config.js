@@ -20,7 +20,7 @@ export default defineConfig({
     port:8081,
     proxy:{
       '/api':{
-        target:"http://localhost:8080",
+        target:"https://121.43.136.251:8080",
         secure:false,
         changeOrigin:true,
         PathRewrite:{
