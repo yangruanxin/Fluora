@@ -270,9 +270,10 @@ public class UserServiceImpl implements UserService {
     public UserInfoResponseDTO getUserInfoById(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BizException("用户不存在"));
-
-        String presignedUrl = AliyunOssUtil.generatePresignedGetUrl(user.getAvatarUrl(), EXPIRE_TIME);
-
+        String presignedUrl = null;
+        if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+            presignedUrl = AliyunOssUtil.generatePresignedGetUrl(user.getAvatarUrl(), EXPIRE_TIME);
+        }
         // 手动将 User 实体类的属性赋值到 UserInfoResponseDTO
         UserInfoResponseDTO dto = new UserInfoResponseDTO();
         dto.setId(user.getId());
