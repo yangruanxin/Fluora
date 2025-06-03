@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
             throw new BizException("用户不存在");
         }
         if (!passwordEncoder.matches(dto.getPassword(), user.get().getPassword())) {
-            throw new BizException("密码错误");
+            throw new BizException(401, "密码错误");
         }
         return jwtUtil.generateToken(user.get().getId());
     }
