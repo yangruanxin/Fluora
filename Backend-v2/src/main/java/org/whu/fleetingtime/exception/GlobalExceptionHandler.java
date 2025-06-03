@@ -9,9 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus; // 用于 @ResponseStatus
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException; // 用于处理 @Valid 校验失败
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,6 +22,9 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.whu.fleetingtime.common.Result; // 你的统一返回类
 
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice // @ControllerAdvice + @ResponseBody，返回JSON
 public class GlobalExceptionHandler {
@@ -34,6 +40,21 @@ public class GlobalExceptionHandler {
         return Result.failure(e.getCode(), e.getMessage());
     }
 
+    // 专门处理 MissingServletRequestParameterException (HTTP 400 Bad Request) ---
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Result<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
+        String parameterName = e.getParameterName();
+        String parameterType = e.getParameterType();
+        String requestPath = request.getRequestURI();
+
+        String message = String.format("请求处理失败：必需的请求参数 '%s' (类型: %s) 未提供。", parameterName, parameterType);
+
+        logger.warn("必需的请求参数缺失 (400) for path: {} from client: {}. Parameter name: '{}', Type: '{}'. Details: {}",
+                requestPath, request.getRemoteAddr(), parameterName, parameterType, e.getMessage());
+
+        return Result.failure(HttpStatus.BAD_REQUEST.value(), message);
+    }
+
     // 专门处理 HttpMessageNotReadableException (HTTP 400 Bad Request) ---
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request) {
@@ -45,6 +66,16 @@ public class GlobalExceptionHandler {
         // 给前端一个相对友好的提示
         String userMessage = "请检查请求数据的格式或内容是否正确。";
         return Result.failure(HttpStatus.BAD_REQUEST.value(), userMessage);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Result<?>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+        String requestUrl = request.getRequestURI();
+        String actualMethod = e.getMethod();
+        Set<String> supportedMethods = e.getSupportedHttpMethods() != null ? e.getSupportedHttpMethods().stream().map(Objects::toString).collect(Collectors.toSet()) : null;
+        String message = String.format("请求方法 '%s' 不被支持。路径 '%s' 支持的方法有: %s", actualMethod, requestUrl, supportedMethods);
+        logger.warn("不支持的HTTP方法 (405): {} {} - Supported: {}", actualMethod, requestUrl, supportedMethods);
+        return new ResponseEntity<>(Result.failure(HttpStatus.METHOD_NOT_ALLOWED.value(), message), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     // 专门处理 NoResourceFoundException (404 Not Found) ---
