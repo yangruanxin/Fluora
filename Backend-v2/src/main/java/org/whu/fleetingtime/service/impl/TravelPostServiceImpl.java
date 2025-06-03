@@ -625,8 +625,11 @@ public class TravelPostServiceImpl implements TravelPostService {
         return TravelPostSummaryDTO.builder()
                 .id(post.getId())
                 .title(post.getTitle())
+                .longitude(post.getLongitude())
+                .latitude(post.getLatitude())
                 .locationName(post.getLocationName())
                 .beginTime(post.getBeginTime())
+                .endTime(post.getEndTime())
                 .createdTime(post.getCreatedTime())
                 .firstImageUrl(firstImageUrl)
                 .build();
