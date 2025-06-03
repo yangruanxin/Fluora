@@ -59,6 +59,7 @@ import FileSubmit from "@/components/FileSubmit.vue";
 import {useRouter} from "vue-router";
 import { ref,onMounted } from "vue";
 import { authAxios } from '@/utils/request'
+import { useAuthStore } from '@/stores/auth'
 
 const router=useRouter();
 
@@ -123,11 +124,20 @@ const initMap = (BMapGL) => {
   console.log("地图初始化完成，准备绑定点击事件");
 
   map.addEventListener("click", (e) => {
-    console.log("点击了地图", e.point);
     const lng = e.latlng.lng;
     const lat = e.latlng.lat;
+    console.log("点击位置：", lat, lng);
+    const authStore = useAuthStore()
+    console.log('当前 token:', authStore.token)
+    
 
-    fetch(`https://121.43.136.251:8080/api/map/reverse-geocode?lat=${lat}&lng=${lng}`)
+    fetch(`https://121.43.136.251:8080/api/map/reverse-geocode?lat=${lat}&lng=${lng}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Content-Type': 'application/json'
+      }
+    })
       .then(res => res.text())
       .then(text => {
         console.log("API响应文本：", text);

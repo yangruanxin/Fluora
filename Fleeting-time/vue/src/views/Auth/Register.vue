@@ -93,6 +93,19 @@
 
         </div>
     </div>
+
+
+    <!-- 图形验证码弹窗 -->
+    <el-dialog v-model="showCaptchaDialog" title="请输入图形验证码">
+        <div style="display: flex; align-items: center;">
+            <el-input v-model="captchaCode" placeholder="图形验证码" style="flex: 1; margin-right: 10px;" />
+            <img :src="captchaImg" @click="fetchCaptcha" style="cursor: pointer; height: 40px;" />
+        </div>
+        <template #footer>
+            <el-button type="primary" @click="verifyCaptchaAndSendSms">确认</el-button>
+        </template>
+    </el-dialog>
+
 </template>
 
 <script setup>
@@ -141,36 +154,126 @@
         ]
     }
 
+    const showCaptchaDialog = ref(false)
+    const captchaImg = ref('')
+    const captchaId = ref('')
+    const captchaCode = ref('')
+
+    const fetchCaptcha = async () => {
+        try {
+            const res = await publicAxios.get('/sms/captchasend')
+            captchaImg.value = res.data.data.img
+            captchaId.value = res.data.data.uuid
+            captchaCode.value = ''
+            showCaptchaDialog.value = true
+        } catch (err) {
+            ElMessage.error('获取图形验证码失败')
+        }
+    }
+
+    const verifyCaptchaAndSendSms = async () => {
+        if (!captchaCode.value) {
+            ElMessage.warning('请输入图形验证码')
+            return
+        }
+
+        try {
+            await publicAxios.post('/sms/validatecaptcha', {
+                uuid: captchaId.value,
+                code: captchaCode.value
+            })
+
+            // 图形验证码通过后，发送短信验证码
+            showCaptchaDialog.value = false
+            if (captchaContext.value === 'sms') {
+                await actuallySendSmsCode()
+            } else if (captchaContext.value === 'email') {
+                await actuallySendEmailCode()
+            }
+        } catch (err) {
+            ElMessage.error(err.response?.data?.message || '图形验证码错误')
+            fetchCaptcha() // 重新获取一张
+        }
+    }
+
+
+
     const smsCaptchaLoading = ref(false)
     const emailCaptchaLoading = ref(false)
     const smsCountdown = ref(0)
     const emailCountdown = ref(0)
+    const captchaContext = ref('')  // 'sms' or 'email'
 
-    const sendSmsCode = () => {
+    const sendSmsCode = async () => {
+        if (!RegisterForm.phone) {
+            ElMessage.warning('请先输入手机号')
+            return
+        }
+        
+        captchaContext.value='sms'
+        await fetchCaptcha()
+    }
+
+
+    const actuallySendSmsCode = async () => {
         smsCaptchaLoading.value = true
-        setTimeout(() => {
+        try {
+            await publicAxios.post(`/sms/smssend?phone=${RegisterForm.phone}`)
+
             smsCaptchaLoading.value = false
             smsCountdown.value = 60
             const timer = setInterval(() => {
                 smsCountdown.value--
                 if (smsCountdown.value <= 0) clearInterval(timer)
             }, 1000)
+
             ElMessage.success('验证码已发送')
-        }, 1000)
+        } catch (err) {
+            smsCaptchaLoading.value = false
+            ElMessage.error(err.response?.data?.message || '验证码发送失败')
+        }
     }
 
-    const sendEmailCode = () => {
+    const sendEmailCode = async () => {
+        if (!RegisterForm.email) {
+            ElMessage.warning('请先输入邮箱')
+            return
+        }
+
+        captchaContext.value = 'email'
+        await fetchCaptcha()
+    }
+
+
+
+    const actuallySendEmailCode = async () => {
         emailCaptchaLoading.value = true
-        setTimeout(() => {
+        try {
+            await publicAxios.post('/sms/emailsend', {
+                email: RegisterForm.email
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+
             emailCaptchaLoading.value = false
             emailCountdown.value = 60
             const timer = setInterval(() => {
                 emailCountdown.value--
                 if (emailCountdown.value <= 0) clearInterval(timer)
             }, 1000)
+
             ElMessage.success('验证码已发送')
-        }, 1000)
+
+        } catch (err) {
+            emailCaptchaLoading.value = false
+            ElMessage.error(err.response?.data?.message || '验证码发送失败')
+        }
     }
+
+
+
 
     //处理取消按钮点击事件
     const handleCancel = () => {
@@ -178,50 +281,48 @@
 
     }
 
-    const handleRegister = () => {
-        const refMap = {
-            account: accountFormRef,
-            email: emailFormRef,
-            phone: phoneFormRef
-        }
+    const handleRegister = async () => {
+        if (!ruleFormRef.value) return;
 
-        refMap[activeTab.value].value.validate(async (valid) => {
-            if (valid) {
-                try {
-                    let payload = {
-                        password: RegisterForm.password,
-                        confirmPassword: RegisterForm.confirmPassword
-                    }
+        ruleFormRef.value.validate(async (valid) => {
+            if (!valid) return ElMessage.error('请填写完整信息');
 
-                    if (registerMethod.value === 'account') {
-                        payload.username = RegisterForm.account
-                    } else if (registerMethod.value === 'phone') {
-                        payload.phone = RegisterForm.phone
-                        payload.code = RegisterForm.code
-                    } else if (registerMethod.value === 'email') {
-                        payload.email = RegisterForm.email
-                        payload.code = RegisterForm.code
-                    }
-                    // 使用 publicAxios 发起注册请求
-                    const response = await publicAxios.post('/user/register', {
-                        username: RegisterForm.account,
-                        password: RegisterForm.password
-                    }) 
-                    console.log('返回数据内容：', response.data)
-
-                    if (response.data.code === 200) {
-                        ElMessage.success('注册成功！')
-                        router.push('/login') // 注册成功跳转登录页
-                    } else {
-                        ElMessage.error(response.data.message || '注册失败')
-                    }
-                } catch (error) {
-                    console.error('请求出错：', error)
-                    ElMessage.error('网络错误或服务器异常')
+            try {
+                const payload  = {
+                    password: RegisterForm.password
                 }
+
+                let apiUrl = '/user/register' // 默认是账号注册
+
+                if (registerMethod.value === 'account') {
+                    payload.username = RegisterForm.account
+                } else if (registerMethod.value === 'phone') {
+                    payload.phone = RegisterForm.phone
+                    payload.code = RegisterForm.code
+                    apiUrl = '/user/register_phone'
+                } else if (registerMethod.value === 'email') {
+                    payload.email = RegisterForm.email
+                    payload.code = RegisterForm.code
+                    apiUrl = '/user/register_email'
+                }
+
+                const response = await publicAxios.post(apiUrl, payload)
+
+                console.log('返回数据内容：', response.data)
+
+                if (response.data.code === 200) {
+                    ElMessage.success('注册成功！')
+                    router.push('/login')
+                } else {
+                    ElMessage.error(response.data.message || '注册失败')
+                }
+            } catch (error) {
+                console.error('请求出错：', error)
+                ElMessage.error('网络错误或服务器异常')
             }
         })
     }
+
 
 
 

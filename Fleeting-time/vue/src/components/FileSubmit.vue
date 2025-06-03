@@ -187,6 +187,7 @@ import { ElImage } from 'element-plus';
 import { defineEmits } from 'vue'
 import draggable from "vuedraggable";
 import { Close } from '@element-plus/icons-vue'
+ import { authAxios } from '@/utils/request'
 
 
 const { URL } = window;
