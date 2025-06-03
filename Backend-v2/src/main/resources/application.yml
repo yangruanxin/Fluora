@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: Fleeting-time-v2
+  datasource:
+#    url: jdbc:mysql://mysql.sqlpub.com:3306/fleeting_time
+#    username: raitocc
+#    password: WTZor9EQYQpUS2Y4
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-cn-9me4964qo001148o.rwlb.rds.aliyuncs.com:3306/fleeting_time
+    username: root
+    password: H2v4uZwDpBVv4ysHy5wy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 32MB
+      max-request-size: 512MB
+  devtools:
+    restart:
+      enabled: true
+  jpa:
+    # 是否在控制台显示Hibernate执行的SQL语句
+    show-sql: false
+    hibernate:
+      ddl-auto: update # 开发和测试阶段，'update' 比较方便
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  #email
+  mail:
+    host: smtp.qq.com              # 发送邮件用的 SMTP 服务器地址
+    port: 587                      # SMTP 服务器端口号
+    username: batiluoxuanwan@foxmail.com          # 发件人邮箱（你的邮箱地址）
+    password: yfhuaquyvmjbdiaa       # 邮箱的授权码（不是你的邮箱登录密码）
+    properties:
+      mail:
+        smtp:
+          auth: true               # 启用 SMTP 身份验证
+          starttls:
+            enable: true           # 启用 TLS 安全传输协议（加密邮件通道）
+  data:
+    redis:
+      host: 121.43.136.251
+      #host: localhost
+      port: 6379
+      password: cloudora100points
+      database: 0
+# 服务器配置
+server:
+  address: 127.0.0.1   # 确保只监听本地回环地址
+  port: 8081           # 将 Spring Boot 应用的监听端口改为 8081 (HTTP)
+
+jwt:
+  secret: YourSuperSecretKeyForJwtMustBeLongEnough123!
+  duration: 1440
+
+baidu:
+  map:
+    ak: cX3Lu6F9cEcRr7M2K80G0Di49wvz4hY0
+
+logging:
+  file:
+    name: logs/fleeting-time.log # 主日志文件路径
+  level:
+    root: INFO
+    org.whu.fleetingtime: DEBUG # 如果你想让自己项目下的日志更详细
+#    org.springframework.jdbc.support.JdbcTransactionManager: debug # 事务管理debug信息开关
+
+#Sms
+sms:
+  host: https://gyytz.market.alicloudapi.com
+  path: /sms/smsSend
+  method: POST
+  appcode: 37d5da8d351c43fea103145f51e4d64c
+  smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
+  templateId: 908e94ccf08b4476ba6c876d13f084ad
+
+

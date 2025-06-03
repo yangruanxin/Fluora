@@ -2,6 +2,7 @@ package org.whu.fleetingtime.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.whu.fleetingtime.pojo.FriendRequest;
 import org.whu.fleetingtime.pojo.UserFriend;
 
@@ -39,4 +40,8 @@ public interface FriendMapper {
     // 删除好友关系（双向都要删）
     int deleteUserFriend(@Param("userId") Long userId,
                          @Param("friendId") Long friendId);
+
+    // 查询用户好友请求列表
+    @Select("SELECT * FROM friend_requests WHERE receiver_id = #{userId}")
+    List<FriendRequest> getReceivedRequests(@Param("userId") Long userId);
 }

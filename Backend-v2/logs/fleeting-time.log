@@ -1,0 +1,571 @@
+2025-06-03T15:18:19.330+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 24448 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T15:18:19.332+08:00 DEBUG 24448 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T15:18:19.332+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T15:18:19.400+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T15:18:19.401+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T15:18:20.411+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T15:18:20.413+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T15:18:20.610+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 185 ms. Found 5 JPA repository interfaces.
+2025-06-03T15:18:20.656+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T15:18:20.657+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T15:18:20.680+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T15:18:20.680+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T15:18:20.682+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T15:18:20.684+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T15:18:20.684+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T15:18:20.684+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2025-06-03T15:18:21.493+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T15:18:21.501+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T15:18:21.501+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T15:18:21.567+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T15:18:21.567+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2166 ms
+2025-06-03T15:18:21.786+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T15:18:21.864+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T15:18:21.897+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T15:18:22.283+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T15:18:22.307+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T15:18:23.007+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@166ec1cc
+2025-06-03T15:18:23.007+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T15:18:23.240+08:00  WARN 24448 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T15:18:24.662+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T15:18:25.044+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T15:18:26.693+08:00  WARN 24448 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T15:18:27.887+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T15:18:27.965+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T15:18:27.983+08:00  INFO 24448 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 9.099 seconds (process running for 10.072)
+2025-06-03T15:19:20.182+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T15:19:20.182+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T15:19:20.182+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-06-03T15:19:21.609+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 733 ms
+2025-06-03T15:19:39.751+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T15:20:12.734+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-9] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T15:23:00.073+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T15:23:00.114+08:00  INFO 24448 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T15:57:30.400+08:00  WARN 24448 --- [Fleeting-time-v2] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13m6s752ms795µs500ns).
+2025-06-03T16:06:07.668+08:00  INFO 24448 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:06:07.672+08:00  INFO 24448 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:06:07.675+08:00  INFO 24448 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-03T16:06:14.179+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 24832 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T16:06:14.180+08:00 DEBUG 24832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T16:06:14.181+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T16:06:14.244+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T16:06:14.244+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T16:06:15.213+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:06:15.215+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T16:06:15.377+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 154 ms. Found 5 JPA repository interfaces.
+2025-06-03T16:06:15.408+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:06:15.409+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T16:06:15.441+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:06:15.443+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:06:15.445+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:06:15.446+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:06:15.446+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:06:15.447+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
+2025-06-03T16:06:16.152+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T16:06:16.170+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T16:06:16.171+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T16:06:16.269+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T16:06:16.270+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2025 ms
+2025-06-03T16:06:16.525+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T16:06:16.611+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T16:06:16.661+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T16:06:17.076+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T16:06:17.106+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T16:06:17.529+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@461615f4
+2025-06-03T16:06:17.533+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T16:06:17.689+08:00  WARN 24832 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T16:06:19.346+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T16:06:19.691+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:06:21.030+08:00  WARN 24832 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T16:06:21.860+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T16:06:21.904+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T16:06:21.915+08:00  INFO 24832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 8.183 seconds (process running for 9.025)
+2025-06-03T16:06:23.388+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T16:06:23.388+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T16:06:23.389+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-03T16:06:24.648+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 690 ms
+2025-06-03T16:06:58.251+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:06:58.285+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:07:00.710+08:00 ERROR 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.service.impl.UserServiceImpl       : 文件上传未知异常
+
+java.lang.NullPointerException: 参数"key"为空指针。
+	at com.aliyun.oss.common.utils.CodingUtils.assertParameterNotNull(CodingUtils.java:35) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.internal.OSSObjectOperation.deleteObject(OSSObjectOperation.java:493) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:761) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:756) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at org.whu.fleetingtime.util.AliyunOssUtil.delete(AliyunOssUtil.java:60) ~[classes/:na]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.updateUserAvatar(UserServiceImpl.java:248) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:392) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl$$SpringCGLIB$$0.updateUserAvatar(<generated>) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.updateUserAvatar(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-06-03T16:07:00.783+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.exception.GlobalExceptionHandler   : 业务异常发生: [Code: 400, Message: 文件上传失败，请稍后重试]
+2025-06-03T16:07:00.798+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.whu.fleetingtime.exception.BizException: 文件上传失败，请稍后重试]
+2025-06-03T16:07:05.009+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:07:05.009+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:07:05.573+08:00 ERROR 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.service.impl.UserServiceImpl       : 文件上传未知异常
+
+java.lang.NullPointerException: 参数"key"为空指针。
+	at com.aliyun.oss.common.utils.CodingUtils.assertParameterNotNull(CodingUtils.java:35) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.internal.OSSObjectOperation.deleteObject(OSSObjectOperation.java:493) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:761) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:756) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at org.whu.fleetingtime.util.AliyunOssUtil.delete(AliyunOssUtil.java:60) ~[classes/:na]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.updateUserAvatar(UserServiceImpl.java:248) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:392) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl$$SpringCGLIB$$0.updateUserAvatar(<generated>) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.updateUserAvatar(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-06-03T16:07:05.631+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.exception.GlobalExceptionHandler   : 业务异常发生: [Code: 400, Message: 文件上传失败，请稍后重试]
+2025-06-03T16:07:05.631+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.whu.fleetingtime.exception.BizException: 文件上传失败，请稍后重试]
+2025-06-03T16:07:15.672+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:07:15.682+08:00  INFO 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:07:16.250+08:00 ERROR 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] o.w.f.service.impl.UserServiceImpl       : 文件上传未知异常
+
+java.lang.NullPointerException: 参数"key"为空指针。
+	at com.aliyun.oss.common.utils.CodingUtils.assertParameterNotNull(CodingUtils.java:35) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.internal.OSSObjectOperation.deleteObject(OSSObjectOperation.java:493) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:761) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:756) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at org.whu.fleetingtime.util.AliyunOssUtil.delete(AliyunOssUtil.java:60) ~[classes/:na]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.updateUserAvatar(UserServiceImpl.java:248) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:392) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl$$SpringCGLIB$$0.updateUserAvatar(<generated>) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.updateUserAvatar(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-06-03T16:07:16.316+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] o.w.f.exception.GlobalExceptionHandler   : 业务异常发生: [Code: 400, Message: 文件上传失败，请稍后重试]
+2025-06-03T16:07:16.316+08:00  WARN 24832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.whu.fleetingtime.exception.BizException: 文件上传失败，请稍后重试]
+2025-06-03T16:09:30.216+08:00  INFO 24832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:09:30.222+08:00  INFO 24832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:09:30.231+08:00  INFO 24832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-03T16:09:33.014+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 28196 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T16:09:33.022+08:00 DEBUG 28196 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T16:09:33.023+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T16:09:33.081+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T16:09:33.081+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T16:09:34.024+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:09:34.026+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T16:09:34.214+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 181 ms. Found 5 JPA repository interfaces.
+2025-06-03T16:09:34.240+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:09:34.242+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T16:09:34.265+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:09:34.265+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:09:34.268+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:09:34.268+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:09:34.269+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:09:34.269+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
+2025-06-03T16:09:34.912+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T16:09:34.923+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T16:09:34.924+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T16:09:35.004+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T16:09:35.005+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1922 ms
+2025-06-03T16:09:35.157+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T16:09:35.213+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T16:09:35.255+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T16:09:35.580+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T16:09:35.607+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T16:09:36.036+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@461615f4
+2025-06-03T16:09:36.039+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T16:09:36.157+08:00  WARN 28196 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T16:09:37.438+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T16:09:37.714+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:09:38.755+08:00  WARN 28196 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T16:09:39.523+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T16:09:39.586+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T16:09:39.603+08:00  INFO 28196 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 7.008 seconds (process running for 8.032)
+2025-06-03T16:09:42.467+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T16:09:42.468+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T16:09:42.470+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-03T16:09:44.441+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 1431 ms
+2025-06-03T16:10:11.515+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:10:11.549+08:00  INFO 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:10:13.453+08:00 ERROR 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.w.f.service.impl.UserServiceImpl       : 文件上传未知异常
+
+java.lang.NullPointerException: 参数"key"为空指针。
+	at com.aliyun.oss.common.utils.CodingUtils.assertParameterNotNull(CodingUtils.java:35) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.internal.OSSObjectOperation.deleteObject(OSSObjectOperation.java:493) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:761) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at com.aliyun.oss.OSSClient.deleteObject(OSSClient.java:756) ~[aliyun-sdk-oss-3.17.4.jar:na]
+	at org.whu.fleetingtime.util.AliyunOssUtil.delete(AliyunOssUtil.java:60) ~[classes/:na]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl.updateUserAvatar(UserServiceImpl.java:248) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:392) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.8.jar:6.1.8]
+	at org.whu.fleetingtime.service.impl.UserServiceImpl$$SpringCGLIB$$0.updateUserAvatar(<generated>) ~[classes/:na]
+	at org.whu.fleetingtime.controller.UserController.updateUserAvatar(UserController.java:73) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.8.jar:6.1.8]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.24.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.8.jar:6.1.8]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.24.jar:10.1.24]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+2025-06-03T16:10:13.545+08:00  WARN 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.w.f.exception.GlobalExceptionHandler   : 业务异常发生: [Code: 400, Message: 文件上传失败，请稍后重试]
+2025-06-03T16:10:13.545+08:00  WARN 28196 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.whu.fleetingtime.exception.BizException: 文件上传失败，请稍后重试]
+2025-06-03T16:11:45.408+08:00  INFO 28196 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:11:45.412+08:00  INFO 28196 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:11:45.419+08:00  INFO 28196 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-03T16:14:39.024+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 24944 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T16:14:39.033+08:00 DEBUG 24944 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T16:14:39.034+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T16:14:39.089+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T16:14:39.090+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T16:14:40.004+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:14:40.005+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T16:14:40.171+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 155 ms. Found 5 JPA repository interfaces.
+2025-06-03T16:14:40.192+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:14:40.194+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T16:14:40.210+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:14:40.211+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:14:40.213+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:14:40.213+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:14:40.214+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:14:40.214+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-03T16:14:40.863+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T16:14:40.878+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T16:14:40.879+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T16:14:40.959+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T16:14:40.959+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1869 ms
+2025-06-03T16:14:41.138+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T16:14:41.214+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T16:14:41.265+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T16:14:41.642+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T16:14:41.694+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T16:14:42.167+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@658096ea
+2025-06-03T16:14:42.169+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T16:14:42.304+08:00  WARN 24944 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T16:14:43.543+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T16:14:43.840+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:14:44.775+08:00  WARN 24944 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T16:14:45.262+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T16:14:45.303+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T16:14:45.311+08:00  INFO 24944 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 6.717 seconds (process running for 7.702)
+2025-06-03T16:14:57.179+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T16:14:57.179+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T16:14:57.183+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-06-03T16:14:57.261+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:14:57.326+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:15:01.709+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 721 ms
+2025-06-03T16:15:34.326+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:15:34.326+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-8] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:21:32.626+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-10] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:21:32.640+08:00  INFO 24944 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-10] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:22:01.493+08:00  INFO 24944 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:22:01.496+08:00  INFO 24944 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:22:01.503+08:00  INFO 24944 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-03T16:22:07.290+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 24264 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T16:22:07.293+08:00 DEBUG 24264 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T16:22:07.293+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T16:22:07.344+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T16:22:07.344+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T16:22:08.380+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:22:08.382+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T16:22:08.612+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 220 ms. Found 5 JPA repository interfaces.
+2025-06-03T16:22:08.637+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:22:08.639+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T16:22:08.659+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:22:08.659+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:22:08.662+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:22:08.662+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:22:08.662+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:22:08.663+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2025-06-03T16:22:09.349+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T16:22:09.361+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T16:22:09.362+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T16:22:09.428+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T16:22:09.429+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2084 ms
+2025-06-03T16:22:09.591+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T16:22:09.651+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T16:22:09.686+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T16:22:10.040+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T16:22:10.065+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T16:22:10.481+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@606520e4
+2025-06-03T16:22:10.484+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T16:22:10.627+08:00  WARN 24264 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T16:22:12.025+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T16:22:12.342+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:22:13.257+08:00  WARN 24264 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T16:22:13.752+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T16:22:13.791+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T16:22:13.800+08:00  INFO 24264 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 6.957 seconds (process running for 7.762)
+2025-06-03T16:22:17.092+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T16:22:17.093+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T16:22:17.095+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-03T16:22:18.949+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 1283 ms
+2025-06-03T16:22:53.876+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:22:53.915+08:00  INFO 24264 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:23:06.789+08:00  INFO 24264 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:23:06.794+08:00  INFO 24264 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:23:06.816+08:00  INFO 24264 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-03T16:23:13.048+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Starting BackendV2Application using Java 23.0.2 with PID 16832 (D:\Files\流光！\fleeting-time\Backend-v2\target\classes started by 23652 in D:\Files\流光！\fleeting-time\Backend-v2)
+2025-06-03T16:23:13.057+08:00 DEBUG 16832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Running with Spring Boot v3.3.0, Spring v6.1.8
+2025-06-03T16:23:13.058+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-06-03T16:23:13.109+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-03T16:23:13.109+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-03T16:23:14.102+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:23:14.105+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-03T16:23:14.343+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 225 ms. Found 5 JPA repository interfaces.
+2025-06-03T16:23:14.368+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-03T16:23:14.368+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-03T16:23:14.387+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendRequestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:23:14.387+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:23:14.392+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:23:14.392+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.TravelPostRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:23:14.392+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.whu.fleetingtime.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-06-03T16:23:14.392+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2025-06-03T16:23:15.036+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-06-03T16:23:15.053+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-03T16:23:15.054+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-06-03T16:23:15.127+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-03T16:23:15.127+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2017 ms
+2025-06-03T16:23:15.275+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-03T16:23:15.338+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-06-03T16:23:15.354+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-03T16:23:15.658+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-03T16:23:15.689+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-03T16:23:16.145+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@606520e4
+2025-06-03T16:23:16.145+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-03T16:23:16.267+08:00  WARN 16832 --- [Fleeting-time-v2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-03T16:23:17.525+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-03T16:23:17.944+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:23:18.825+08:00  WARN 16832 --- [Fleeting-time-v2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-03T16:23:19.405+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-06-03T16:23:19.441+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-06-03T16:23:19.454+08:00  INFO 16832 --- [Fleeting-time-v2] [restartedMain] o.whu.fleetingtime.BackendV2Application  : Started BackendV2Application in 6.813 seconds (process running for 7.546)
+2025-06-03T16:23:36.363+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-03T16:23:36.363+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-03T16:23:36.368+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2025-06-03T16:23:38.221+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 1240 ms
+2025-06-03T16:24:08.200+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT拦截器】拦截请求: /api/user/avatar
+2025-06-03T16:24:08.233+08:00  INFO 16832 --- [Fleeting-time-v2] [http-nio-127.0.0.1-8081-exec-6] o.w.f.interceptor.JwtInterceptor         : 【JWT解析】userId: 8518f24e-d3e3-476d-87f6-39b6ef6c504e
+2025-06-03T16:28:54.482+08:00  INFO 16832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-03T16:28:54.486+08:00  INFO 16832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-03T16:28:54.492+08:00  INFO 16832 --- [Fleeting-time-v2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

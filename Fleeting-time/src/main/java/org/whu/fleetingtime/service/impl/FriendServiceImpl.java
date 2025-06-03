@@ -61,4 +61,9 @@ public class FriendServiceImpl implements FriendService {
     public List<UserFriend> listFriends(Long userId) {
         return friendMapper.selectFriendsByUserId(userId);
     }
+
+    @Override
+    public List<FriendRequest> listReceivedRequests(Long userId) {
+        return friendMapper.getReceivedRequests(userId);
+    }
 }
