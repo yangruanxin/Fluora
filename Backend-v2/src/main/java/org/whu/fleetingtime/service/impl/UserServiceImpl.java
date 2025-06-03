@@ -36,10 +36,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+
+    private static final long EXPIRE_TIME = 1000 * 60 * 5; //  5 分钟
+
     public String generateRandomUsername() {
-        String username=null;
+        String username = null;
         do {
-            int randomNum = (int)(Math.random() * 900000) + 100000;
+            int randomNum = (int) (Math.random() * 900000) + 100000;
             username = "用户" + randomNum;
         } while (userRepository.existsByUsername(username) == true);
         return username;
@@ -123,6 +126,7 @@ public class UserServiceImpl implements UserService {
             throw new BizException("验证码服务异常，请稍后重试");
         }
     }
+
     @Override
     public String login(LoginRequestDTO dto) {
         if (dto == null || !StringUtils.hasText(dto.getIdentifier()) || !StringUtils.hasText(dto.getPassword())) {
@@ -152,6 +156,7 @@ public class UserServiceImpl implements UserService {
         }
         return jwtUtil.generateToken(user.get().getId());
     }
+
     @Override
     @Transactional
     public UserUpdateResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
@@ -266,13 +271,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BizException("用户不存在"));
 
+        String presignedUrl = AliyunOssUtil.generatePresignedGetUrl(user.getAvatarUrl(), EXPIRE_TIME);
+
         // 手动将 User 实体类的属性赋值到 UserInfoResponseDTO
         UserInfoResponseDTO dto = new UserInfoResponseDTO();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
-        dto.setAvatarUrl(user.getAvatarUrl());
+        dto.setAvatarUrl(presignedUrl);
         dto.setCreatedTime(user.getCreatedTime());
         dto.setUpdatedTime(user.getUpdatedTime());
         return dto;
@@ -317,11 +324,12 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BizException("邮箱或手机号必须提供一个");
         }
-        if(passwordEncoder.matches(dto.getNewPassword(), user.getPassword()))
-                throw new BizException("新密码不能与旧密码相同");
+        if (passwordEncoder.matches(dto.getNewPassword(), user.getPassword()))
+            throw new BizException("新密码不能与旧密码相同");
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
     }
+
     @Override
     @Transactional
     public void unbindEmail(String userId, String code) {
