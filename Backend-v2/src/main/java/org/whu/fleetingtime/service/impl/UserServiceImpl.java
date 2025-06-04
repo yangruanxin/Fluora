@@ -43,8 +43,9 @@ public class UserServiceImpl implements UserService {
     private String generateRandomAvatar() {
         Random random = new Random();
         Integer number = random.nextInt(3) + 1; // 生成 0~2，再加 1 得 1~3
-        return "avatar/defaults/d"+number.toString()+".gif";
+        return "avatar/defaults/d" + number.toString() + ".gif";
     }
+
     public String generateRandomUsername() {
         String username = null;
         do {
@@ -265,7 +266,7 @@ public class UserServiceImpl implements UserService {
             user.setUpdatedTime(LocalDateTime.now());
             userRepository.save(user);
 
-            return newAvatarUrl;
+            return AliyunOssUtil.generatePresignedGetUrl(newAvatarUrl, EXPIRE_TIME);
         } catch (IOException e) {
             log.error("文件上传异常", e);
             throw new BizException("文件上传失败");
