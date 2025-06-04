@@ -627,6 +627,7 @@ public class TravelPostServiceImpl implements TravelPostService {
                 .title(post.getTitle())
                 .longitude(post.getLongitude())
                 .latitude(post.getLatitude())
+                .content(post.getContent().substring(0, Math.min(post.getContent().length(), 1000)))
                 .locationName(post.getLocationName())
                 .beginTime(post.getBeginTime())
                 .endTime(post.getEndTime())

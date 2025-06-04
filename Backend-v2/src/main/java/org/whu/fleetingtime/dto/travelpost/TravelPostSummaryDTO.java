@@ -16,6 +16,9 @@ public class TravelPostSummaryDTO {
     @Schema(description = "帖子标题")
     private String title;
 
+    @Schema(description = "帖子内容")
+    private String content;
+
     @Schema(description = "地点名称")
     private String locationName;
 
