@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = ref(false)
   const token = ref('')
+  const imageIdMap = ref({})
 
   // 登录
   function login(authToken) {
@@ -31,15 +32,30 @@ export const useAuthStore = defineStore('auth', () => {
       isLoggedIn.value = false
     }
   }
-  // 在组件加载时检查用户是否已登录
-  onMounted(() => {
-    checkAuth()
-  })
 
+  
+  // imageId->url映射表
+  function setImageId(url, id) {
+    imageIdMap.value[url] = id
+  }
 
+  function getImageId(url) {
+    return imageIdMap.value[url]
+  }
 
-  return { isLoggedIn, token, login, logout, checkAuth }
+  return { 
+    isLoggedIn, 
+    token, 
+    login, 
+    logout, 
+    checkAuth,
+    imageIdMap,
+    setImageId,
+    getImageId 
+  }
 },{
-  persist: true
+  persist: {
+    paths: ['isLoggedIn', 'token', 'imageIdMap'] 
+  }
 }
 )
