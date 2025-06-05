@@ -1,11 +1,13 @@
 package org.whu.fleetingtime.util;
 
 import com.aliyun.oss.ClientBuilderConfiguration;
+import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
 import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
 import com.aliyun.oss.common.comm.SignVersion;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyuncs.exceptions.ClientException;
 
 import java.io.InputStream;
@@ -69,10 +71,30 @@ public class AliyunOssUtil {
      */
     public static String generatePresignedGetUrl(String objectKey, long validityDurationMillis) {
         // 计算绝对的过期时间点
-
         Date expirationTime = new Date(System.currentTimeMillis() + validityDurationMillis);
         // 生成一个GET请求的预签名URL。
         URL presignedUrl = ossClient.generatePresignedUrl(BUCKET_NAME, objectKey, expirationTime);
+        return presignedUrl.toString();
+    }
+
+
+    /**
+     * 生成阿里云OSS对象的预签名URL，并附带图片处理参数 (用于GET请求获取处理后的图片)。
+     *
+     * @param objectKey              存储在OSS上的对象的完整路径
+     * @param validityDurationMillis URL的有效时长，单位为毫秒
+     * @param imageProcessStyleName  阿里云OSS图片处理样式名称 (例如："style/watermark")
+     *                               或者 图片处理参数字符串 (例如："image/resize,l_1600/quality,q_75")
+     *                               如果为null或空，则不应用任何图片处理。
+     * @return 生成的带图片处理参数的预签名URL字符串，如果生成失败则返回null
+     */
+    public static String generatePresignedGetUrl(String objectKey, long validityDurationMillis, String imageProcessStyleName) {
+        Date expirationTime = new Date(System.currentTimeMillis() + validityDurationMillis);
+        // 创建一个GeneratePresignedUrlRequest对象，以便我们可以设置图片处理参数
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(BUCKET_NAME, objectKey, HttpMethod.GET);
+        request.setExpiration(expirationTime);
+        request.addQueryParameter("x-oss-process", imageProcessStyleName);
+        URL presignedUrl = ossClient.generatePresignedUrl(request);
         return presignedUrl.toString();
     }
 
