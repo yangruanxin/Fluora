@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String register(UserRegisterRequestDTO dto) {
         validateUserRegisterDTO(dto);
-        try {
+//        try {
             if (userRepository.existsByUsername(dto.getUsername())) {
                 throw new BizException("用户名已存在");
             }
@@ -69,17 +69,17 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("服务器异常，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("服务器异常，请稍后重试");
+//        }
     }
 
     @Override
     @Transactional
     public String register_phone(PhoneRegisterRequestDTO dto) {
         validatePhoneRegisterDTO(dto);
-        try {
+//        try {
             if (userRepository.existsByPhone(dto.getPhone())) {
                 throw new BizException("手机号已被注册");
             }
@@ -97,20 +97,20 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("服务器异常，请稍后重试");
-        } catch (Exception e) {
-            log.error("验证码服务异常", e);
-            throw new BizException("验证码服务异常，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("服务器异常，请稍后重试");
+//        } catch (Exception e) {
+//            log.error("验证码服务异常", e);
+//            throw new BizException("验证码服务异常，请稍后重试");
+//        }
     }
 
     @Override
     @Transactional
     public String register_email(EmailRegisterRequestDTO dto) {
         validateEmailRegisterDTO(dto);
-        try {
+//        try {
             if (userRepository.existsByEmail(dto.getEmail())) {
                 throw new BizException("邮箱已被注册");
             }
@@ -128,13 +128,13 @@ public class UserServiceImpl implements UserService {
             user.setAvatarUrl(generateRandomAvatar());
             userRepository.save(user);
             return jwtUtil.generateToken(user.getId());
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("服务器异常，请稍后重试");
-        } catch (Exception e) {
-            log.error("验证码服务异常", e);
-            throw new BizException("验证码服务异常，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("服务器异常，请稍后重试");
+//        } catch (Exception e) {
+//            log.error("验证码服务异常", e);
+//            throw new BizException("验证码服务异常，请稍后重试");
+//        }
     }
 
     @Override
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         }
 
         Optional<User> user = Optional.empty();
-        try {
+//        try {
             if (dto.getIdentifier().matches("^\\d{11}$")) {
                 user = userRepository.findByPhone(dto.getIdentifier());
 
@@ -153,10 +153,10 @@ public class UserServiceImpl implements UserService {
             } else {
                 user = Optional.ofNullable(userRepository.findByUsername(dto.getIdentifier()));
             }
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("服务器异常，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("服务器异常，请稍后重试");
+//        }
 
         if (user.isEmpty()) {
             throw new BizException("用户不存在");
@@ -215,7 +215,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(dto.getUsername());
         }
 
-        try {
+//        try {
             User updatedUser = userRepository.save(user);
 
             UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO();
@@ -223,10 +223,10 @@ public class UserServiceImpl implements UserService {
             responseDTO.setEmail(updatedUser.getEmail());
             responseDTO.setPhone(updatedUser.getPhone());
             return responseDTO;
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("更新失败，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("更新失败，请稍后重试");
+//        }
     }
 
 
@@ -302,16 +302,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean deleteUserAndAllRelatedData(String userId) {
         if (!StringUtils.hasText(userId)) throw new BizException("用户ID不能为空");
-
-        try {
+//        try {
             User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
             userRepository.delete(user);
             // TODO: 删除其他关联数据
             return true;
-        } catch (DataAccessException e) {
-            log.error("数据库异常", e);
-            throw new BizException("删除失败，请稍后重试");
-        }
+//        } catch (DataAccessException e) {
+//            log.error("数据库异常", e);
+//            throw new BizException("删除失败，请稍后重试");
+//        }
     }
 
     @Override
