@@ -111,7 +111,7 @@
                     }
                 } catch (error) {
                     console.error(error)
-                    ElMessage.error('网络错误或服务器异常')
+                    ElMessage.error('用户名或密码错误')
                 } finally {
                     loading.value = false
                 }

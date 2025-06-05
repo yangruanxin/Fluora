@@ -216,29 +216,25 @@ const submit = async () => {
     return;
   }
 
-  const formData = new FormData();
-  console.log("locationInfo.value",locationInfo.value)
-  formData.append("locationName", locationInfo.value.name);
-  formData.append("longitude", locationInfo.value.lng);
-  formData.append("latitude", locationInfo.value.lat);
-  formData.append("content", description.value);
-  formData.append("beginTime", formatDateTime(travelStart.value));
-  formData.append("endTime", formatDateTime(travelEnd.value));
-
-  if (uploadImage.value && uploadImage.value.length > 0) {
-    uploadImage.value.forEach((file,index) => {
-      formData.append("images", file);
-      formData.append("orders", index); 
-      console.log(index)
-    });
-  }
+  console.log('发表旅行日记的图片',uploadImage.value)
 
   try {
-    const response = await authAxios.post("/travel-posts", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    const postData = {
+      content: description.value,
+      locationName: locationInfo.value.name,
+      latitude: locationInfo.value.lat,
+      longitude: locationInfo.value.lng,
+      beginTime: formatDateTime(travelStart.value),
+      endTime: formatDateTime(travelEnd.value),
+      images : uploadImage.value
+      .filter(file => file.uploadData && file.uploadData.imageId)
+      .map((file, index) => ({
+        imageId: file.uploadData.imageId,
+        sortOrder: index
+      }))
+    };
+
+    const response = await authAxios.post("/travel-posts", postData);
     console.log("提交成功：", response.data);
     alert("提交成功！");
     closeModal();

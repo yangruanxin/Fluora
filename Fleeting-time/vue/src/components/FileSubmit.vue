@@ -57,6 +57,7 @@
             animation="200"
             ghost-class="drag-ghost"
             handle=".drag-handle"
+            @update="onSortUpdate"
           >
             <template #item="{ element: file, index: idx }">
               <Motion
@@ -187,16 +188,21 @@ import { ElImage } from 'element-plus';
 import { defineEmits } from 'vue'
 import draggable from "vuedraggable";
 import { Close } from '@element-plus/icons-vue'
- import { authAxios } from '@/utils/request'
-
+import { authAxios } from '@/utils/request'
+import { useAuthStore } from '@/stores/auth' 
 
 const { URL } = window;
+const authStore = useAuthStore()
 
 interface FileUploadProps {
   class?: HTMLAttributes["class"];
 }
 
 const removeFile = (index: number) => {
+  // 释放预览对象URL，防止内存泄漏
+  const file = files.value[index];
+  if (file.previewUrl) URL.revokeObjectURL(file.previewUrl);
+
   files.value.splice(index, 1)
 }
 
@@ -210,11 +216,47 @@ const emit = defineEmits<{
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const isActive = ref<boolean>(false);
 
-type FileWithPreview = File & { previewUrl?: string };
+type FileWithPreview = File & { previewUrl?: string; uploadData?: any; uploading?: boolean };
+
 const files = ref<FileWithPreview[]>([]);
 
-function handleFileChange(newFiles: File[]) {
-  const enhancedFiles = newFiles.map((f) => {
+const uploadImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    // 假设你的token在localStorage，实际请根据你项目改
+    const token = localStorage.getItem('token') || '';
+
+    const res = await authAxios.post('/travel-posts/upload/img', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    if (res.data?.code === 200) {
+      const data = res.data.data;
+      if (data.url && data.imageId) {
+        console.log('authStore keys:', Object.keys(authStore))
+        authStore.setImageId(data.url, data.imageId)  // 保存映射
+      }
+      return data;
+    } else {
+      console.error('上传失败:', res.data?.message || '未知错误');
+      return null;
+    }
+  } catch (err) {
+    console.error('上传异常:', err);
+    return null;
+  }
+};
+
+function onSortUpdate() {
+  emit("onChange", files.value); // 把排序后的顺序更新到父组件
+}
+
+async function handleFileChange(newFiles: File[]) {
+  const enhancedFiles: FileWithPreview[] = newFiles.map((f) => {
     const fileWithPreview = f as FileWithPreview;
     if (f.type.startsWith("image/")) {
       fileWithPreview.previewUrl = URL.createObjectURL(f);
@@ -222,8 +264,23 @@ function handleFileChange(newFiles: File[]) {
     return fileWithPreview;
   });
 
+  // 先把新文件加进 files 数组，标记上传中
+  enhancedFiles.forEach(f => f.uploading = true);
   files.value = [...files.value, ...enhancedFiles];
   emit("onChange", files.value);
+
+  // 依次上传新添加的文件
+  for (const file of enhancedFiles) {
+    const uploadResult = await uploadImage(file);
+    file.uploading = false;
+    if (uploadResult) {
+      file.uploadData = uploadResult;
+      console.log('上传成功：', uploadResult);
+    } else {
+      console.warn('上传失败的文件：', file.name);
+    }
+    emit("onChange", files.value);
+  }
 }
 
 function onFileChange(e: Event) {

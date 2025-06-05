@@ -4,10 +4,12 @@
       <!-- 左侧信息栏 -->
       <div class="sidebar">
         <!-- 头像 -->
-        <div class="avatar" 
-        @click="triggerFileInput"
-        :style="{ backgroundImage: `url(${user.avatarUrl || '/default-avatar.png'})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
-        ></div>
+        <img
+          :src="user.avatarUrl ? `${user.avatarUrl}` : '/default-avatar.png'"
+          alt="头像"
+          class="avatar"
+          @click="triggerFileInput"
+        />
         <!-- 点击头像区域可上传头像 -->
         <input type="file" ref="fileInput" @change="handleAvatarUpload" style="display: none;" accept="image/*" />
         <!-- 用户名 -->
@@ -74,8 +76,7 @@
                     <!-- 图片 -->
                     <div class="md:w-1/4 w-full flex justify-center md:justify-start">
                       <img
-                        v-if="item.imageUrls.length > 0"
-                        :src="item.imageUrls[0]"
+                        :src="item.firstImageUrl"
                         class="w-32 h-32 object-cover rounded-lg border"
                       />
                     </div>
@@ -132,10 +133,6 @@
     <!-- 弹窗：编辑旅行记录 -->
     <el-dialog v-model="editPostDialogVisible" title="编辑打卡内容" width="600px">
       <el-form label-position="top">
-        <!-- 标题 -->
-        <el-form-item label="标题">
-          <el-input v-model="editingPost.title" placeholder="请输入打卡标题" clearable/>
-        </el-form-item>
 
         <!-- 时间 -->
         <el-form-item label="编辑时间">
@@ -166,6 +163,7 @@
             animation="200"
             ghost-class="drag-ghost"
             handle=".drag-handle"
+            @update="onSortUpdate"
           >
             <template #item="{ element: url, index }">
               <Motion
@@ -201,6 +199,7 @@
             accept="image/*"
             :headers="uploadHeaders"
             :on-success="handleUploadSuccess"
+            name="image" 
           >
             <el-button type="primary" :icon="Plus">添加图片</el-button>
           </el-upload>
@@ -258,7 +257,7 @@
 
   
   import {useRouter} from 'vue-router'
-  import { ref, onMounted, onUnmounted ,defineEmits} from 'vue'
+  import { ref, onMounted, onUnmounted ,defineEmits , onBeforeUnmount } from 'vue'
   import { authAxios } from '@/utils/request'
   import { useAuthStore } from '@/stores/auth'
   import { ElMessage, ElMessageBox } from 'element-plus'
@@ -420,8 +419,8 @@ onUnmounted(() => {
         },
       })
       console.log('上传返回结果：', response)
-      user.value.avatarUrl = response.data.data 
-      // console.log('user.value.avatarUrl:',user.value.avatarUrl)
+      user.value.avatarUrl = response.data.data
+      console.log('user.value.avatarUrl:',user.value.avatarUrl)
     } catch (err) {
         console.error('上传头像失败：', err)
       }
@@ -500,6 +499,11 @@ onUnmounted(() => {
   };
 
   const posts = ref([]);
+  const page = ref(1)
+  const size = 100
+  const totalPages = ref(1)
+  const loading = ref(false)
+  const noMore = ref(false)
 
   // 加载用户数据
   onMounted(async () => {
@@ -528,12 +532,23 @@ onUnmounted(() => {
     }
   })
 
+  // 加载所有旅游记录
   const loadPosts = async () => {
+    if (loading.value || noMore.value) return
+    loading.value = true
+
     try {
-      const response = await authAxios.get('/travel-posts/me');
+      const response = await authAxios.get('/travel-posts/me',{      
+      params: {
+        page: page.value,
+        size,
+        sortBy: 'beginTime',
+        sortDirection: 'DESC'
+      }});
+      console.log('查询游记',response)
       if (response.data.code === 200) {
-        posts.value = response.data.data.content;
-        posts.value.sort((a, b) => new Date(b.beginTime) - new Date(a.beginTime));
+        const allPosts = response.data.data.content;
+        posts.value = allPosts;
         addMarkers();
       } else {
         console.error('获取游记失败：', response.data.message);
@@ -542,6 +557,42 @@ onUnmounted(() => {
       console.error('请求游记接口出错：', err);
     }
   }
+
+  // 加载地图标记
+  let currentMarkers = [];
+
+  const addMarkers = () => {
+    const BMapGL = window.BMapGL;
+    if (!map || !posts.value) return;
+
+    // 清除地图上的旧标记
+    currentMarkers.forEach(marker => map.removeOverlay(marker));
+    currentMarkers = [];
+
+    // 添加新标记
+    posts.value.forEach(item => {
+      const point = new BMapGL.Point(item.longitude, item.latitude);
+      const marker = new BMapGL.Marker(point);
+      map.addOverlay(marker);
+      currentMarkers.push(marker); // 添加到 marker 列表中
+
+      const content = `
+        <div style="width:220px; height:250px; border: 1px solid #666; border-radius: 8px; background: white; padding: 8px; position: relative; font-family: Arial, sans-serif;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">${item.locationName}</div>
+          <img src="${item.firstImageUrl  ? item.firstImageUrl : '/assets/default.jpg'}" 
+            style="width: 200px; height: 200px; object-fit: cover; border-radius: 6px;"/>
+        </div>
+      `;
+
+      const infoWindow = new BMapGL.InfoWindow(content, {
+        offset: new BMapGL.Size(0, -30)
+      });
+
+      marker.addEventListener('click', () => {
+        map.openInfoWindow(infoWindow, point);
+      });
+    });
+  };
 
   
   const scrollTo = (section) => {
@@ -603,7 +654,6 @@ onUnmounted(() => {
   const editPostDialogVisible = ref(false)
   const editingPost = ref({
     postId: '',
-    title: '',
     imageUrls:[],
     content: '',
     locationName: '',
@@ -614,24 +664,54 @@ onUnmounted(() => {
   });
   const currentImageIndex = ref(0)
 
-  const openEditor = (item) => {
-    editingPost.value = {
-      postId: item.id,
-      title:item.title,
-      imageUrls: item.imageUrls,  
-      content: item.content,
-      locationName: item.locationName,
-      latitude: item.latitude,
-      longitude: item.longitude,
-      beginTime: item.beginTime,
-      endTime: item.endTime
-    };
-    console.log(editingPost.value);
-    editPostDialogVisible.value = true;
+
+  // 编辑里删除当前图片
+  function deleteCurrentImage() {
+    editingPost.value.imageUrls.splice(currentImageIndex.value, 1);
+  }
+
+  // 拖拽排序顺序更新
+  const emit = defineEmits(['onChange'])
+  function onSortUpdate() {
+    emit("onChange", editingPost.value.imageUrls);
+    console.log('图片顺序发生更改，更新后顺序', editingPost.value.imageUrls)
+  }
+
+
+  // 查询某个记录的详细信息
+  const fetchPostDetail = async (postId) => {
+    try {
+      const response = await authAxios.get(`/travel-posts/${postId}`);
+      return response.data.data;
+    } catch (error) {
+      console.error('获取游记详情失败:', error);
+      return null;
+    }
   };
 
-  const newImages = ref([]) // 新增图片文件
-  const deletedImageUrls = ref([]) // 被用户删除的旧图片
+
+  // 打开某条记录的编辑弹窗
+  const openEditor = async (item) => {
+    const detail = await fetchPostDetail(item.id);
+    if (!detail) {
+      ElMessage.error('获取游记详情失败');
+      return;
+    }
+
+    editingPost.value = {
+      postId: detail.id,
+      imageUrls: detail.imageUrls ?? [],
+      content: detail.content,
+      locationName: detail.locationName,
+      latitude: detail.latitude,
+      longitude: detail.longitude,
+      beginTime: detail.beginTime,
+      endTime: detail.endTime
+    };
+
+    currentImageIndex.value = 0;
+    editPostDialogVisible.value = true;
+  };
 
 
   // 从 Pinia 获取 token，处理图片上传
@@ -645,111 +725,99 @@ onUnmounted(() => {
 
   const handleUploadSuccess = (response) => {
     editingPost.value.imageUrls.push(response.data.url);
+    console.log('上传了图片，所有图片：',editingPost.value.imageUrls)
+    authStore.setImageId(response.data.url, response.data.imageId)
   }
 
-  const sortOrders = computed(() =>
-    editingPost.value.imageUrls.map((_, index) => index)
-  )
 
-  const existingImageUrls = computed(() =>
-    editingPost.value.imageUrls.filter(url => !deletedImageUrls.value.includes(url))
-  )
-
-
-
+  // 保存图片
   const saveEditedImages = async () => {
     if (!editingPost.value || !editingPost.value.postId) {
-      ElMessage.error('无效的帖子 ID');
-      return;
+      ElMessage.error('无效的帖子 ID')
+      return
     }
 
-    try {
-      const formData = new FormData();
+    const authStore = useAuthStore()
 
-      // 1. 添加新图片文件（newImages 是 File[]）
-      newImages.value.forEach(file => {
-        formData.append('newImages', file);  // 字段名是 newImages[]
-      });
+    editingPost.value.imageUrls.forEach(url => {
+      const imageId = authStore.getImageId(url);
+      console.log('图片 URL:', url, '对应的 imageId:', imageId);
+    });
 
-      // 2. 添加被删除的图片 URL（deletedImageUrls 是 string[]）
-      deletedImageUrls.value.forEach(url => {
-        formData.append('deletedImageUrls', url);  // deletedImageUrls[]
-      });
-
-      // 3. 添加保留的图片 URL（existingImageUrls 是 string[]，用于保留顺序）
-      existingImageUrls.value.forEach(url => {
-        formData.append('existingImageUrls', url);  // existingImageUrls[]
-      });
-
-      // 4. 添加排序数组（sortOrders 是 number[]）
-      sortOrders.value.forEach(order => {
-        formData.append('sortOrders', order.toString());  // sortOrders[]
-      });
-
-      console.log('提交图片编辑请求，数据如下：');
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
+    // 构造符合后端要求的 images 数组
+    const images = editingPost.value.imageUrls.map((url, index) => {
+      const imageId = authStore.getImageId(url)
+      if (!imageId || imageId === '') {
+        console.warn(`警告：图片 ${url} 缺少 imageId，可能不会被保存`);
       }
+      return {
+        imageId,
+        sortOrder: index
+      }
+    }).filter(item => item.imageId) 
 
+    console.log('准备上传editingPost.value.imageUrls',editingPost.value.imageUrls)
+    console.log('images',images)
+    try {
       const response = await authAxios.put(
-        `/api/travel-posts/images/${editingPost.value.postId}`,
-        formData,
+        `/travel-posts/${editingPost.value.postId}/images`,
+        { images }, 
         {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json'
           }
         }
-      );
+      )
 
       if (response.data.code === 200) {
-        ElMessage.success('图片保存成功');
-        await loadPosts(); // 重新加载帖子以反映新图片顺序
+        ElMessage.success('图片保存成功')
       } else {
-        console.error('保存失败：', response.data.message);
-        ElMessage.error('保存失败，请检查输入内容');
+        console.error('保存失败：', response.data.message)
+        ElMessage.error('保存失败，请检查输入内容')
       }
     } catch (err) {
-      console.error('保存图片出错：', err);
-      ElMessage.error('请求出错，请稍后重试');
+      console.error('保存图片出错：', err)
+      ElMessage.error('请求出错，请稍后重试')
     }
-  };
+  }
 
 
   const saveEditedPost = async () => {
     try {
       if (!editingPost.value || !editingPost.value.postId) {
         console.error('无效的帖子数据');
+        ElMessage.error('帖子数据无效');
         return;
       }
 
-      const formData = new FormData();
-      formData.append('postId', editingPost.value.postId);
-      formData.append('userId', user.value.id);
-      formData.append('title', editingPost.value.title);
-      formData.append('content', editingPost.value.content);
-      formData.append('locationName', editingPost.value.locationName);
-      formData.append('latitude', editingPost.value.latitude);
-      formData.append('longitude', editingPost.value.longitude);
-      formData.append('beginTime',formatDateTime(editingPost.value.beginTime));
-      formData.append('endTime', formatDateTime(editingPost.value.endTime));
+      // 构造 JSON payload
+      const payload = {
+        content: editingPost.value.content,
+        locationName: editingPost.value.locationName,
+        latitude: editingPost.value.latitude,
+        longitude: editingPost.value.longitude,
+        beginTime: formatDateTime(editingPost.value.beginTime),
+        endTime: editingPost.value.endTime
+          ? formatDateTime(editingPost.value.endTime)
+          : formatDateTime(editingPost.value.beginTime)
+      };
 
-      console.log('尝试保存的数据：');
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+      console.log('尝试保存的数据：', payload);
 
       const response = await authAxios.put(
         `/travel-posts/${editingPost.value.postId}`,
-        formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       if (response.data.code === 200) {
         console.log('保存成功：', response.data.data);
         ElMessage.success('保存成功');
-        await loadPosts()
+        await loadPosts();
         editPostDialogVisible.value = false;
       } else {
         console.error('保存失败：', response.data.message);
@@ -761,6 +829,7 @@ onUnmounted(() => {
     }
   };
 
+
   // 处理保存按钮点击事件
   const isSaving = ref(false);
 
@@ -771,46 +840,13 @@ onUnmounted(() => {
       await saveEditedImages();
       ElMessage.success('所有修改已保存');
       editPostDialogVisible.value = false;
+      await resetAndLoadPosts()
     } catch (err) {
       console.error('保存失败：', err);
       ElMessage.error('保存失败，请重试');
     } finally {
       isSaving.value = false;
     }
-  };
-
-
-  const addMarkers = () => {
-    const BMapGL = window.BMapGL;
-    if (!map || !posts.value) return;
-
-    posts.value.forEach(item => {
-      // 创建标注点坐标
-      const point = new BMapGL.Point(item.longitude, item.latitude);
-
-      // 创建标注
-      const marker = new BMapGL.Marker(point);
-      map.addOverlay(marker);
-
-      // 创建信息窗口内容，带图片和地点名
-      const content = `
-        <div style="width:220px; height:250px; border: 1px solid #666; border-radius: 8px; background: white; padding: 8px; position: relative; font-family: Arial, sans-serif;">
-          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">${item.locationName}</div>
-          <img src="${item.imageUrls && item.imageUrls.length > 0 ? item.imageUrls[0] : '/assets/default.jpg'}" 
-            style="width: 200px; height: 200px; object-fit: cover; border-radius: 6px;"/>
-        </div>
-      `;
-
-      // 创建信息窗口
-      const infoWindow = new BMapGL.InfoWindow(content, {
-        offset: new BMapGL.Size(0, -30) // 调整信息窗口偏移，避免覆盖标注点
-      });
-
-      // 点击标注弹出信息窗口
-      marker.addEventListener('click', () => {
-        map.openInfoWindow(infoWindow, point);
-      });
-    });
   };
 
   const deleting = ref(false)
@@ -834,7 +870,7 @@ onUnmounted(() => {
 
       ElMessage.success('删除成功')
       editPostDialogVisible.value = false;
-      await loadPosts()
+      await resetAndLoadPosts()
       console.log(posts);
     } catch (error) {
       if (error !== 'cancel') {
@@ -845,6 +881,16 @@ onUnmounted(() => {
       deleting.value = false
     }
   }
+
+  //删除记录后刷新
+  const resetAndLoadPosts = async () => {
+    posts.value = []
+    page.value = 1
+    noMore.value = false
+    loading.value = false
+    await loadPosts()
+  }
+
   </script>
   
   <style lang="css" scoped>
@@ -875,6 +921,7 @@ onUnmounted(() => {
     background-color: #ddd;
     border-radius: 50%;
     margin: 0 auto 16px;
+    object-fit: cover; 
   }
   
   /* 用户名 */
