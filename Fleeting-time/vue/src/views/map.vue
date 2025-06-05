@@ -15,7 +15,7 @@
       <h3 
         class="relative z-20 font-sans text-base font-bold dark:text-neutral-300"
       >添加旅行记录</h3>
-      <p>目的地：{{ locationInfo.name }}</p>
+      <p style="margin-bottom: 10px;">目的地：{{ locationInfo.name }}</p>
       <div class="upload">
         <FileSubmit class="additional-class" @onChange="handleImageUpload"></FileSubmit>
         <div style="flex: 1;">
@@ -34,13 +34,19 @@
               format="YYYY-MM-DD"
               value-format="YYYY-MM-DD"
               placeholder="选择旅行结束日期"
-              style="width: 100%; margin-bottom: 10px;"
+              style="width: 100%; margin-bottom: 15px;"
             />
           </div>
 
           <!-- 描述文本框 -->
-          <textarea v-model="description" placeholder="记录一下你的感受吧..." rows="4"></textarea>
-      </div>
+          <div style="flex: 1;">
+            <textarea
+              v-model="description"
+              placeholder="记录一下你的感受吧..."
+              style="width: 100%; height: 280px; resize: none; padding: 10px; box-sizing: border-box;"
+            ></textarea>
+          </div>
+        </div>
       </div>
 
 
