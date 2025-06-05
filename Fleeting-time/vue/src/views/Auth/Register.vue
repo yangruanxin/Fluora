@@ -159,15 +159,19 @@
     const captchaId = ref('')
     const captchaCode = ref('')
 
-    const fetchCaptcha = async () => {
+    const fetchCaptcha = async (params = {}) => {
         try {
-            const res = await publicAxios.get('/sms/captchasend')
+            const res = await publicAxios.post('/sms/captchasend', {
+                params: {
+                    ...params
+                }
+            })
             captchaImg.value = res.data.data.img
             captchaId.value = res.data.data.uuid
             captchaCode.value = ''
             showCaptchaDialog.value = true
         } catch (err) {
-            ElMessage.error('获取图形验证码失败')
+            ElMessage.error('手机号或邮箱已存在，请直接登录')
         }
     }
 
@@ -211,7 +215,7 @@
         }
         
         captchaContext.value='sms'
-        await fetchCaptcha()
+        await fetchCaptcha({ identifier: RegisterForm.phone })
     }
 
 
@@ -241,7 +245,7 @@
         }
 
         captchaContext.value = 'email'
-        await fetchCaptcha()
+        await fetchCaptcha({ identifier: RegisterForm.email })
     }
 
 
@@ -317,8 +321,7 @@
                     ElMessage.error(response.data.message || '注册失败')
                 }
             } catch (error) {
-                console.error('请求出错：', error)
-                ElMessage.error('网络错误或服务器异常')
+                ElMessage.error('用户已存在，请直接登录')
             }
         })
     }
