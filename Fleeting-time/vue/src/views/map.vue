@@ -44,6 +44,7 @@
             placeholder="记录一下你的感受吧..."
             style="width: 100%; height: 280px; resize: none; padding: 10px; box-sizing: border-box;"
           ></textarea>
+        </div>
       </div>
 
 
