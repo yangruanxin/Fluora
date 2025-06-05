@@ -248,7 +248,7 @@ public class UserServiceImpl implements UserService {
         if (avatarFile == null || avatarFile.isEmpty()) throw new BizException("文件不能为空");
 
         User user = userRepository.findById(userId).orElseThrow(() -> new BizException("用户不存在"));
-//        try {
+        try {
             String suffix = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
             if (suffix == null || suffix.isEmpty()) {
                 throw new BizException("文件格式错误");
@@ -267,13 +267,13 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return AliyunOssUtil.generatePresignedGetUrl(newAvatarUrl, EXPIRE_TIME);
-//        } catch (IOException e) {
-//            log.error("文件上传异常", e);
-//            throw new BizException("文件上传失败");
-//        } catch (Exception e) {
-//            log.error("文件上传未知异常", e);
-//            throw new BizException("文件上传失败，请稍后重试");
-//        }
+        } catch (IOException e) {
+            log.error("文件上传异常", e);
+            throw new BizException("文件上传失败");
+        } catch (Exception e) {
+            log.error("文件上传未知异常", e);
+            throw new BizException("文件上传失败，请稍后重试");
+        }
     }
 
 
