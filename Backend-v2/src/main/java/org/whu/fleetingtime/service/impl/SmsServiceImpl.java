@@ -215,6 +215,10 @@ public class SmsServiceImpl implements SmsService {
         if (!StringUtils.hasText(uuid)) {
             throw new BizException("验证码标识不能为空");
         }
+        //如果identifier为空，则不进行验证
+        if (StringUtils.isEmpty(identifier)) {
+            throw new BizException("用户标识不能为空");
+        }
         Optional<User> user = Optional.empty();
         if (identifier.matches("^\\d{11}$")) {
             user = userRepository.findByPhone(identifier);
