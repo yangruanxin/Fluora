@@ -15,10 +15,13 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.whu.fleetingtime.entity.User;
 import org.whu.fleetingtime.exception.BizException;
+import org.whu.fleetingtime.repository.UserRepository;
 import org.whu.fleetingtime.service.SmsService;
 
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -36,6 +39,9 @@ public class SmsServiceImpl implements SmsService {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("${sms.host}")
     private String host;
@@ -58,6 +64,57 @@ public class SmsServiceImpl implements SmsService {
     @Value("${spring.mail.username}")
     private String from;
 
+//    @Override
+//    public boolean sendSms(String mobile) {
+//        if (!StringUtils.hasText(mobile)) {
+//            throw new BizException("手机号不能为空");
+//        }
+//        if (!mobile.matches("^\\d{11}$")) {
+//            throw new BizException("手机号格式不正确");
+//        }
+//        // 防止频繁发送（1分钟限制）
+//        String rateLimitKey = "sms:rate:" + mobile;
+//        if (Boolean.TRUE.equals(redisTemplate.hasKey(rateLimitKey))) {
+//            throw new BizException("验证码发送过于频繁，请稍后再试");
+//        }
+//
+//        int minutes=5;
+//        String code = String.valueOf((int)((Math.random() * 9 + 1) * 100000)); // 生成6位验证码
+//        String url = host + path +
+//                "?mobile=" + mobile +
+//                "&param=" + "**code**:" + code + ",**minute**:" + minutes +
+//                "&smsSignId=" + smsSignId +
+//                "&templateId=" + templateId;
+//        //设置请求头
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "APPCODE " + appcode);
+//        //创建请求实体
+//        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+//        //发送 HTTP 请求
+//        try {
+//            ResponseEntity<String> response = restTemplate.exchange(
+//                    url,
+//                    HttpMethod.POST,
+//                    entity,
+//                    String.class
+//            );
+//            System.out.println("响应状态码：" + response.getStatusCode());
+//            System.out.println("响应内容：" + response.getBody());
+//            //存入redis
+//            if (response.getStatusCode().is2xxSuccessful()) {
+//                // 限制1分钟重复发送
+//                redisTemplate.opsForValue().set(rateLimitKey, "1", 60, TimeUnit.SECONDS);
+//                // 存验证码，有效期5分钟
+//                redisTemplate.opsForValue().set("sms:" + mobile, code, 5, TimeUnit.MINUTES);
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
     @Override
     public boolean sendSms(String mobile) {
         if (!StringUtils.hasText(mobile)) {
@@ -66,49 +123,37 @@ public class SmsServiceImpl implements SmsService {
         if (!mobile.matches("^\\d{11}$")) {
             throw new BizException("手机号格式不正确");
         }
-        // 防止频繁发送（1分钟限制）
+
         String rateLimitKey = "sms:rate:" + mobile;
         if (Boolean.TRUE.equals(redisTemplate.hasKey(rateLimitKey))) {
             throw new BizException("验证码发送过于频繁，请稍后再试");
         }
 
-        int minutes=5;
-        String code = String.valueOf((int)((Math.random() * 9 + 1) * 100000)); // 生成6位验证码
+        int minutes = 5;
+        String code = String.valueOf((int)((Math.random() * 9 + 1) * 100000)); // 6位验证码
+
         String url = host + path +
                 "?mobile=" + mobile +
                 "&param=" + "**code**:" + code + ",**minute**:" + minutes +
                 "&smsSignId=" + smsSignId +
                 "&templateId=" + templateId;
-        //设置请求头
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "APPCODE " + appcode);
-        //创建请求实体
+
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        //发送 HTTP 请求
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    entity,
-                    String.class
-            );
-            System.out.println("响应状态码：" + response.getStatusCode());
-            System.out.println("响应内容：" + response.getBody());
-            //存入redis
-            if (response.getStatusCode().is2xxSuccessful()) {
-                // 限制1分钟重复发送
-                redisTemplate.opsForValue().set(rateLimitKey, "1", 60, TimeUnit.SECONDS);
-                // 存验证码，有效期5分钟
-                redisTemplate.opsForValue().set("sms:" + mobile, code, 5, TimeUnit.MINUTES);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new BizException("短信发送失败，请稍后再试");
         }
+
+        // 设置验证码及频率限制
+        redisTemplate.opsForValue().set(rateLimitKey, "1", 60, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set("sms:" + mobile, code, 5, TimeUnit.MINUTES);
+        return true;
     }
+
     @Override
     public boolean sendEmail(String email) {
         if (!StringUtils.hasText(email)) {
@@ -163,12 +208,25 @@ public class SmsServiceImpl implements SmsService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            throw new BizException("邮件发送失败，请稍后再试");
         }
     }
-    public BufferedImage sendCaptcha(String uuid) {
+    public BufferedImage sendCaptcha(String uuid,String identifier) {
         if (!StringUtils.hasText(uuid)) {
             throw new BizException("验证码标识不能为空");
+        }
+        Optional<User> user = Optional.empty();
+        if (identifier.matches("^\\d{11}$")) {
+            user = userRepository.findByPhone(identifier);
+
+        } else if (identifier.matches("^[\\w.%+-]+@[\\w.-]+\\.\\w{2,}$")) {
+            user = userRepository.findByEmail(identifier);
+        } else {
+            user = Optional.ofNullable(userRepository.findByUsername(identifier));
+        }
+        //已被注册
+        if (user.isPresent()) {
+            throw new BizException("该账号已被注册");
         }
         String code = captchaProducer.createText();
         BufferedImage image = captchaProducer.createImage(code);

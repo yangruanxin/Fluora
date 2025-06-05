@@ -45,11 +45,11 @@ public class SmsController {
     }
 
     // 获取图形验证码
-    @GetMapping("/captchasend")
-    public Result<Map<String, String>> sendCaptcha() {
+    @PostMapping("/captchasend")
+    public Result<Map<String, String>> sendCaptcha(String identifier) {
         String uuid = UUID.randomUUID().toString();
 
-        BufferedImage image = smsService.sendCaptcha(uuid);
+        BufferedImage image = smsService.sendCaptcha(uuid,identifier);
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(image, "jpg", baos);
