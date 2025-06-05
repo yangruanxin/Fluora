@@ -81,7 +81,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         String imageUrl;
         try (InputStream inputStream = file.getInputStream()) {
             AliyunOssUtil.upload(objectName, inputStream);
-            imageUrl = AliyunOssUtil.generatePresignedGetUrl(objectName, 5 * 60 * 1000);
+            imageUrl = AliyunOssUtil.generatePresignedGetUrl(objectName, EXPIRED_TIME, "image/resize,l_1600/quality,q_50");
             logger.info("【图片上传服务】图片 {} (objectKey: {}) 成功上传到OSS，访问URL: {}", originalFilename, objectName, imageUrl);
         } catch (Exception e) {
             logger.error("【图片上传服务】用户 {} 上传图片 {} (objectKey: {}) 到OSS失败: {}", userId, originalFilename, objectName, e.getMessage(), e);
@@ -137,7 +137,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         logger.info("【图片上传服务】准备上传图片 {} 到OSS...", originalFilename);
         try (InputStream inputStream = file.getInputStream()) {
             AliyunOssUtil.upload(objectName, inputStream); // 假设此方法仅上传
-            imageUrl = AliyunOssUtil.generatePresignedGetUrl (objectName, EXPIRED_TIME); // 生成预签名URL
+            imageUrl = AliyunOssUtil.generatePresignedGetUrl(objectName, EXPIRED_TIME,"image/resize,l_1600/quality,q_50"); // 生成预签名URL
             if (imageUrl == null) {
                 throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "图片上传成功但生成访问链接失败");
             }
@@ -198,8 +198,11 @@ public class TravelPostServiceImpl implements TravelPostService {
         } catch (DataAccessException dae) {
             logger.error("【图片上传服务】保存图片信息 (objectKey: {}) 到数据库失败: {}", objectName, dae.getMessage(), dae);
             // 应该尝试删除已上传到OSS的文件，作为补偿
-            try { AliyunOssUtil.delete(objectName); }
-            catch (Exception ossEx) { logger.error("【图片上传服务】补偿删除OSS文件 {} 失败", objectName, ossEx); }
+            try {
+                AliyunOssUtil.delete(objectName);
+            } catch (Exception ossEx) {
+                logger.error("【图片上传服务】补偿删除OSS文件 {} 失败", objectName, ossEx);
+            }
             throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "图片信息保存失败");
         }
         logger.info("【图片上传服务】图片信息成功保存到数据库，图片ID: {}, objectKey: {}", savedImage.getId(), savedImage.getObjectKey());
@@ -289,7 +292,7 @@ public class TravelPostServiceImpl implements TravelPostService {
                 try {
                     travelPostImageRepository.save(image); // 保存图片更新（关联和顺序）
                     logger.debug("【创建旅行日志服务】图片ID: {} 成功关联到帖子ID: {}，顺序: {}", imageIdToAssociate, savedPost.getId(), sortOrder);
-                    String presignedUrl = AliyunOssUtil.generatePresignedGetUrl(image.getObjectKey(), EXPIRED_TIME);
+                    String presignedUrl = AliyunOssUtil.generatePresignedGetUrl(image.getObjectKey(), EXPIRED_TIME,"image/resize,l_1600/quality,q_50");
                     if (presignedUrl != null) {
                         associatedImageUrls.add(presignedUrl);
                     } else {
@@ -532,7 +535,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         List<String> finalImageUrls = travelPostRepository.findById(postId).get().getImages()
                 .stream()
                 .sorted(Comparator.comparing(TravelPostImage::getSortOrder)) // 如果 @OrderBy没生效或想再次确认
-                .map(img -> AliyunOssUtil.generatePresignedGetUrl(img.getObjectKey(), EXPIRED_TIME))
+                .map(img -> AliyunOssUtil.generatePresignedGetUrl(img.getObjectKey(), EXPIRED_TIME,"image/resize,l_1600/quality,q_50"))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -619,7 +622,7 @@ public class TravelPostServiceImpl implements TravelPostService {
         if (post.getImages() != null && !post.getImages().isEmpty()) {
             // 获取第一张图片 (假设images已按sortOrder排序)
             TravelPostImage firstImage = post.getImages().get(0);
-            firstImageUrl = AliyunOssUtil.generatePresignedGetUrl(firstImage.getObjectKey(), EXPIRED_TIME);
+            firstImageUrl = AliyunOssUtil.generatePresignedGetUrl(firstImage.getObjectKey(), EXPIRED_TIME,"image/resize,l_1600/quality,q_50");
         }
 
         return TravelPostSummaryDTO.builder()
@@ -644,7 +647,7 @@ public class TravelPostServiceImpl implements TravelPostService {
             // 确保在事务内访问，或者images是EAGER加载
             // post.getImages().size(); // 触发懒加载（如果需要）
             imageUrls = post.getImages().stream()
-                    .map(img -> AliyunOssUtil.generatePresignedGetUrl(img.getObjectKey(), EXPIRED_TIME)) // 生成预签名URL
+                    .map(img -> AliyunOssUtil.generatePresignedGetUrl(img.getObjectKey(), EXPIRED_TIME,"image/resize,l_1600/quality,q_50")) // 生成预签名URL
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
@@ -676,7 +679,7 @@ public class TravelPostServiceImpl implements TravelPostService {
             imageUrls = post.getImages().stream()
                     // 假设 TravelPostImage 有 getObjectKey() 方法
                     // 并且 AliyunOssUtil.generateUrl 返回的是预签名URL字符串
-                    .map(image -> AliyunOssUtil.generatePresignedGetUrl(image.getObjectKey(), EXPIRED_TIME))
+                    .map(image -> AliyunOssUtil.generatePresignedGetUrl(image.getObjectKey(), EXPIRED_TIME,"image/resize,l_1600/quality,q_50"))
                     .filter(url -> url != null && !url.isEmpty()) // 过滤掉生成失败或为空的URL
                     .collect(Collectors.toList());
         }
