@@ -266,7 +266,7 @@ public class UserServiceImpl implements UserService {
             user.setUpdatedTime(LocalDateTime.now());
             userRepository.save(user);
 
-            return AliyunOssUtil.generatePresignedGetUrl(newAvatarUrl, EXPIRE_TIME);
+            return AliyunOssUtil.generatePresignedGetUrl(newAvatarUrl, EXPIRE_TIME,"image/resize,l_1600/quality,q_50");
         } catch (IOException e) {
             log.error("文件上传异常", e);
             throw new BizException("文件上传失败");
@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new BizException("用户不存在"));
         String presignedUrl = null;
         if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            presignedUrl = AliyunOssUtil.generatePresignedGetUrl(user.getAvatarUrl(), EXPIRE_TIME);
+            presignedUrl = AliyunOssUtil.generatePresignedGetUrl(user.getAvatarUrl(),EXPIRE_TIME,"image/resize,l_1600/quality,q_50");
         }
         // 手动将 User 实体类的属性赋值到 UserInfoResponseDTO
         UserInfoResponseDTO dto = new UserInfoResponseDTO();
