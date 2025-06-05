@@ -35,12 +35,26 @@ export const useAuthStore = defineStore('auth', () => {
 
   
   // imageId->url映射表
-  function setImageId(url, id) {
-    imageIdMap.value[url] = id
+  // URL 规范化函数（去除查询参数）
+  function normalizeImageUrl(url) {
+    try {
+      const u = new URL(url)
+      return u.origin + u.pathname
+    } catch {
+      return url
+    }
   }
 
+  // 设置 imageId
+  function setImageId(url, id) {
+    const key = normalizeImageUrl(url)
+    imageIdMap.value[key] = id
+  }
+
+  // 获取 imageId
   function getImageId(url) {
-    return imageIdMap.value[url]
+    const key = normalizeImageUrl(url)
+    return imageIdMap.value[key]
   }
 
   return { 
