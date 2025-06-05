@@ -159,13 +159,23 @@
     const captchaId = ref('')
     const captchaCode = ref('')
 
-    const fetchCaptcha = async (params = {}) => {
+    const fetchCaptcha = async () => {
+        const identifier =
+        registerMethod.value === 'phone'
+            ? RegisterForm.phone
+            : registerMethod.value === 'email'
+            ? RegisterForm.email
+            : RegisterForm.account;
+
+        console.log('identifier',identifier)
         try {
-            const res = await publicAxios.post('/sms/captchasend', {
-                params: {
-                    ...params
-                }
-            })
+            if (!identifier) {
+            ElMessage.warning('请输入手机号或邮箱');
+            return;
+            }
+           
+
+            const res = await publicAxios.post(`/sms/captchasend?identifier=${encodeURIComponent(identifier)}`);
             captchaImg.value = res.data.data.img
             captchaId.value = res.data.data.uuid
             captchaCode.value = ''
@@ -215,7 +225,8 @@
         }
         
         captchaContext.value='sms'
-        await fetchCaptcha({ identifier: RegisterForm.phone })
+        registerMethod.value='phone'
+        await fetchCaptcha()
     }
 
 
@@ -245,7 +256,8 @@
         }
 
         captchaContext.value = 'email'
-        await fetchCaptcha({ identifier: RegisterForm.email })
+        registerMethod.value = 'email'
+        await fetchCaptcha()
     }
 
 
